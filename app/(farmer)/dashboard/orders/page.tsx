@@ -15,7 +15,7 @@ export default async function OrdersPage({
   if (!session) return null;
 
   const resolvedSearchParams = await searchParams;
-  const statusFilter = resolvedSearchParams.status as OrderStatus | undefined;
+  const statusFilter = resolvedSearchParams.status;
   
   let orders = await getOrdersByFarmer(session.userId);
   
