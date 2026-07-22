@@ -4,7 +4,8 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { loginAction } from "@/lib/auth/actions";
-import { MdLock, MdMail, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { MdAgriculture, MdLock, MdMail, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { FaLeaf } from "react-icons/fa6";
 
 const HERO_IMAGE =
   "login_image.jpg";
@@ -34,8 +35,14 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           {/* Brand */}
           <div className="mb-12">
-            <h1 className="font-heading text-3xl font-bold text-primary tracking-tight">
-              FarmFresh
+            <h1 className="font-heading flex items-center gap-2 text-3xl font-bold text-primary tracking-tight">
+              <span
+                className="material-symbols-outlined text-primary text-3xl"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                <MdAgriculture />
+              </span>
+              <span className="font-heading text-2xl font-bold text-primary tracking-tight">FarmFresh</span>
             </h1>
             <p className="text-on-surface-variant mt-2">
               Welcome back to the source of goodness.
@@ -201,7 +208,7 @@ export default function LoginPage() {
               className="material-symbols-outlined text-primary-container"
               style={{ fontVariationSettings: "'FILL' 1" }}
             >
-              eco
+              <FaLeaf />
             </span>
             <span className="text-sm font-semibold text-on-primary-fixed">Eco-Certified Marketplace</span>
           </div>
