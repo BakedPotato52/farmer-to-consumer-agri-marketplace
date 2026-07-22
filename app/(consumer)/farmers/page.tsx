@@ -85,9 +85,9 @@ export default async function FarmersPage(props: {
                 href={`/farmers/${farmer.userId}`}
                 className="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center relative overflow-hidden"
               >
-                <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-br from-emerald-100 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 z-0"></div>
+                <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-br from-emerald-100 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 z-0"></div>
                 
-                <div className="relative z-10 w-24 h-24 bg-gradient-to-br from-emerald-500 to-teal-600 text-white rounded-full flex items-center justify-center font-bold text-4xl shadow-lg mb-4 border-4 border-white dark:border-gray-800 group-hover:scale-105 transition-transform">
+                <div className="relative z-10 w-24 h-24 bg-linear-to-br from-emerald-500 to-teal-600 text-white rounded-full flex items-center justify-center font-bold text-4xl shadow-lg mb-4 border-4 border-white dark:border-gray-800 group-hover:scale-105 transition-transform">
                   {farmer.farmName.charAt(0)}
                 </div>
                 
