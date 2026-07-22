@@ -26,8 +26,12 @@ export default function LoginPage() {
     <div className="w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl shadow-2xl overflow-hidden flex min-h-[600px]">
       <div className="w-full md:w-1/2 p-8 sm:p-12 flex flex-col justify-center">
         <div className="mb-8 text-center md:text-left">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-500 dark:text-gray-400">Sign in to your FarmFresh account</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Welcome Back
+          </h1>
+          <p className="text-gray-500 dark:text-gray-400">
+            Sign in to your FarmFresh account
+          </p>
         </div>
 
         <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-xl mb-6">
@@ -48,9 +52,11 @@ export default function LoginPage() {
 
         <form action={formAction} className="space-y-5">
           <input type="hidden" name="role" value={role} />
-          
+
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Email
+            </label>
             <input
               type="email"
               name="email"
@@ -61,7 +67,9 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Password
+            </label>
             <input
               type="password"
               name="password"
@@ -82,13 +90,18 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
           Don't have an account?{" "}
-          <Link href="/register" className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline">
+          <Link
+            href="/register"
+            className="text-emerald-600 dark:text-emerald-400 font-medium hover:underline"
+          >
             Register here
           </Link>
         </p>
 
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400 text-center space-y-1">
-          <p className="font-semibold text-gray-600 dark:text-gray-300">Demo Credentials:</p>
+          <p className="font-semibold text-gray-600 dark:text-gray-300">
+            Demo Credentials:
+          </p>
           <p>Consumer: arjun@email.com / consumer123</p>
           <p>Farmer: rajesh@farmfresh.com / farmer123</p>
           <p>Admin: admin@farmfresh.com / admin123</p>
@@ -96,15 +109,27 @@ export default function LoginPage() {
       </div>
 
       <div className="hidden md:flex w-1/2 bg-gradient-to-br from-emerald-500 to-teal-700 p-12 flex-col justify-center items-center relative overflow-hidden">
-        <div className="absolute top-10 right-10 text-6xl opacity-20 animate-bounce" style={{ animationDuration: '3s' }}>🌾</div>
-        <div className="absolute bottom-20 left-10 text-6xl opacity-20 animate-bounce" style={{ animationDuration: '4s' }}>🚜</div>
-        <div className="absolute top-1/2 right-20 text-5xl opacity-20 animate-pulse">🍎</div>
-        
+        <div
+          className="absolute top-10 right-10 text-6xl opacity-20 animate-bounce"
+          style={{ animationDuration: "3s" }}
+        >
+          🌾
+        </div>
+        <div
+          className="absolute bottom-20 left-10 text-6xl opacity-20 animate-bounce"
+          style={{ animationDuration: "4s" }}
+        >
+          🚜
+        </div>
+        <div className="absolute top-1/2 right-20 text-5xl opacity-20 animate-pulse">
+          🍎
+        </div>
+
         <div className="relative z-10 text-center text-white">
           <h2 className="text-4xl font-bold mb-4">FarmFresh</h2>
           <p className="text-emerald-100 text-lg leading-relaxed">
-            Connecting local farmers directly with consumers. 
-            Fresh produce, fair prices, sustainable agriculture.
+            Connecting local farmers directly with consumers. Fresh produce,
+            fair prices, sustainable agriculture.
           </p>
         </div>
       </div>

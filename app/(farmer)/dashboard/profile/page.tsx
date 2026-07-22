@@ -21,7 +21,9 @@ export default async function ProfilePage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">Farm Profile</h1>
-          <p className="text-gray-500 text-sm mt-1">Manage your farm's public information and settings.</p>
+          <p className="text-gray-500 text-sm mt-1">
+            Manage your farm's public information and settings.
+          </p>
         </div>
         {profile.isVerified ? (
           <span className="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full font-medium text-sm">

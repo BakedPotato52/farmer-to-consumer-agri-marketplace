@@ -23,7 +23,10 @@ export function getProductsByCategory(category: ProductCategory): Product[] {
 }
 
 export function createProduct(
-  data: Omit<Product, "id" | "rating" | "totalReviews" | "createdAt" | "updatedAt">
+  data: Omit<
+    Product,
+    "id" | "rating" | "totalReviews" | "createdAt" | "updatedAt"
+  >,
 ): Product {
   const now = new Date().toISOString();
   const newProduct: Product = {
@@ -38,7 +41,10 @@ export function createProduct(
   return newProduct;
 }
 
-export function updateProduct(id: string, data: Partial<Product>): Product | undefined {
+export function updateProduct(
+  id: string,
+  data: Partial<Product>,
+): Product | undefined {
   const index = store.products.findIndex((p) => p.id === id);
   if (index === -1) return undefined;
 
@@ -63,7 +69,9 @@ export function filterProducts(filters: ProductFilters): Product[] {
   if (filters.search) {
     const s = filters.search.toLowerCase();
     filtered = filtered.filter(
-      (p) => p.name.toLowerCase().includes(s) || p.description.toLowerCase().includes(s)
+      (p) =>
+        p.name.toLowerCase().includes(s) ||
+        p.description.toLowerCase().includes(s),
     );
   }
 
@@ -92,7 +100,10 @@ export function filterProducts(filters: ProductFilters): Product[] {
     filtered = filtered.filter((p) => {
       const farmer = getFarmerById(p.farmerId);
       if (!farmer) return false;
-      return farmer.farmLocation.toLowerCase().includes(loc) || farmer.state.toLowerCase().includes(loc);
+      return (
+        farmer.farmLocation.toLowerCase().includes(loc) ||
+        farmer.state.toLowerCase().includes(loc)
+      );
     });
   }
 
@@ -108,7 +119,10 @@ export function filterProducts(filters: ProductFilters): Product[] {
         filtered.sort((a, b) => b.rating - a.rating);
         break;
       case "newest":
-        filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        filtered.sort(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        );
         break;
     }
   }

@@ -8,7 +8,9 @@ export function getAllFarmers(): (FarmerProfile & { user: User })[] {
   });
 }
 
-export function getFarmerById(userId: string): (FarmerProfile & { user: User }) | undefined {
+export function getFarmerById(
+  userId: string,
+): (FarmerProfile & { user: User }) | undefined {
   const profile = store.farmerProfiles.find((p) => p.userId === userId);
   if (!profile) return undefined;
   const user = store.users.find((u) => u.id === userId)!;
@@ -16,7 +18,7 @@ export function getFarmerById(userId: string): (FarmerProfile & { user: User }) 
 }
 
 export function createFarmerProfile(
-  data: Omit<FarmerProfile, "rating" | "totalReviews" | "totalProducts">
+  data: Omit<FarmerProfile, "rating" | "totalReviews" | "totalProducts">,
 ): FarmerProfile {
   const newProfile: FarmerProfile = {
     ...data,
@@ -30,7 +32,7 @@ export function createFarmerProfile(
 
 export function updateFarmerProfile(
   userId: string,
-  data: Partial<FarmerProfile>
+  data: Partial<FarmerProfile>,
 ): FarmerProfile | undefined {
   const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
   if (index === -1) return undefined;
@@ -66,7 +68,9 @@ export function getPendingFarmers(): (FarmerProfile & { user: User })[] {
   return getAllFarmers().filter((f) => !f.isVerified);
 }
 
-export function searchFarmers(filters: FarmerFilters): (FarmerProfile & { user: User })[] {
+export function searchFarmers(
+  filters: FarmerFilters,
+): (FarmerProfile & { user: User })[] {
   let farmers = getAllFarmers();
 
   if (filters.isVerified !== undefined) {
@@ -80,7 +84,9 @@ export function searchFarmers(filters: FarmerFilters): (FarmerProfile & { user: 
   if (filters.location) {
     const loc = filters.location.toLowerCase();
     farmers = farmers.filter(
-      (f) => f.farmLocation.toLowerCase().includes(loc) || f.state.toLowerCase().includes(loc)
+      (f) =>
+        f.farmLocation.toLowerCase().includes(loc) ||
+        f.state.toLowerCase().includes(loc),
     );
   }
 
@@ -90,7 +96,7 @@ export function searchFarmers(filters: FarmerFilters): (FarmerProfile & { user: 
       (f) =>
         f.farmName.toLowerCase().includes(s) ||
         f.user.name.toLowerCase().includes(s) ||
-        f.description.toLowerCase().includes(s)
+        f.description.toLowerCase().includes(s),
     );
   }
 

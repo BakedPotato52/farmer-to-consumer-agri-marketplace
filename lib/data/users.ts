@@ -9,7 +9,9 @@ export function getUserById(id: string): User | undefined {
   return store.users.find((u) => u.id === id);
 }
 
-export function createUser(data: Omit<User, "id" | "createdAt" | "updatedAt">): User {
+export function createUser(
+  data: Omit<User, "id" | "createdAt" | "updatedAt">,
+): User {
   const now = new Date().toISOString();
   const newUser: User = {
     ...data,
@@ -22,7 +24,9 @@ export function createUser(data: Omit<User, "id" | "createdAt" | "updatedAt">): 
 }
 
 export function authenticateUser(email: string, password: string): User | null {
-  const user = store.users.find((u) => u.email === email && u.password === password);
+  const user = store.users.find(
+    (u) => u.email === email && u.password === password,
+  );
   return user || null;
 }
 

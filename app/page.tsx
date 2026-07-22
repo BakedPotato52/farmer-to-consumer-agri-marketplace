@@ -7,8 +7,7 @@ import { MdOutlineStarPurple500 } from "react-icons/md";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 /* ─── Image URLs ─── */
-const HERO_BG =
-  "image_750x_687a56f8c4ff1.jpg";
+const HERO_BG = "image_750x_687a56f8c4ff1.jpg";
 
 const CATEGORIES = [
   {
@@ -129,8 +128,9 @@ export default function Home() {
               </h1>
 
               <p className="text-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed">
-                Experience the peak of seasonal flavor. We connect you directly with local farmers growing premium,
-                organic produce with integrity and care.
+                Experience the peak of seasonal flavor. We connect you directly
+                with local farmers growing premium, organic produce with
+                integrity and care.
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -139,7 +139,9 @@ export default function Home() {
                   className="px-8 py-4 bg-primary text-on-primary rounded-lg text-sm font-semibold transition-all hover:opacity-90 active:scale-95 organic-shadow flex items-center gap-2"
                 >
                   Shop Now
-                  <span className="material-symbols-outlined text-sm"><FaArrowRightLong /></span>
+                  <span className="material-symbols-outlined text-sm">
+                    <FaArrowRightLong />
+                  </span>
                 </Link>
                 <Link
                   href="/register"
@@ -155,9 +157,12 @@ export default function Home() {
         {/* ── How It Works ── */}
         <section className="py-20 bg-surface">
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto text-center mb-14">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">Sourcing Made Simple</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
+              Sourcing Made Simple
+            </h2>
             <p className="text-on-surface-variant max-w-xl mx-auto">
-              Three elegant steps to bring the finest agricultural products to your kitchen.
+              Three elegant steps to bring the finest agricultural products to
+              your kitchen.
             </p>
           </div>
 
@@ -166,21 +171,24 @@ export default function Home() {
               {
                 icon: <BsSearch />,
                 title: "Browse",
-                description: "Explore seasonal harvests from our curated list of boutique local farms.",
+                description:
+                  "Explore seasonal harvests from our curated list of boutique local farms.",
                 color: "bg-secondary-container text-on-secondary-container",
                 delay: "100ms",
               },
               {
                 icon: <BsCart4 />,
                 title: "Order",
-                description: "Select your favorites and pay securely through our transparent marketplace.",
+                description:
+                  "Select your favorites and pay securely through our transparent marketplace.",
                 color: "bg-tertiary-fixed text-on-tertiary-fixed",
                 delay: "300ms",
               },
               {
                 icon: <BsTruck />,
                 title: "Receive",
-                description: "Get farm-fresh produce delivered directly to your doorstep within 24 hours.",
+                description:
+                  "Get farm-fresh produce delivered directly to your doorstep within 24 hours.",
                 color: "bg-primary-fixed text-on-primary-fixed",
                 delay: "500ms",
               },
@@ -193,9 +201,13 @@ export default function Home() {
                 <div
                   className={`w-20 h-20 rounded-full ${step.color} flex items-center justify-center mb-6 organic-shadow`}
                 >
-                  <span className="material-symbols-outlined text-3xl">{step.icon}</span>
+                  <span className="material-symbols-outlined text-3xl">
+                    {step.icon}
+                  </span>
                 </div>
-                <h3 className="font-heading text-xl font-bold text-primary mb-2">{step.title}</h3>
+                <h3 className="font-heading text-xl font-bold text-primary mb-2">
+                  {step.title}
+                </h3>
                 <p className="text-on-surface-variant">{step.description}</p>
               </div>
             ))}
@@ -206,30 +218,45 @@ export default function Home() {
         <section className="py-20">
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto mb-14 flex justify-between items-end">
             <div>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary">The Seasonal Edit</h2>
-              <p className="text-on-surface-variant mt-1">Discover what&apos;s flourishing right now.</p>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary">
+                The Seasonal Edit
+              </h2>
+              <p className="text-on-surface-variant mt-1">
+                Discover what&apos;s flourishing right now.
+              </p>
             </div>
             <Link
               href="/products"
               className="hidden md:flex text-primary text-sm font-semibold items-center gap-1 hover:underline"
             >
-              View All Categories <span className="material-symbols-outlined text-sm"><FaArrowRightLong /></span>
+              View All Categories{" "}
+              <span className="material-symbols-outlined text-sm">
+                <FaArrowRightLong />
+              </span>
             </Link>
           </div>
 
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {CATEGORIES.map((cat) => (
-              <Link key={cat.name} href={cat.href} className="group cursor-pointer block">
+              <Link
+                key={cat.name}
+                href={cat.href}
+                className="group cursor-pointer block"
+              >
                 <div className="aspect-square rounded-2xl overflow-hidden mb-4 organic-shadow relative">
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
                     style={{ backgroundImage: `url('${cat.image}')` }}
                   />
                   <div className="absolute inset-x-0 bottom-0 p-4 glass-card mx-3 mb-3 rounded-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-                    <span className="text-on-surface text-xs font-semibold">Explore</span>
+                    <span className="text-on-surface text-xs font-semibold">
+                      Explore
+                    </span>
                   </div>
                 </div>
-                <h4 className="font-heading text-lg font-bold text-on-surface text-center">{cat.name}</h4>
+                <h4 className="font-heading text-lg font-bold text-on-surface text-center">
+                  {cat.name}
+                </h4>
               </Link>
             ))}
           </div>
@@ -240,19 +267,25 @@ export default function Home() {
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto relative z-10">
             <div className="grid md:grid-cols-3 gap-12 text-center">
               <div>
-                <div className="font-heading text-6xl font-extrabold mb-2">12+</div>
+                <div className="font-heading text-6xl font-extrabold mb-2">
+                  12+
+                </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
                   Farmers Onboarded
                 </div>
               </div>
               <div>
-                <div className="font-heading text-6xl font-extrabold mb-2">48</div>
+                <div className="font-heading text-6xl font-extrabold mb-2">
+                  48
+                </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
                   Orders Fulfilled
                 </div>
               </div>
               <div>
-                <div className="font-heading text-6xl font-extrabold mb-2">1+</div>
+                <div className="font-heading text-6xl font-extrabold mb-2">
+                  1+
+                </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
                   Liters of Fresh Milk
                 </div>
@@ -264,10 +297,12 @@ export default function Home() {
         {/* ── Featured Farmers ── */}
         <section className="py-20 bg-surface-container-low">
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto mb-14 text-center">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">Meet the Producers</h2>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">
+              Meet the Producers
+            </h2>
             <p className="text-on-surface-variant max-w-2xl mx-auto">
-              The hands behind your food. We vet every producer to ensure the highest standards of sustainability and
-              quality.
+              The hands behind your food. We vet every producer to ensure the
+              highest standards of sustainability and quality.
             </p>
           </div>
 
@@ -283,15 +318,25 @@ export default function Home() {
                     style={{ backgroundImage: `url('${farmer.image}')` }}
                   />
                   <div className="absolute top-4 right-4 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">verified</span> Verified
+                    <span className="material-symbols-outlined text-[14px]">
+                      verified
+                    </span>{" "}
+                    Verified
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h3 className="font-heading text-xl font-bold text-primary">{farmer.name}</h3>
+                  <h3 className="font-heading text-xl font-bold text-primary">
+                    {farmer.name}
+                  </h3>
                   <div className="flex items-center text-on-surface-variant gap-1 text-sm">
-                    <span className="material-symbols-outlined text-sm">location_on</span> {farmer.location}
+                    <span className="material-symbols-outlined text-sm">
+                      location_on
+                    </span>{" "}
+                    {farmer.location}
                   </div>
-                  <p className="text-on-surface-variant text-sm pt-2">{farmer.bio}</p>
+                  <p className="text-on-surface-variant text-sm pt-2">
+                    {farmer.bio}
+                  </p>
                   <div className="pt-4 flex gap-2 flex-wrap">
                     {farmer.tags.map((tag) => (
                       <span
@@ -311,7 +356,9 @@ export default function Home() {
         {/* ── Testimonials ── */}
         <section className="py-stack-lg overflow-hidden">
           <div className="px-margin-desktop max-w-container-max mx-auto text-center mb-stack-lg">
-            <h2 className="font-headline-md text-headline-md text-primary">Voices of the Harvest</h2>
+            <h2 className="font-headline-md text-headline-md text-primary">
+              Voices of the Harvest
+            </h2>
           </div>
 
           <div className="flex flex-nowrap gap-gutter px-margin-desktop animate-fade-up">
@@ -332,12 +379,18 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <p className="font-body-lg text-on-surface mb-6">&ldquo;{t.quote}&rdquo;</p>
+                <p className="font-body-lg text-on-surface mb-6">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-surface-variant" />
                   <div>
-                    <div className="font-label-md text-on-surface">{t.name}</div>
-                    <div className="text-label-sm text-on-surface-variant">{t.role}</div>
+                    <div className="font-label-md text-on-surface">
+                      {t.name}
+                    </div>
+                    <div className="text-label-sm text-on-surface-variant">
+                      {t.role}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -362,8 +415,9 @@ export default function Home() {
                 Empowering the Modern Farmer
               </h2>
               <p className="text-primary-fixed-dim mb-10 leading-relaxed">
-                Join our growing ecosystem and gain access to a dedicated market of quality-seekers. We provide the
-                tools, you provide the harvest.
+                Join our growing ecosystem and gain access to a dedicated market
+                of quality-seekers. We provide the tools, you provide the
+                harvest.
               </p>
               <ul className="space-y-4 mb-10">
                 {[
@@ -371,8 +425,13 @@ export default function Home() {
                   "Advanced cold-chain logistics support",
                   "Direct customer feedback & analytics",
                 ].map((item) => (
-                  <li key={item} className="flex items-center gap-3 text-on-primary">
-                    <span className="material-symbols-outlined text-secondary-fixed"><IoMdCheckmarkCircleOutline /></span>
+                  <li
+                    key={item}
+                    className="flex items-center gap-3 text-on-primary"
+                  >
+                    <span className="material-symbols-outlined text-secondary-fixed">
+                      <IoMdCheckmarkCircleOutline />
+                    </span>
                     {item}
                   </li>
                 ))}

@@ -8,7 +8,7 @@ export default function ReviewForm({
   orderId,
   productId,
   farmerId,
-  productName
+  productName,
 }: {
   orderId: string;
   productId: string;
@@ -22,13 +22,13 @@ export default function ReviewForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     const formData = new FormData(e.currentTarget);
     const comment = formData.get("comment");
-    
+
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
     setSubmitted(true);
     setIsSubmitting(false);
   };
@@ -42,11 +42,18 @@ export default function ReviewForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-4 space-y-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl">
-      <h4 className="font-medium text-sm text-gray-900 dark:text-white">Review {productName}</h4>
-      
+    <form
+      onSubmit={handleSubmit}
+      className="mt-4 space-y-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl"
+    >
+      <h4 className="font-medium text-sm text-gray-900 dark:text-white">
+        Review {productName}
+      </h4>
+
       <div>
-        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Rating</label>
+        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Rating
+        </label>
         <div className="flex gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -55,14 +62,24 @@ export default function ReviewForm({
               onClick={() => setRating(star)}
               className="text-2xl focus:outline-none transition-colors"
             >
-              <span className={star <= rating ? "text-amber-400" : "text-gray-300 dark:text-gray-600"}>★</span>
+              <span
+                className={
+                  star <= rating
+                    ? "text-amber-400"
+                    : "text-gray-300 dark:text-gray-600"
+                }
+              >
+                ★
+              </span>
             </button>
           ))}
         </div>
       </div>
-      
+
       <div>
-        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Comment</label>
+        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Comment
+        </label>
         <textarea
           name="comment"
           required
@@ -71,7 +88,7 @@ export default function ReviewForm({
           placeholder="What did you think of this product?"
         ></textarea>
       </div>
-      
+
       <button
         type="submit"
         disabled={isSubmitting}

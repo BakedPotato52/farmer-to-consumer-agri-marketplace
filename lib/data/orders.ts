@@ -18,7 +18,7 @@ export function getOrdersByFarmer(farmerId: string): Order[] {
 }
 
 export function createOrder(
-  data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">
+  data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">,
 ): Order {
   const now = new Date().toISOString();
   const newOrder: Order = {
@@ -32,7 +32,10 @@ export function createOrder(
   return newOrder;
 }
 
-export function updateOrderStatus(id: string, status: OrderStatus): Order | undefined {
+export function updateOrderStatus(
+  id: string,
+  status: OrderStatus,
+): Order | undefined {
   const index = store.orders.findIndex((o) => o.id === id);
   if (index === -1) return undefined;
 

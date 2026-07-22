@@ -1,17 +1,17 @@
 {
-    "name": "FarmFresh Marketplace",
-    "short_name": "FarmFresh",
-    "description": "Connecting you directly to the source of fresh, organic agriculture.",
-    "start_url": "/",
-    "display": "standalone",
-    "background_color": "#fff8f6",
-    "theme_color": "#004532",
-    "icons": [
-        {
-            "src": "{{DATA:IMAGE:FAVICON}}",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "any maskable"
-        }
-    ]
+  "name": "FarmFresh Marketplace",
+  "short_name": "FarmFresh",
+  "description": "Connecting you directly to the source of fresh, organic agriculture.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff8f6",
+  "theme_color": "#004532",
+  "icons": [
+    {
+      "src": "{{DATA:IMAGE:FAVICON}}",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
 }

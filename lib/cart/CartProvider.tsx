@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { CartContext } from './CartContext';
-import type { CartItem } from '@/lib/types';
+import React, { useState, useEffect, useCallback } from "react";
+import { CartContext } from "./CartContext";
+import type { CartItem } from "@/lib/types";
 
-const CART_STORAGE_KEY = 'farmfresh_cart';
+const CART_STORAGE_KEY = "farmfresh_cart";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -18,7 +18,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setItems(JSON.parse(storedCart));
       }
     } catch (error) {
-      console.error('Failed to parse cart from localStorage:', error);
+      console.error("Failed to parse cart from localStorage:", error);
     }
     setIsHydrated(true);
   }, []);
@@ -32,15 +32,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback((newItem: CartItem) => {
     setItems((prevItems) => {
-      const existingItemIndex = prevItems.findIndex(item => item.productId === newItem.productId);
-      
+      const existingItemIndex = prevItems.findIndex(
+        (item) => item.productId === newItem.productId,
+      );
+
       if (existingItemIndex >= 0) {
         const updatedItems = [...prevItems];
         const existingItem = updatedItems[existingItemIndex];
-        
+
         // Check if adding more exceeds maxQuantity
-        const newQuantity = Math.min(existingItem.quantity + newItem.quantity, existingItem.maxQuantity);
-        
+        const newQuantity = Math.min(
+          existingItem.quantity + newItem.quantity,
+          existingItem.maxQuantity,
+        );
+
         updatedItems[existingItemIndex] = {
           ...existingItem,
           quantity: newQuantity,
@@ -50,7 +55,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         // Enforce max quantity limit even on initial add
         const itemToAdd = {
           ...newItem,
-          quantity: Math.min(newItem.quantity, newItem.maxQuantity)
+          quantity: Math.min(newItem.quantity, newItem.maxQuantity),
         };
         return [...prevItems, itemToAdd];
       }
@@ -58,12 +63,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const removeItem = useCallback((productId: string) => {
-    setItems((prevItems) => prevItems.filter(item => item.productId !== productId));
+    setItems((prevItems) =>
+      prevItems.filter((item) => item.productId !== productId),
+    );
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number) => {
     setItems((prevItems) => {
-      return prevItems.map(item => {
+      return prevItems.map((item) => {
         if (item.productId === productId) {
           // Ensure quantity is between 1 and maxQuantity
           const newQuantity = Math.max(1, Math.min(quantity, item.maxQuantity));
@@ -79,7 +86,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const getTotal = useCallback(() => {
-    return items.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return items.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [items]);
 
   const getItemCount = useCallback(() => {
@@ -87,15 +94,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   return (
-    <CartContext.Provider value={{
-      items: isHydrated ? items : [],
-      addItem,
-      removeItem,
-      updateQuantity,
-      clearCart,
-      getTotal,
-      getItemCount
-    }}>
+    <CartContext.Provider
+      value={{
+        items: isHydrated ? items : [],
+        addItem,
+        removeItem,
+        updateQuantity,
+        clearCart,
+        getTotal,
+        getItemCount,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

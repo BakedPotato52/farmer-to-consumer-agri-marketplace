@@ -1,23 +1,26 @@
-'use server';
+"use server";
 
-import { redirect } from 'next/navigation';
-import { authenticateUser, createUser, getUserByEmail } from '@/lib/data/users';
-import { createFarmerProfile } from '@/lib/data/farmers';
-import { createSession, destroySession } from '@/lib/auth/session';
-import type { UserRole, FarmingMethod } from '@/lib/types';
+import { redirect } from "next/navigation";
+import { authenticateUser, createUser, getUserByEmail } from "@/lib/data/users";
+import { createFarmerProfile } from "@/lib/data/farmers";
+import { createSession, destroySession } from "@/lib/auth/session";
+import type { UserRole, FarmingMethod } from "@/lib/types";
 
-export async function loginAction(prevState: any, formData: FormData): Promise<{ error?: string; success?: boolean }> {
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
+export async function loginAction(
+  prevState: any,
+  formData: FormData,
+): Promise<{ error?: string; success?: boolean }> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
 
   if (!email || !password) {
-    return { error: 'Email and password are required' };
+    return { error: "Email and password are required" };
   }
 
   const user = await authenticateUser(email, password);
 
   if (!user) {
-    return { error: 'Invalid email or password' };
+    return { error: "Invalid email or password" };
   }
 
   await createSession({
@@ -27,30 +30,33 @@ export async function loginAction(prevState: any, formData: FormData): Promise<{
     role: user.role,
   });
 
-  if (user.role === 'admin') {
-    redirect('/admin');
-  } else if (user.role === 'farmer') {
-    redirect('/dashboard');
+  if (user.role === "admin") {
+    redirect("/admin");
+  } else if (user.role === "farmer") {
+    redirect("/dashboard");
   } else {
-    redirect('/products');
+    redirect("/products");
   }
 }
 
-export async function registerAction(prevState: any, formData: FormData): Promise<{ error?: string; success?: boolean }> {
-  const email = formData.get('email') as string;
-  const password = formData.get('password') as string;
-  const name = formData.get('name') as string;
-  const phone = formData.get('phone') as string;
-  const role = formData.get('role') as UserRole;
-  const address = formData.get('address') as string;
+export async function registerAction(
+  prevState: any,
+  formData: FormData,
+): Promise<{ error?: string; success?: boolean }> {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const name = formData.get("name") as string;
+  const phone = formData.get("phone") as string;
+  const role = formData.get("role") as UserRole;
+  const address = formData.get("address") as string;
 
   if (!email || !password || !name || !role) {
-    return { error: 'Missing required fields' };
+    return { error: "Missing required fields" };
   }
 
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
-    return { error: 'Email already exists' };
+    return { error: "Email already exists" };
   }
 
   const user = await createUser({
@@ -62,16 +68,18 @@ export async function registerAction(prevState: any, formData: FormData): Promis
     address,
   });
 
-  if (role === 'farmer') {
-    const farmName = formData.get('farmName') as string;
-    const farmLocation = formData.get('farmLocation') as string;
-    const state = formData.get('state') as string;
-    const pincode = formData.get('pincode') as string;
-    const cropTypesStr = formData.get('cropTypes') as string;
-    const farmingMethod = formData.get('farmingMethod') as FarmingMethod;
-    const description = formData.get('description') as string;
+  if (role === "farmer") {
+    const farmName = formData.get("farmName") as string;
+    const farmLocation = formData.get("farmLocation") as string;
+    const state = formData.get("state") as string;
+    const pincode = formData.get("pincode") as string;
+    const cropTypesStr = formData.get("cropTypes") as string;
+    const farmingMethod = formData.get("farmingMethod") as FarmingMethod;
+    const description = formData.get("description") as string;
 
-    const cropTypes = cropTypesStr ? cropTypesStr.split(',').map(c => c.trim()) : [];
+    const cropTypes = cropTypesStr
+      ? cropTypesStr.split(",").map((c) => c.trim())
+      : [];
 
     await createFarmerProfile({
       userId: user.id,
@@ -84,10 +92,10 @@ export async function registerAction(prevState: any, formData: FormData): Promis
       description,
       isVerified: false,
       deliverySlots: [
-        { id: 'ds1', day: 'Monday', startTime: '08:00', endTime: '12:00' },
-        { id: 'ds2', day: 'Wednesday', startTime: '08:00', endTime: '12:00' },
-        { id: 'ds3', day: 'Friday', startTime: '08:00', endTime: '12:00' },
-        { id: 'ds4', day: 'Saturday', startTime: '09:00', endTime: '13:00' },
+        { id: "ds1", day: "Monday", startTime: "08:00", endTime: "12:00" },
+        { id: "ds2", day: "Wednesday", startTime: "08:00", endTime: "12:00" },
+        { id: "ds3", day: "Friday", startTime: "08:00", endTime: "12:00" },
+        { id: "ds4", day: "Saturday", startTime: "09:00", endTime: "13:00" },
       ],
     });
   }
@@ -99,16 +107,16 @@ export async function registerAction(prevState: any, formData: FormData): Promis
     role: user.role,
   });
 
-  if (user.role === 'admin') {
-    redirect('/admin');
-  } else if (user.role === 'farmer') {
-    redirect('/dashboard');
+  if (user.role === "admin") {
+    redirect("/admin");
+  } else if (user.role === "farmer") {
+    redirect("/dashboard");
   } else {
-    redirect('/products');
+    redirect("/products");
   }
 }
 
 export async function logoutAction(): Promise<void> {
   await destroySession();
-  redirect('/');
+  redirect("/");
 }

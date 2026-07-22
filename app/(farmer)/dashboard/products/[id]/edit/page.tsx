@@ -4,7 +4,11 @@ import { redirect } from "next/navigation";
 import EditProductForm from "./edit-form";
 import { cookies } from "next/headers";
 
-export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   await cookies();
   const session = await getSession();
   if (!session || session.role !== "farmer") {

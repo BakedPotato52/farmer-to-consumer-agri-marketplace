@@ -5,7 +5,7 @@ import { OrderStatus } from "@/lib/types";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await getSession();
   if (!session) {
@@ -14,15 +14,17 @@ export async function GET(
 
   const { id } = await params;
   const order = await getOrderById(id);
-  
+
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
   // Check permissions
-  if (session.role !== "admin" && 
-      order.consumerId !== session.userId && 
-      order.farmerId !== session.userId) {
+  if (
+    session.role !== "admin" &&
+    order.consumerId !== session.userId &&
+    order.farmerId !== session.userId
+  ) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -31,7 +33,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await getSession();
   if (!session) {
@@ -40,16 +42,19 @@ export async function PATCH(
 
   const { id } = await params;
   const order = await getOrderById(id);
-  
+
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
 
   try {
     const { status } = await request.json();
-    
+
     if (!status) {
-      return NextResponse.json({ error: "Status is required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Status is required" },
+        { status: 400 },
+      );
     }
 
     // Role-based restrictions
@@ -58,21 +63,35 @@ export async function PATCH(
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
       if (status !== "cancelled" || order.status !== "pending") {
-        return NextResponse.json({ error: "Consumers can only cancel pending orders" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Consumers can only cancel pending orders" },
+          { status: 400 },
+        );
       }
     } else if (session.role === "farmer") {
       if (order.farmerId !== session.userId) {
         return NextResponse.json({ error: "Forbidden" }, { status: 403 });
       }
-      const allowedFarmerStatuses = ["confirmed", "packed", "shipped", "delivered"];
+      const allowedFarmerStatuses = [
+        "confirmed",
+        "packed",
+        "shipped",
+        "delivered",
+      ];
       if (!allowedFarmerStatuses.includes(status)) {
-        return NextResponse.json({ error: "Invalid status update for farmer" }, { status: 400 });
+        return NextResponse.json(
+          { error: "Invalid status update for farmer" },
+          { status: 400 },
+        );
       }
     }
 
     const updated = await updateOrderStatus(id, status as OrderStatus);
     return NextResponse.json(updated);
   } catch (error) {
-    return NextResponse.json({ error: "Invalid request data" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid request data" },
+      { status: 400 },
+    );
   }
 }

@@ -5,9 +5,17 @@ import { useCart } from "@/lib/cart/CartContext";
 
 export default function AddToCartButton({
   product,
-  farmerName
+  farmerName,
 }: {
-  product: { id: string; name: string; price: number; unit: string; isOrganic: boolean; farmerId: string; quantityAvailable: number };
+  product: {
+    id: string;
+    name: string;
+    price: number;
+    unit: string;
+    isOrganic: boolean;
+    farmerId: string;
+    quantityAvailable: number;
+  };
   farmerName: string;
 }) {
   const [quantity, setQuantity] = useState(1);
@@ -24,9 +32,9 @@ export default function AddToCartButton({
       unit: product.unit,
       quantity,
       isOrganic: product.isOrganic,
-      maxQuantity: product.quantityAvailable
+      maxQuantity: product.quantityAvailable,
     });
-    
+
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -34,7 +42,9 @@ export default function AddToCartButton({
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-4">
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Quantity:</label>
+        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Quantity:
+        </label>
         <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -49,7 +59,9 @@ export default function AddToCartButton({
             className="w-12 text-center bg-transparent border-none text-gray-900 dark:text-white focus:ring-0 text-sm font-medium"
           />
           <button
-            onClick={() => setQuantity(Math.min(product.quantityAvailable, quantity + 1))}
+            onClick={() =>
+              setQuantity(Math.min(product.quantityAvailable, quantity + 1))
+            }
             className="px-3 py-1 text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
           >
             +
@@ -65,8 +77,8 @@ export default function AddToCartButton({
           added
             ? "bg-green-500 text-white hover:bg-green-600"
             : product.quantityAvailable > 0
-            ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg"
-            : "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700"
+              ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700"
         }`}
       >
         {added ? (

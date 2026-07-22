@@ -14,7 +14,7 @@ export async function approveFarmerAction(userId: string) {
 
   // TODO: Call actual db mutation, e.g., await approveFarmer(userId)
   console.log(`Farmer ${userId} approved by admin`);
-  
+
   revalidatePath("/admin/farmers");
   revalidatePath("/admin");
   return { success: true };
@@ -28,7 +28,7 @@ export async function rejectFarmerAction(userId: string) {
 
   // TODO: Call actual db mutation, e.g., await rejectFarmer(userId)
   console.log(`Farmer ${userId} rejected by admin`);
-  
+
   revalidatePath("/admin/farmers");
   revalidatePath("/admin");
   return { success: true };

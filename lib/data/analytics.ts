@@ -1,29 +1,52 @@
 import { store } from "@/lib/data/store";
-import type { PlatformStats, SalesSummary, FarmerProfile, User, Product } from "@/lib/types";
+import type {
+  PlatformStats,
+  SalesSummary,
+  FarmerProfile,
+  User,
+  Product,
+} from "@/lib/types";
 import { getFarmerById } from "./farmers";
 
 export function getPlatformStats(): PlatformStats {
   const totalFarmers = store.farmerProfiles.length;
-  const verifiedFarmers = store.farmerProfiles.filter((f) => f.isVerified).length;
-  const totalConsumers = store.users.filter((u) => u.role === "consumer").length;
+  const verifiedFarmers = store.farmerProfiles.filter(
+    (f) => f.isVerified,
+  ).length;
+  const totalConsumers = store.users.filter(
+    (u) => u.role === "consumer",
+  ).length;
   const totalOrders = store.orders.length;
 
   const completedOrders = store.orders.filter((o) => o.status === "delivered");
-  const totalRevenue = completedOrders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const totalRevenue = completedOrders.reduce(
+    (sum, o) => sum + o.totalAmount,
+    0,
+  );
 
-  const pendingApprovals = store.farmerProfiles.filter((f) => !f.isVerified).length;
+  const pendingApprovals = store.farmerProfiles.filter(
+    (f) => !f.isVerified,
+  ).length;
 
-  const orderFulfilmentRate = totalOrders > 0 ? (completedOrders.length / totalOrders) * 100 : 0;
-  const averageOrderValue = completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
+  const orderFulfilmentRate =
+    totalOrders > 0 ? (completedOrders.length / totalOrders) * 100 : 0;
+  const averageOrderValue =
+    completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
 
-  const consumerOrderCounts = store.orders.reduce((acc, order) => {
-    acc[order.consumerId] = (acc[order.consumerId] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const consumerOrderCounts = store.orders.reduce(
+    (acc, order) => {
+      acc[order.consumerId] = (acc[order.consumerId] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
-  const repeatCustomers = Object.values(consumerOrderCounts).filter((count) => count > 1).length;
+  const repeatCustomers = Object.values(consumerOrderCounts).filter(
+    (count) => count > 1,
+  ).length;
   const uniqueCustomers = Object.keys(consumerOrderCounts).length;
-  const repeatCustomerRate = uniqueCustomers > 0 ? (repeatCustomers / uniqueCustomers) * 100 : 0;
+  const repeatCustomerRate =
+    uniqueCustomers > 0 ? (repeatCustomers / uniqueCustomers) * 100 : 0;
 
   return {
     totalFarmers,
@@ -38,7 +61,11 @@ export function getPlatformStats(): PlatformStats {
   };
 }
 
-export function getOrderTrends(): { month: string; orders: number; revenue: number }[] {
+export function getOrderTrends(): {
+  month: string;
+  orders: number;
+  revenue: number;
+}[] {
   const trendsMap: Record<string, { orders: number; revenue: number }> = {};
 
   store.orders.forEach((order) => {
@@ -64,7 +91,13 @@ export function getOrderTrends(): { month: string; orders: number; revenue: numb
     }));
 }
 
-export function getTopFarmers(limit: number = 5): { farmer: FarmerProfile & { user: User }; revenue: number; orders: number }[] {
+export function getTopFarmers(
+  limit: number = 5,
+): {
+  farmer: FarmerProfile & { user: User };
+  revenue: number;
+  orders: number;
+}[] {
   const farmerStats: Record<string, { revenue: number; orders: number }> = {};
 
   store.orders.forEach((order) => {
@@ -89,12 +122,18 @@ export function getTopFarmers(limit: number = 5): { farmer: FarmerProfile & { us
         orders: farmerStats[farmerId].orders,
       };
     })
-    .filter(Boolean) as { farmer: FarmerProfile & { user: User }; revenue: number; orders: number }[];
+    .filter(Boolean) as {
+    farmer: FarmerProfile & { user: User };
+    revenue: number;
+    orders: number;
+  }[];
 
   return sortedFarmers;
 }
 
-export function getTopProducts(limit: number = 5): { product: Product; orders: number; revenue: number }[] {
+export function getTopProducts(
+  limit: number = 5,
+): { product: Product; orders: number; revenue: number }[] {
   const productStats: Record<string, { orders: number; revenue: number }> = {};
 
   store.orders.forEach((order) => {
@@ -126,7 +165,11 @@ export function getTopProducts(limit: number = 5): { product: Product; orders: n
   return sortedProducts;
 }
 
-export function getCategoryDistribution(): { category: string; count: number; revenue: number }[] {
+export function getCategoryDistribution(): {
+  category: string;
+  count: number;
+  revenue: number;
+}[] {
   const distribution: Record<string, { count: number; revenue: number }> = {};
 
   store.products.forEach((product) => {
@@ -160,21 +203,33 @@ export function getCategoryDistribution(): { category: string; count: number; re
 export function getFarmerSalesSummary(farmerId: string): SalesSummary {
   const farmerOrders = store.orders.filter((o) => o.farmerId === farmerId);
   const totalOrders = farmerOrders.length;
-  const completedOrders = farmerOrders.filter((o) => o.status === "delivered").length;
-  const pendingOrders = farmerOrders.filter((o) => o.status === "pending" || o.status === "confirmed").length;
+  const completedOrders = farmerOrders.filter(
+    (o) => o.status === "delivered",
+  ).length;
+  const pendingOrders = farmerOrders.filter(
+    (o) => o.status === "pending" || o.status === "confirmed",
+  ).length;
 
   const totalRevenue = farmerOrders
     .filter((o) => o.status === "delivered")
     .reduce((sum, o) => sum + o.totalAmount, 0);
 
-  const averageOrderValue = completedOrders > 0 ? totalRevenue / completedOrders : 0;
+  const averageOrderValue =
+    completedOrders > 0 ? totalRevenue / completedOrders : 0;
 
-  const productStats: Record<string, { name: string; revenue: number; orders: number }> = {};
+  const productStats: Record<
+    string,
+    { name: string; revenue: number; orders: number }
+  > = {};
 
   farmerOrders.forEach((order) => {
     order.items.forEach((item) => {
       if (!productStats[item.productId]) {
-        productStats[item.productId] = { name: item.productName, revenue: 0, orders: 0 };
+        productStats[item.productId] = {
+          name: item.productName,
+          revenue: 0,
+          orders: 0,
+        };
       }
       productStats[item.productId].orders += 1;
       if (order.status === "delivered") {

@@ -14,8 +14,15 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "FarmFresh — Farm to Table Marketplace",
-  description: "Connect directly with local farmers for fresh, organic produce delivered straight to your door.",
-  keywords: ["farm to table", "organic produce", "local farmers", "fresh vegetables", "marketplace"],
+  description:
+    "Connect directly with local farmers for fresh, organic produce delivered straight to your door.",
+  keywords: [
+    "farm to table",
+    "organic produce",
+    "local farmers",
+    "fresh vegetables",
+    "marketplace",
+  ],
 };
 
 export default function RootLayout({

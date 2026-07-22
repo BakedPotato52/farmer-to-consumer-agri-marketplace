@@ -14,9 +14,7 @@ export default async function ConsumerLayout({
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
       <Navbar session={session} />
       <CartProvider>
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
+        <main className="flex-1 flex flex-col">{children}</main>
       </CartProvider>
       <Footer />
     </div>
