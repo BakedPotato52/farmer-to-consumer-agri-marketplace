@@ -26,11 +26,10 @@ export default function Navbar({
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-outline-variant/10 ${
-        isScrolled
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-outline-variant/10 ${isScrolled
           ? "bg-surface/80 backdrop-blur-xl shadow-md h-16"
           : "bg-surface/80 backdrop-blur-xl shadow-sm h-20"
-      }`}
+        }`}
     >
       <div className="flex justify-between items-center h-full px-4 md:px-[40px] max-w-[1280px] mx-auto">
         {/* Left: Logo + Nav */}
