@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { BsCart4 } from "react-icons/bs";
 import { RiAccountCircleLine } from "react-icons/ri";
-import { IoIosSearch } from "react-icons/io";
+import { IoIosSearch, IoMdInformation, IoMdPeople } from "react-icons/io";
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { IoStorefrontOutline } from "react-icons/io5";
 
 export default function Navbar({ session }: { session?: { name: string; role: string } | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -109,7 +111,7 @@ export default function Navbar({ session }: { session?: { name: string; role: st
             className="md:hidden p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <span className="material-symbols-outlined">menu</span>
+            <span className="material-symbols-outlined"><AiOutlineMenu /></span>
           </button>
         </div>
       </div>
@@ -118,28 +120,32 @@ export default function Navbar({ session }: { session?: { name: string; role: st
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-60 bg-black/40 md:hidden" onClick={() => setMobileMenuOpen(false)}>
           <div
-            className="absolute right-0 top-0 bottom-0 w-72 bg-surface-container-lowest shadow-xl p-6 animate-slide-up"
+            className="absolute right-0 top-0 w-72 bg-surface-container-lowest shadow-xl p-6 overflow-y-auto"
+            style={{
+              top: isScrolled ? "0rem" : "0rem",
+              height: `calc(100vh - ${isScrolled ? "0rem" : "0rem"})`,
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-8">
-              <span className="text-lg font-bold font-heading text-primary">Menu</span>
+              <span className="text-lg font-bold font-heading text-primary">FarmFresh</span>
               <button onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-surface-container rounded-lg">
-                <span className="material-symbols-outlined">close</span>
+                <span className="material-symbols-outlined"><AiOutlineClose /></span>
               </button>
             </div>
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-2">
               {[
-                { label: "Marketplace", href: "/products", icon: "storefront" },
-                { label: "Farmers", href: "/farmers", icon: "agriculture" },
-                { label: "Cart", href: "/cart", icon: "shopping_cart" },
-                { label: "Our Story", href: "/about", icon: "info" },
+                { label: "Marketplace", href: "/products", icon: <IoStorefrontOutline /> },
+                { label: "Farmers", href: "/farmers", icon: <IoMdPeople /> },
+                { label: "Cart", href: "/cart", icon: <BsCart4 /> },
+                { label: "Our Story", href: "/about", icon: <IoMdInformation /> },
               ].map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-3 px-3 py-3 text-on-surface hover:bg-surface-container-high rounded-xl transition-colors"
+                  className="flex items-center gap-3 px-3 py-3 text-on-surface  border border-outline-variant/15 rounded-xl shadow-sm transition-colors hover:bg-surface-container-high"
                 >
-                  <span className="material-symbols-outlined text-on-surface-variant">{item.icon}</span>
+                  <span className="text-on-surface-variant">{item.icon}</span>
                   {item.label}
                 </Link>
               ))}

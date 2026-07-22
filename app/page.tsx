@@ -8,7 +8,7 @@ import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
 /* ─── Image URLs ─── */
 const HERO_BG =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBeZdnc8mAONYZQ5IEiKoxCfA5bLEp6lT9sV_DXr356yrHjraJfIjo2lZGcdQ8Si12SeR6Y6NmrJtYXLuLUy1Vgl-9xRKQXwSZG9SCq5q-m2-crsTQkL9vyzoS09hDn0LM1Q9ZqFLIeIFn1XMQwSQyE8u0WtbKg1ofQtK1P4hFR4SNulBV1iLjD_EElMePm9_I9ou0cm0Ym2MXlPHHnlvbAv0erl2-lHdXDKY8s3QBSfIuInQCvzgiu0Aggf0B0XeFH1ytze6pVWWap";
+  "image_750x_687a56f8c4ff1.jpg";
 
 const CATEGORIES = [
   {
