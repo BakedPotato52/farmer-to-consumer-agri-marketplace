@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${outfit.variable} ${inter.variable} min-h-screen antialiased`}
+      className={`${outfit.variable} ${inter.variable} scroll-smooth min-h-screen antialiased`}
     >
       <body className="min-h-screen flex flex-col">{children}</body>
     </html>

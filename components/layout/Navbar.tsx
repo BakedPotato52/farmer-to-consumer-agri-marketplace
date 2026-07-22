@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { BsCart4 } from "react-icons/bs";
+import { RiAccountCircleLine } from "react-icons/ri";
+import { IoIosSearch } from "react-icons/io";
 
 export default function Navbar({ session }: { session?: { name: string; role: string } | null }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -9,7 +12,7 @@ export default function Navbar({ session }: { session?: { name: string; role: st
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -17,129 +20,163 @@ export default function Navbar({ session }: { session?: { name: string; role: st
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass shadow-sm py-3" : "bg-transparent py-5"
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-outline-variant/10 ${isScrolled
+        ? "bg-surface/80 backdrop-blur-xl shadow-md h-16"
+        : "bg-surface/80 backdrop-blur-xl shadow-sm h-20"
       }`}
     >
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <span className="text-2xl md:text-3xl transition-transform group-hover:scale-110">🌱</span>
-            <span className="text-xl md:text-2xl font-bold tracking-tight font-heading gradient-text">
-              FarmFresh
-            </span>
+      <div className="flex justify-between items-center h-full px-4 md:px-[40px] max-w-[1280px] mx-auto">
+        {/* Left: Logo + Nav */}
+        <div className="flex items-center gap-12">
+          <Link href="/" className="font-heading text-xl font-bold text-primary">
+            FarmFresh
           </Link>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-sm font-medium hover:text-brand-600 transition-colors">Home</Link>
-            <Link href="/products" className="text-sm font-medium hover:text-brand-600 transition-colors">Products</Link>
-            <Link href="/farmers" className="text-sm font-medium hover:text-brand-600 transition-colors">Farmers</Link>
-            <Link href="/about" className="text-sm font-medium hover:text-brand-600 transition-colors">About</Link>
-          </nav>
-
-          {/* Right actions */}
-          <div className="hidden md:flex items-center gap-5">
-            <button className="p-2 hover:bg-brand-50 rounded-full transition-colors text-gray-700 dark:text-gray-200">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            </button>
-            
-            <Link href="/cart" className="relative p-2 hover:bg-brand-50 rounded-full transition-colors text-gray-700 dark:text-gray-200">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              <span className="absolute top-0 right-0 flex h-4 w-4 items-center justify-center rounded-full bg-accent-500 text-[10px] font-bold text-white">
-                3
-              </span>
+          <nav className="hidden md:flex gap-8">
+            <Link href="/products" className="text-sm font-semibold text-primary border-b-2 border-primary pb-1">
+              Marketplace
             </Link>
+            <Link href="/farmers" className="text-sm text-on-surface-variant hover:text-primary transition-colors">
+              Farmers
+            </Link>
+            <Link href="/about" className="text-sm text-on-surface-variant hover:text-primary transition-colors">
+              Our Story
+            </Link>
+          </nav>
+        </div>
 
-            {session ? (
-              <div className="relative group">
-                <button className="flex items-center gap-2 px-3 py-2 rounded-full border border-gray-200 hover:border-brand-300 transition-colors">
-                  <div className="h-6 w-6 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 text-xs font-bold">
-                    {session.name.charAt(0)}
-                  </div>
-                  <span className="text-sm font-medium">{session.name}</span>
-                </button>
-                <div className="absolute right-0 mt-2 w-48 rounded-xl bg-white dark:bg-gray-800 shadow-lg border border-gray-100 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform origin-top-right z-50">
-                  <div className="py-2">
-                    <Link href={session.role === 'admin' ? '/admin' : session.role === 'farmer' ? '/dashboard' : '/profile'} className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700">
-                      Dashboard
-                    </Link>
-                    <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-brand-50 dark:hover:bg-gray-700">
-                      Profile
-                    </Link>
-                    <form action="/api/auth/logout" method="POST">
-                      <button type="submit" className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">
-                        Logout
-                      </button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link href="/login" className="text-sm font-medium hover:text-brand-600 transition-colors">Log in</Link>
-                <Link href="/register" className="text-sm font-medium bg-brand-600 text-white px-4 py-2 rounded-full hover:bg-brand-700 transition-colors shadow-sm hover:shadow-md">
-                  Sign up
-                </Link>
-              </div>
-            )}
+        {/* Right: Search + Actions */}
+        <div className="flex items-center gap-4">
+          {/* Search (desktop) */}
+          <div className="hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 border border-outline-variant/20">
+            <span className="material-symbols-outlined text-on-surface-variant text-sm mr-2"><IoIosSearch /></span>
+            <input
+              className="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface placeholder:text-on-surface-variant"
+              placeholder="Search harvest..."
+              type="text"
+            />
           </div>
 
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden p-2 text-gray-700 dark:text-gray-200"
+          {/* Cart */}
+          <Link
+            href="/cart"
+            className="p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg transition-all active:scale-95 relative"
+          >
+            <span className="material-symbols-outlined"><BsCart4 /></span>
+          </Link>
+
+          {/* User / Auth */}
+          {session ? (
+            <div className="relative group">
+              <button className="p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg transition-all active:scale-95">
+                <span className="material-symbols-outlined"><RiAccountCircleLine /></span>
+              </button>
+              <div className="absolute right-0 mt-2 w-52 rounded-xl bg-surface-container-lowest shadow-lg border border-outline-variant/20 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 organic-shadow">
+                <div className="p-3 border-b border-outline-variant/10">
+                  <div className="text-sm font-semibold text-on-surface">{session.name}</div>
+                  <div className="text-xs text-on-surface-variant capitalize">{session.role}</div>
+                </div>
+                <div className="py-1">
+                  <Link
+                    href={session.role === "admin" ? "/admin" : session.role === "farmer" ? "/dashboard" : "/orders"}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container-high rounded-lg mx-1 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">dashboard</span>
+                    Dashboard
+                  </Link>
+                  <form action="/api/auth/logout" method="POST">
+                    <button
+                      type="submit"
+                      className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-error hover:bg-error-container/30 rounded-lg mx-1 transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">logout</span>
+                      Log out
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          ) : (
+              <Link
+                href="/login"
+                className="p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg transition-all active:scale-95"
+              >
+                <span className="material-symbols-outlined"><RiAccountCircleLine /></span>
+              </Link>
+          )}
+
+          {/* Mobile Menu */}
+          <button
+            className="md:hidden p-2 text-on-surface-variant hover:bg-primary/5 rounded-lg"
             onClick={() => setMobileMenuOpen(true)}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            <span className="material-symbols-outlined">menu</span>
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-[60] bg-black/50 md:hidden" onClick={() => setMobileMenuOpen(false)}>
-          <div 
-            className="absolute right-0 top-0 bottom-0 w-64 bg-white dark:bg-gray-900 shadow-xl p-6 animate-shimmer"
+        <div className="fixed inset-0 z-60 bg-black/40 md:hidden" onClick={() => setMobileMenuOpen(false)}>
+          <div
+            className="absolute right-0 top-0 bottom-0 w-72 bg-surface-container-lowest shadow-xl p-6 animate-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-8">
-              <span className="text-xl font-bold font-heading gradient-text">Menu</span>
-              <button onClick={() => setMobileMenuOpen(false)} className="p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              <span className="text-lg font-bold font-heading text-primary">Menu</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="p-2 hover:bg-surface-container rounded-lg">
+                <span className="material-symbols-outlined">close</span>
               </button>
             </div>
-            
-            <nav className="flex flex-col gap-4">
-              <Link href="/" className="text-lg font-medium border-b border-gray-100 pb-2">Home</Link>
-              <Link href="/products" className="text-lg font-medium border-b border-gray-100 pb-2">Products</Link>
-              <Link href="/farmers" className="text-lg font-medium border-b border-gray-100 pb-2">Farmers</Link>
-              <Link href="/about" className="text-lg font-medium border-b border-gray-100 pb-2">About</Link>
-              <Link href="/cart" className="text-lg font-medium border-b border-gray-100 pb-2 flex justify-between">
-                Cart
-                <span className="bg-accent-500 text-white text-xs py-1 px-2 rounded-full">3</span>
-              </Link>
+            <nav className="flex flex-col gap-1">
+              {[
+                { label: "Marketplace", href: "/products", icon: "storefront" },
+                { label: "Farmers", href: "/farmers", icon: "agriculture" },
+                { label: "Cart", href: "/cart", icon: "shopping_cart" },
+                { label: "Our Story", href: "/about", icon: "info" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="flex items-center gap-3 px-3 py-3 text-on-surface hover:bg-surface-container-high rounded-xl transition-colors"
+                >
+                  <span className="material-symbols-outlined text-on-surface-variant">{item.icon}</span>
+                  {item.label}
+                </Link>
+              ))}
             </nav>
-            
-            <div className="mt-8 flex flex-col gap-3">
+            <div className="mt-8 pt-6 border-t border-outline-variant/20 flex flex-col gap-3">
               {session ? (
                 <>
-                  <div className="font-medium mb-2 text-brand-700">Hi, {session.name}</div>
-                  <Link href={session.role === 'admin' ? '/admin' : session.role === 'farmer' ? '/dashboard' : '/profile'} className="bg-brand-50 text-brand-700 px-4 py-2 rounded-lg text-center font-medium">
+                  <div className="text-sm text-on-surface-variant mb-1">
+                    Signed in as <span className="font-semibold text-on-surface">{session.name}</span>
+                  </div>
+                  <Link
+                    href={session.role === "admin" ? "/admin" : session.role === "farmer" ? "/dashboard" : "/orders"}
+                    className="w-full text-center px-4 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-semibold"
+                  >
                     Dashboard
                   </Link>
                   <form action="/api/auth/logout" method="POST">
-                    <button type="submit" className="w-full text-center px-4 py-2 text-red-600 border border-red-200 rounded-lg font-medium">
-                      Logout
+                    <button
+                      type="submit"
+                      className="w-full text-center px-4 py-2.5 border border-error/30 text-error rounded-xl text-sm font-semibold"
+                    >
+                      Log out
                     </button>
                   </form>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="w-full text-center px-4 py-2 border border-brand-200 text-brand-700 rounded-lg font-medium">
+                    <Link
+                      href="/login"
+                      className="w-full text-center px-4 py-2.5 border border-outline-variant/30 text-primary rounded-xl text-sm font-semibold"
+                    >
                     Log in
                   </Link>
-                  <Link href="/register" className="w-full text-center px-4 py-2 bg-brand-600 text-white rounded-lg font-medium">
+                    <Link
+                      href="/register"
+                      className="w-full text-center px-4 py-2.5 bg-primary text-on-primary rounded-xl text-sm font-semibold"
+                    >
                     Sign up
                   </Link>
                 </>

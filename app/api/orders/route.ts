@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllOrders, getOrdersByConsumer, getOrdersByFarmer, createOrder } from "@/lib/data/orders";
 import { getSession } from "@/lib/auth/session";
+import type { Order } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
   const session = await getSession();
@@ -9,7 +10,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  let orders = [];
+  let orders: Order[] = [];
 
   if (session.role === "admin") {
     orders = await getAllOrders();

@@ -83,6 +83,12 @@ export async function registerAction(prevState: any, formData: FormData): Promis
       farmingMethod,
       description,
       isVerified: false,
+      deliverySlots: [
+        { id: 'ds1', day: 'Monday', startTime: '08:00', endTime: '12:00' },
+        { id: 'ds2', day: 'Wednesday', startTime: '08:00', endTime: '12:00' },
+        { id: 'ds3', day: 'Friday', startTime: '08:00', endTime: '12:00' },
+        { id: 'ds4', day: 'Saturday', startTime: '09:00', endTime: '13:00' },
+      ],
     });
   }
 

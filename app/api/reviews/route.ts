@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReviewsByFarmer, getReviewsByProduct, createReview } from "@/lib/data/reviews";
 import { getSession } from "@/lib/auth/session";
+import type { Review } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const farmerId = searchParams.get("farmerId");
   const productId = searchParams.get("productId");
 
-  let reviews = [];
+  let reviews: Review[] = [];
 
   if (productId) {
     reviews = await getReviewsByProduct(productId);

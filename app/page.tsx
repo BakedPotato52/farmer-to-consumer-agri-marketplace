@@ -1,278 +1,396 @@
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { FaArrowRightLong } from "react-icons/fa6";
+import { BsSearch, BsCart4, BsTruck } from "react-icons/bs";
+import { MdOutlineStarPurple500 } from "react-icons/md";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 
-// Mock data as fallback if store doesn't exist yet
-const mockProducts = [
-  { id: '1', name: 'Organic Tomatoes', price: 60, farmerName: 'Green Acres', isOrganic: true, emoji: '🍅' },
-  { id: '2', name: 'Fresh Carrots', price: 40, farmerName: 'Valley Farms', isOrganic: false, emoji: '🥕' },
-  { id: '3', name: 'Sweet Corn', price: 30, farmerName: 'Sunshine Co.', isOrganic: true, emoji: '🌽' },
-  { id: '4', name: 'Lettuce Heads', price: 50, farmerName: 'Green Acres', isOrganic: true, emoji: '🥬' },
+/* ─── Image URLs ─── */
+const HERO_BG =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBeZdnc8mAONYZQ5IEiKoxCfA5bLEp6lT9sV_DXr356yrHjraJfIjo2lZGcdQ8Si12SeR6Y6NmrJtYXLuLUy1Vgl-9xRKQXwSZG9SCq5q-m2-crsTQkL9vyzoS09hDn0LM1Q9ZqFLIeIFn1XMQwSQyE8u0WtbKg1ofQtK1P4hFR4SNulBV1iLjD_EElMePm9_I9ou0cm0Ym2MXlPHHnlvbAv0erl2-lHdXDKY8s3QBSfIuInQCvzgiu0Aggf0B0XeFH1ytze6pVWWap";
+
+const CATEGORIES = [
+  {
+    name: "Vegetables",
+    href: "/products?category=vegetables",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDfErvLblMXWmNJdHyUXtsEEzRNTV8aYXJBFE2pYL3Koe-fRZ-UOHpsqbdpdT2AQ2yRPI9wpHugugGxlIA1B0DB438nUvMsLgFLmUuyin0QwWTVOC9o3wWniVdpeo4nFkZPJa940f24lfZiB2A7fLmuJSTC0hRwS6G3PWPTCqgsqKqzakoTOywOfB30aDWmpAY1LxAu9rvr_rAKTiQZO77Abj5x8kadNZ24K2dW0vloQfKh78tAatXpLM-OQWeq-jsAC-2yEfWSXDTy",
+  },
+  {
+    name: "Fruits",
+    href: "/products?category=fruits",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBv1pwtb5_wqXh_gkTgNvfxV6HsH-864XqxvtDjkPzIEp-FaqzBrHz1aq1qccGVx15T1dzwIpcyV8LWV7LN5nIfwXhUxntdDwgnqfDWEHghWcPYS22AaXNIgEoPW_mqBExJTGrmce2Bzv8k97I55RMuyUWmAXRZfC08MH_FWDXkvtZJUb0dgL-IJjw91stNAdx9TOyXnni0hefxfbdv0GvmPXiXLSzU_8R8rfbaxcKiDQNhjqFY-SkuXwfmepS7EOwcz3JLdnity196",
+  },
+  {
+    name: "Dairy",
+    href: "/products?category=dairy",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDmf_rMpFrJH50EmULybPqQWCZRfBD5_4KFjXJkt89Eeoko0QA1JkuRWtwNn9Mbj8z4lg1HRE4xiH0xdaZQwXA6wq_g4Hem7K3_W0xDnPb1Y6-47zYae_Me9gBmyWhz5yM2DvbwJtH4OmXfEm0PlnAQf317xhqrPQ078uJ_PPYsgNyDBtvWOpsAEBC1V8yRL3kpNArSCPX7YnR5GyBWM2bXZ1OZ4shd_deBf5T2rC1Jnu3v6ywAn8ERmmIYFgj7XlPnflIX5CbRfgEG",
+  },
+  {
+    name: "Grains",
+    href: "/products?category=grains",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBu8mo5HAuHQ-NlFmM1UM_V7s9ulEiU_dUR75mV5BzNHoMJBqio6N5MLDVHYpXfkox434eG2BE0qmxoEXXhlB6j2tmgGuGNqLS4bcneT1nmvSeE849V2FqrG7-qEolw9BvaVSVPN98mGB1Q_sKlp_m3iCoBPm7NF8VB49--dHRP-4KZh1RvnnVeQyx-P9bRmxwPhRsH4SMVQYO4htKAKkYwzWQ79CoqPdmfE-8ppu50UCVV18WYPnsvZ2Njr26VD9XfnDE3NlAsvr0z",
+  },
+  {
+    name: "Herbs",
+    href: "/products?category=herbs",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDyOb3m0KNMpkM_xN1h7Kv6NSFd2FjBrP4tFw8TF3txVOUX9ApYbn3syf1xqycCLMpkreePOD_gsPjzPI0uLbpuIOsPBceeuvTDbQdTXiOHKFOtPaM0Q6oKbbymz3D5gOl57IuVmkK8HrZVfHPhw5Bgb694fqGX22wf3Hy7elbNmyuf6LAXU3uUhJRLakYLWXgE8AhA-sqeEo-6h3pXBiHQfzI-ZrmeQzSL3vF8WfP4z-uZa_pLYUN9iUZqdWlnd1IsGSXHMx9nddCT",
+  },
 ];
 
-const mockFarmers = [
-  { id: 'f1', initials: 'GA', name: 'Green Acres', location: 'Punjab', method: 'organic', rating: 4.8, verified: true },
-  { id: 'f2', initials: 'VF', name: 'Valley Farms', location: 'Haryana', method: 'mixed', rating: 4.5, verified: true },
-  { id: 'f3', initials: 'SC', name: 'Sunshine Co.', location: 'Maharashtra', method: 'organic', rating: 4.9, verified: false },
+const FARMERS = [
+  {
+    name: "Julian Thorne",
+    location: "Sonoma Valley, CA",
+    bio: "Specializing in organic heirloom vegetables and cold-pressed oils.",
+    tags: ["Heirlooms", "Organic"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBIE4dTewGq88dPU09wa-PjvFxJdRVIQ7wNDj1GY9Evpwx9j8FFCOwme1es5PX2vwLD7jv9HUXWc8ykrGLlOPxZR1sJslhPaf4x_9RyxA3UvhoctxuZbkiC7oP2i4PCqC0c25CoTRK4qmFG-M5fWr9Vcu40pbXLcRLAasujpTXyEQfVKpI1kr0oLKJIRnJ3Fq2SUqCvjYlAnTn99TO055SvoQFdmMIiX-DsmkObsUxHnSU6yR8GYbrho4oJMrvpcJQ2UkRPgBFo5wPf",
+  },
+  {
+    name: "Elena Rossi",
+    location: "Tuscany Ridge, OR",
+    bio: "Crafting award-winning artisanal goat cheese and pasture-raised dairy.",
+    tags: ["Dairy", "Artisanal"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCN-4C93kzMU760w3KKWeeg2HmRnqFHvgXeQKICMCc8QR1JoloCSFIf8OsCutYADtVvamibWSLhnd7vp26b1JriiQPtmxtAlpzQC50iAMEFEz-D1NXSZBFefvo2GpXIucCcqOAbY1drlYxxCVWdYnhKpy4l-SAkYIoQDpebr0uBGbjsDeZuRdeBMf-k_PLnDBjDtgezcJhnoLK1JG4fk4VaVny2P3SC41WTgHcNbqp7OnbkQkHjytA1oREDhG9KxR-03boEHnLNY976",
+  },
+  {
+    name: "Marcus Wei",
+    location: "Hudson Valley, NY",
+    bio: "Leader in regenerative hydroponic berries and medicinal herbs.",
+    tags: ["Berries", "Hydroponic"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuBVFprT3g-DZOeEPTFEaHmAVxVjyVrTnte2RmwBZrguiGp-hP2GoWUdsO5V_GrnGkwkXSW_GWfCOBCyUgkgaIBOM_xcRiIB7HgX_LR4lSpdle_3BzpOCTN1v1jrD_aVLMrqu3yFaT3HKjDCWoKXbIVfWKUDxG8jvOHXlSJMMpS94hVvvbF1QMyXpCNcIvJpvjknNC7uPCVOG8brZaOQphCYtpAohSlUfnraqfn3ZgO8FwUaPPVjGj75xpgzYQOg1C-Jj005KBXboOjD",
+  },
 ];
 
-const testimonials = [
-  { id: 1, quote: "The freshest vegetables I've ever bought. Knowing it comes directly from the farmer makes it taste even better!", name: "Priya S.", rating: 5 },
-  { id: 2, quote: "FarmFresh has completely changed how I shop for groceries. The quality is unmatched and delivery is always on time.", name: "Rahul M.", rating: 5 },
-  { id: 3, quote: "As a farmer, this platform has given me direct access to consumers. My margins have improved significantly.", name: "Amit K.", rating: 4 },
+const CTA_BG =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuDOxDaA92Wb1aI2ki5aoaOyfpHZb06wlp43uqyIcm6bol0kv4-bPxvHXRc2AoHbJWG8BWEo92s3PQI-msoKUlztttL50MqRcuNXMicUae_tUL57alKqdoFgs7g4lFG3JuneXgbVnYcDxgE5cmWj-Lj3W7EfnZ0ml8a6AIPD0qnPrJspGBj8bg2ztVkRfIpo0DTMo7qARBPnStkclykuujs_bDTfPR4HbIcL4AuKI4WKHNrGETBSG7waB-t_vtevepX4vF1ltW0Rks02";
+
+const CTA_TABLET =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuBMpqaisOuPD8uyIPJArpjKxbT4ivLUDsnYeE4TySy8zodu4ZK1PiyRhoJKfViZgsLGINEoh-AbFtFpIILr2aEJHoYzPVtOKINeTAng6Do7BRAGy8LDySzm2m_iATDDxSbi2j-ZS0F0A4g5GagBGQIF_mtvoNrqpUZsMFB1EJg7r51YYcGgQ8IesjV_YeuGE8ex1JbTmamgC4OEGVWVobVG-zXU_gicpkpxKwTyYYvTIPkvF70ATcF5OXnvii3j40lpqvztQGskZB2M";
+
+const TESTIMONIALS = [
+  {
+    quote:
+      "The quality of the dairy and vegetables from FarmFresh is incomparable. As a chef, knowing exactly where my ingredients come from is non-negotiable.",
+    name: "Sarah Jenkins",
+    role: "Executive Chef, The Hearth",
+  },
+  {
+    quote:
+      "Selling through FarmFresh has allowed me to focus on my crops rather than logistics. The platform is intuitive and the community is supportive.",
+    name: "David Miller",
+    role: "Thistle Creek Farms",
+  },
+  {
+    quote:
+      "Our family has switched completely to sourcing our weekly staples here. You can taste the sunshine in the produce. It's truly a game changer.",
+    name: "Michael Song",
+    role: "Home Enthusiast",
+  },
 ];
 
+/* ─── Page ─── */
 export default function Home() {
   return (
     <>
       <Navbar session={null} />
-      
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-900 dark:to-brand-900/20">
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-          
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-md border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-300 font-medium text-sm animate-fade-in">
-                🌱 Direct from farm, straight to your kitchen
-              </div>
-              
-              <h1 className="text-5xl md:text-7xl font-extrabold font-heading mb-6 tracking-tight animate-slide-up">
-                Fresh From <br className="hidden md:block" />
-                <span className="gradient-text">Farm to Your Table</span>
+
+      <main className="pt-20">
+        {/* ── Hero ── */}
+        <section className="relative min-h-[90vh] flex items-center overflow-hidden">
+          {/* Background */}
+          <div className="absolute inset-0 z-0">
+            <div
+              className="w-full h-full bg-cover bg-center"
+              style={{ backgroundImage: `url('${HERO_BG}')` }}
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-background/90 via-background/40 to-transparent" />
+          </div>
+
+          {/* Content */}
+          <div className="relative z-10 px-4 md:px-[40px] max-w-[1280px] mx-auto w-full py-12">
+            <div className="max-w-2xl animate-fade-up">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-secondary-fixed text-on-secondary-fixed text-sm font-semibold mb-6">
+                DIRECT FARM-TO-TABLE
+              </span>
+
+              <h1 className="font-heading text-5xl md:text-7xl font-extrabold text-primary mb-6 leading-tight tracking-tight">
+                Fresh From Farm
+                <br />
+                To Your Table
               </h1>
-              
-              <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.1s" }}>
-                Connect directly with local farmers for fresh, organic produce. Better for them, better for you, better for the planet.
+
+              <p className="text-lg text-on-surface-variant mb-10 max-w-lg leading-relaxed">
+                Experience the peak of seasonal flavor. We connect you directly with local farmers growing premium,
+                organic produce with integrity and care.
               </p>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: "0.2s" }}>
-                <Link href="/products" className="w-full sm:w-auto px-8 py-4 rounded-full bg-brand-600 text-white font-bold text-lg hover:bg-brand-700 transition-all hover:shadow-lg hover:-translate-y-1">
+
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/products"
+                  className="px-8 py-4 bg-primary text-on-primary rounded-lg text-sm font-semibold transition-all hover:opacity-90 active:scale-95 organic-shadow flex items-center gap-2"
+                >
                   Shop Now
+                  <span className="material-symbols-outlined text-sm"><FaArrowRightLong /></span>
                 </Link>
-                <Link href="/register" className="w-full sm:w-auto px-8 py-4 rounded-full bg-white dark:bg-gray-800 text-brand-600 dark:text-brand-400 font-bold text-lg border-2 border-brand-200 dark:border-brand-800 hover:border-brand-600 dark:hover:border-brand-500 transition-all hover:shadow-lg hover:-translate-y-1">
+                <Link
+                  href="/register"
+                  className="px-8 py-4 border-2 border-primary text-primary bg-white/20 backdrop-blur-md rounded-lg text-sm font-semibold transition-all hover:bg-white/30 active:scale-95"
+                >
                   Become a Seller
                 </Link>
               </div>
             </div>
           </div>
-
-          {/* Floating Emojis */}
-          <div className="absolute top-20 left-10 text-5xl opacity-80 animate-float" style={{ animationDelay: "0s" }}>🍅</div>
-          <div className="absolute top-40 right-20 text-6xl opacity-80 animate-float" style={{ animationDelay: "1s" }}>🥕</div>
-          <div className="absolute bottom-20 left-1/4 text-5xl opacity-80 animate-float" style={{ animationDelay: "2s" }}>🌽</div>
-          <div className="absolute bottom-10 right-1/4 text-6xl opacity-80 animate-float" style={{ animationDelay: "0.5s" }}>🥬</div>
         </section>
 
-        {/* Stats Section */}
-        <section className="py-12 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-gray-100 dark:divide-gray-800">
-              <div className="text-center px-4">
-                <div className="text-3xl md:text-4xl mb-2">👨‍🌾</div>
-                <div className="text-2xl font-bold font-heading text-gray-900 dark:text-white">500+</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">Farmers</div>
+        {/* ── How It Works ── */}
+        <section className="py-20 bg-surface">
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto text-center mb-14">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">Sourcing Made Simple</h2>
+            <p className="text-on-surface-variant max-w-xl mx-auto">
+              Three elegant steps to bring the finest agricultural products to your kitchen.
+            </p>
+          </div>
+
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid md:grid-cols-3 gap-12">
+            {[
+              {
+                icon: <BsSearch />,
+                title: "Browse",
+                description: "Explore seasonal harvests from our curated list of boutique local farms.",
+                color: "bg-secondary-container text-on-secondary-container",
+                delay: "100ms",
+              },
+              {
+                icon: <BsCart4 />,
+                title: "Order",
+                description: "Select your favorites and pay securely through our transparent marketplace.",
+                color: "bg-tertiary-fixed text-on-tertiary-fixed",
+                delay: "300ms",
+              },
+              {
+                icon: <BsTruck />,
+                title: "Receive",
+                description: "Get farm-fresh produce delivered directly to your doorstep within 24 hours.",
+                color: "bg-primary-fixed text-on-primary-fixed",
+                delay: "500ms",
+              },
+            ].map((step) => (
+              <div
+                key={step.title}
+                className="flex flex-col items-center text-center animate-fade-up"
+                style={{ animationDelay: step.delay }}
+              >
+                <div
+                  className={`w-20 h-20 rounded-full ${step.color} flex items-center justify-center mb-6 organic-shadow`}
+                >
+                  <span className="material-symbols-outlined text-3xl">{step.icon}</span>
+                </div>
+                <h3 className="font-heading text-xl font-bold text-primary mb-2">{step.title}</h3>
+                <p className="text-on-surface-variant">{step.description}</p>
               </div>
-              <div className="text-center px-4">
-                <div className="text-3xl md:text-4xl mb-2">👨‍👩‍👧‍👦</div>
-                <div className="text-2xl font-bold font-heading text-gray-900 dark:text-white">10,000+</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">Consumers</div>
-              </div>
-              <div className="text-center px-4">
-                <div className="text-3xl md:text-4xl mb-2">📦</div>
-                <div className="text-2xl font-bold font-heading text-gray-900 dark:text-white">50,000+</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">Orders</div>
-              </div>
-              <div className="text-center px-4">
-                <div className="text-3xl md:text-4xl mb-2">💰</div>
-                <div className="text-2xl font-bold font-heading text-gray-900 dark:text-white">₹2Cr+</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium">Revenue</div>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
-        {/* How It Works Section */}
-        <section className="py-20 bg-cream-50 dark:bg-gray-800">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4 text-gray-900 dark:text-white">How It Works</h2>
-              <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto text-lg">A simple, transparent process that brings the farm to your doorstep.</p>
+        {/* ── Featured Categories ── */}
+        <section className="py-20">
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto mb-14 flex justify-between items-end">
+            <div>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary">The Seasonal Edit</h2>
+              <p className="text-on-surface-variant mt-1">Discover what&apos;s flourishing right now.</p>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-              {/* Connecting lines for desktop */}
-              <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-0.5 bg-brand-200 dark:bg-brand-800 z-0"></div>
-              
-              <div className="text-center relative z-10 group">
-                <div className="w-24 h-24 mx-auto bg-white dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl shadow-md mb-6 border-4 border-brand-50 dark:border-gray-800 group-hover:scale-110 group-hover:border-brand-200 transition-all duration-300">
-                  🔍
+            <Link
+              href="/products"
+              className="hidden md:flex text-primary text-sm font-semibold items-center gap-1 hover:underline"
+            >
+              View All Categories <span className="material-symbols-outlined text-sm"><FaArrowRightLong /></span>
+            </Link>
+          </div>
+
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            {CATEGORIES.map((cat) => (
+              <Link key={cat.name} href={cat.href} className="group cursor-pointer block">
+                <div className="aspect-square rounded-2xl overflow-hidden mb-4 organic-shadow relative">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
+                    style={{ backgroundImage: `url('${cat.image}')` }}
+                  />
+                  <div className="absolute inset-x-0 bottom-0 p-4 glass-card mx-3 mb-3 rounded-xl opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                    <span className="text-on-surface text-xs font-semibold">Explore</span>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold font-heading mb-3 text-gray-900 dark:text-white">1. Browse & Discover</h3>
-                <p className="text-gray-600 dark:text-gray-400">Explore fresh produce from verified local farmers in your area.</p>
-              </div>
-              
-              <div className="text-center relative z-10 group">
-                <div className="w-24 h-24 mx-auto bg-white dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl shadow-md mb-6 border-4 border-brand-50 dark:border-gray-800 group-hover:scale-110 group-hover:border-brand-200 transition-all duration-300">
-                  🛒
-                </div>
-                <h3 className="text-xl font-bold font-heading mb-3 text-gray-900 dark:text-white">2. Order & Pay</h3>
-                <p className="text-gray-600 dark:text-gray-400">Add items to your cart and checkout with secure payment options.</p>
-              </div>
-              
-              <div className="text-center relative z-10 group">
-                <div className="w-24 h-24 mx-auto bg-white dark:bg-gray-700 rounded-full flex items-center justify-center text-4xl shadow-md mb-6 border-4 border-brand-50 dark:border-gray-800 group-hover:scale-110 group-hover:border-brand-200 transition-all duration-300">
-                  🚚
-                </div>
-                <h3 className="text-xl font-bold font-heading mb-3 text-gray-900 dark:text-white">3. Fresh Delivery</h3>
-                <p className="text-gray-600 dark:text-gray-400">Receive farm-fresh produce delivered right to your doorstep.</p>
-              </div>
-            </div>
+                <h4 className="font-heading text-lg font-bold text-on-surface text-center">{cat.name}</h4>
+              </Link>
+            ))}
           </div>
         </section>
 
-        {/* Featured Categories */}
-        <section className="py-20 bg-white dark:bg-gray-900">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex justify-between items-end mb-10">
+        {/* ── Impact Stats ── */}
+        <section className="py-24 bg-primary text-on-primary overflow-hidden relative">
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto relative z-10">
+            <div className="grid md:grid-cols-3 gap-12 text-center">
               <div>
-                <h2 className="text-3xl font-bold font-heading mb-2 text-gray-900 dark:text-white">Shop by Category</h2>
-                <p className="text-gray-600 dark:text-gray-400">Discover fresh produce sorted by category.</p>
+                <div className="font-heading text-6xl font-extrabold mb-2">12+</div>
+                <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
+                  Farmers Onboarded
+                </div>
               </div>
-              <Link href="/products" className="hidden sm:inline-flex text-brand-600 font-medium hover:text-brand-700 items-center gap-1">
-                View all <span aria-hidden="true">&rarr;</span>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
-              {[
-                { name: 'Vegetables', icon: '🥬', slug: 'vegetables', color: 'from-green-100 to-green-50' },
-                { name: 'Fruits', icon: '🍎', slug: 'fruits', color: 'from-red-100 to-red-50' },
-                { name: 'Dairy', icon: '🥛', slug: 'dairy', color: 'from-blue-100 to-blue-50' },
-                { name: 'Grains', icon: '🌾', slug: 'grains', color: 'from-amber-100 to-amber-50' },
-                { name: 'Herbs', icon: '🌿', slug: 'herbs', color: 'from-emerald-100 to-emerald-50' }
-              ].map(cat => (
-                <Link key={cat.slug} href={`/products?category=${cat.slug}`} className="block group">
-                  <div className={`aspect-square rounded-2xl bg-gradient-to-br ${cat.color} dark:from-gray-800 dark:to-gray-700 flex flex-col items-center justify-center p-4 transition-all duration-300 group-hover:-translate-y-2 group-hover:shadow-lg border border-transparent dark:border-gray-700`}>
-                    <span className="text-5xl md:text-6xl mb-4 transform transition-transform group-hover:scale-110">{cat.icon}</span>
-                    <h3 className="font-bold font-heading text-gray-900 dark:text-white text-center">{cat.name}</h3>
-                  </div>
-                </Link>
-              ))}
+              <div>
+                <div className="font-heading text-6xl font-extrabold mb-2">48</div>
+                <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
+                  Orders Fulfilled
+                </div>
+              </div>
+              <div>
+                <div className="font-heading text-6xl font-extrabold mb-2">1+</div>
+                <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
+                  Liters of Fresh Milk
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Featured Products */}
-        <section className="py-20 bg-gray-50 dark:bg-gray-800 border-y border-gray-200 dark:border-gray-700">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex justify-between items-end mb-10">
-              <h2 className="text-3xl font-bold font-heading text-gray-900 dark:text-white">Fresh Picks For You</h2>
-              <Link href="/products" className="hidden sm:inline-flex text-brand-600 font-medium hover:text-brand-700 items-center gap-1">
-                Explore more <span aria-hidden="true">&rarr;</span>
-              </Link>
-            </div>
+        {/* ── Featured Farmers ── */}
+        <section className="py-20 bg-surface-container-low">
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto mb-14 text-center">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-primary mb-4">Meet the Producers</h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">
+              The hands behind your food. We vet every producer to ensure the highest standards of sustainability and
+              quality.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {mockProducts.map((product) => (
-                <div key={product.id} className="bg-white dark:bg-gray-900 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-700 group flex flex-col">
-                  <div className="h-48 bg-gradient-to-br from-brand-50 to-brand-100 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center relative">
-                    <span className="text-7xl group-hover:scale-110 transition-transform duration-300">{product.emoji}</span>
-                    {product.isOrganic && (
-                      <span className="absolute top-3 left-3 bg-brand-500 text-white text-xs font-bold px-2 py-1 rounded-md">
-                        ORGANIC
+          <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid md:grid-cols-3 gap-6">
+            {FARMERS.map((farmer) => (
+              <div
+                key={farmer.name}
+                className="bg-surface rounded-2xl p-6 organic-shadow group transition-all hover:-translate-y-2"
+              >
+                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-6">
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url('${farmer.image}')` }}
+                  />
+                  <div className="absolute top-4 right-4 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">verified</span> Verified
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="font-heading text-xl font-bold text-primary">{farmer.name}</h3>
+                  <div className="flex items-center text-on-surface-variant gap-1 text-sm">
+                    <span className="material-symbols-outlined text-sm">location_on</span> {farmer.location}
+                  </div>
+                  <p className="text-on-surface-variant text-sm pt-2">{farmer.bio}</p>
+                  <div className="pt-4 flex gap-2 flex-wrap">
+                    {farmer.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-block px-3 py-1 rounded-full bg-surface-container-highest text-on-tertiary-fixed-variant text-xs font-medium"
+                      >
+                        {tag}
                       </span>
-                    )}
+                    ))}
                   </div>
-                  <div className="p-5 flex-1 flex flex-col">
-                    <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-bold font-heading text-lg text-gray-900 dark:text-white">{product.name}</h3>
-                      <span className="font-bold text-brand-600 dark:text-brand-400">₹{product.price}<span className="text-xs text-gray-500 font-normal">/kg</span></span>
-                    </div>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 flex items-center gap-1 mt-auto">
-                      👨‍🌾 {product.farmerName}
-                    </p>
-                    <button className="w-full py-2.5 rounded-xl border border-brand-200 text-brand-600 dark:border-gray-600 dark:text-gray-300 font-medium hover:bg-brand-50 dark:hover:bg-gray-800 transition-colors">
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Farmers */}
-        <section className="py-20 bg-white dark:bg-gray-900">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold font-heading mb-4 text-gray-900 dark:text-white">Meet Our Top Farmers</h2>
-              <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">Support local agriculture by buying directly from the people who grow your food.</p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {mockFarmers.map((farmer) => (
-                <div key={farmer.id} className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="w-16 h-16 rounded-full bg-accent-100 dark:bg-gray-700 flex items-center justify-center text-accent-700 dark:text-accent-400 font-bold text-xl flex-shrink-0">
-                      {farmer.initials}
-                    </div>
-                    <div>
-                      <h3 className="font-bold font-heading text-lg text-gray-900 dark:text-white flex items-center gap-1">
-                        {farmer.name}
-                        {farmer.verified && <span className="text-brand-500" title="Verified Farmer">✓</span>}
-                      </h3>
-                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
-                        📍 {farmer.location}
-                      </p>
-                      <div className="flex items-center gap-1 mt-1 text-sm">
-                        <span className="text-accent-500">★</span>
-                        <span className="font-medium text-gray-700 dark:text-gray-300">{farmer.rating}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    <span className="px-2.5 py-1 bg-brand-50 dark:bg-gray-700 text-brand-700 dark:text-brand-300 text-xs font-medium rounded-md capitalize">
-                      {farmer.method} Farming
-                    </span>
-                  </div>
-                  <Link href={`/farmers/${farmer.id}`} className="block w-full py-2 text-center text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
-                    View Profile
-                  </Link>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-600 to-brand-800 dark:from-brand-800 dark:to-brand-950 z-0"></div>
-          
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
-            <div className="bg-white/10 glass rounded-3xl p-8 md:p-12 lg:p-16 text-center max-w-4xl mx-auto border border-white/20">
-              <h2 className="text-3xl md:text-5xl font-bold font-heading text-white mb-6">Are You a Farmer? Join FarmFresh Today</h2>
-              
-              <p className="text-brand-50 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-                Connect directly with thousands of consumers. Get better prices for your produce while managing your sales easily through our platform.
-              </p>
-              
-              <div className="flex flex-wrap justify-center gap-4 mb-10">
-                <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-                  <span>✓</span> Direct Sales
-                </div>
-                <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-                  <span>✓</span> Better Prices
-                </div>
-                <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-                  <span>✓</span> Wider Reach
                 </div>
               </div>
-              
-              <Link href="/register" className="inline-block px-10 py-4 rounded-full bg-accent-500 text-white font-bold text-lg hover:bg-accent-600 transition-all hover:shadow-xl hover:shadow-accent-500/20 transform hover:-translate-y-1">
-                Register as Farmer
+            ))}
+          </div>
+        </section>
+
+        {/* ── Testimonials ── */}
+        <section className="py-stack-lg overflow-hidden">
+          <div className="px-margin-desktop max-w-container-max mx-auto text-center mb-stack-lg">
+            <h2 className="font-headline-md text-headline-md text-primary">Voices of the Harvest</h2>
+          </div>
+
+          <div className="flex flex-nowrap gap-gutter px-margin-desktop animate-fade-up">
+            {TESTIMONIALS.map((t) => (
+              <div
+                key={t.name}
+                className="min-w-[320px] md:min-w-100 p-8 rounded-3xl bg-surface-container-lowest border border-outline-variant/10 organic-shadow"
+              >
+                {/* Stars */}
+                <div className="flex gap-1 text-secondary mb-4">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <span
+                      key={s}
+                      className="material-symbols-outlined"
+                      style={{ fontVariationSettings: "'FILL' 1" }}
+                    >
+                      <MdOutlineStarPurple500 />
+                    </span>
+                  ))}
+                </div>
+                <p className="font-body-lg text-on-surface mb-6">&ldquo;{t.quote}&rdquo;</p>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-surface-variant" />
+                  <div>
+                    <div className="font-label-md text-on-surface">{t.name}</div>
+                    <div className="text-label-sm text-on-surface-variant">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ── CTA Banner ── */}
+        <section className="px-4 md:px-[40px] py-20 max-w-[1280px] mx-auto">
+          <div className="relative rounded-[2.5rem] overflow-hidden bg-primary p-12 md:p-20 flex flex-col md:flex-row items-center justify-between gap-12">
+            {/* Background Texture */}
+            <div className="absolute inset-0 z-0 overflow-hidden opacity-30">
+              <div
+                className="w-full h-full bg-cover bg-center mix-blend-overlay"
+                style={{ backgroundImage: `url('${CTA_BG}')` }}
+              />
+            </div>
+
+            {/* Copy */}
+            <div className="relative z-10 max-w-xl">
+              <h2 className="font-heading text-3xl md:text-4xl font-extrabold text-on-primary mb-6">
+                Empowering the Modern Farmer
+              </h2>
+              <p className="text-primary-fixed-dim mb-10 leading-relaxed">
+                Join our growing ecosystem and gain access to a dedicated market of quality-seekers. We provide the
+                tools, you provide the harvest.
+              </p>
+              <ul className="space-y-4 mb-10">
+                {[
+                  "0% Listing Fees for the first 3 months",
+                  "Advanced cold-chain logistics support",
+                  "Direct customer feedback & analytics",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-on-primary">
+                    <span className="material-symbols-outlined text-secondary-fixed"><IoMdCheckmarkCircleOutline /></span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/register"
+                className="inline-block px-8 py-4 bg-secondary-fixed text-on-secondary-fixed rounded-xl text-sm font-semibold hover:scale-105 transition-transform active:scale-95 organic-shadow"
+              >
+                Join as a Farmer
               </Link>
+            </div>
+
+            {/* Tablet Image */}
+            <div className="relative z-10 hidden lg:block w-96 h-96 rounded-3xl overflow-hidden organic-shadow rotate-3 shrink-0">
+              <div
+                className="w-full h-full bg-cover bg-center"
+                style={{ backgroundImage: `url('${CTA_TABLET}')` }}
+              />
             </div>
           </div>
         </section>
