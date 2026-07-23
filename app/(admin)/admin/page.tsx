@@ -2,6 +2,9 @@ import { getPlatformStats } from "@/lib/data/analytics";
 import { getAllOrders } from "@/lib/data/orders";
 import { getPendingFarmers } from "@/lib/data/farmers";
 import Link from "next/link";
+import { FaCheckCircle } from "react-icons/fa";
+import { MdAgriculture, MdGroups3, MdHowToReg, MdOutlineLocalShipping, MdOutlineShoppingCart, MdPayments, MdVerified } from "react-icons/md";
+import { FaLocationDot } from "react-icons/fa6";
 
 export default async function AdminOverview() {
   const stats = await getPlatformStats();
@@ -28,41 +31,41 @@ export default async function AdminOverview() {
           title="Total Farmers"
           value={stats.totalFarmers.toString()}
           subtitle={`${stats.verifiedFarmers} Verified`}
-          icon="agriculture"
+          icon=<MdAgriculture />
         />
         <StatCard
           title="Total Consumers"
           value={stats.totalConsumers.toString()}
           subtitle="Registered Buyers"
-          icon="group"
+          icon=<MdGroups3 />
         />
         <StatCard
           title="Total Orders"
           value={stats.totalOrders.toString()}
           subtitle="Placed Orders"
-          icon="local_shipping"
+          icon=<MdOutlineLocalShipping />
         />
         <StatCard
           title="Total Revenue"
           value={`₹${stats.totalRevenue.toLocaleString("en-IN")}`}
           subtitle="Gross Value"
-          icon="payments"
+          icon=<MdPayments />
         />
         <StatCard
           title="Fulfilment Rate"
           value={`${stats.orderFulfilmentRate.toFixed(1)}%`}
           subtitle="Success Rate"
-          icon="verified"
+          icon=<MdVerified />
         />
       </div>
 
       {/* Main Grid: Pending Approvals & Recent Orders */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Pending Farmers */}
-        <div className="lg:col-span-4 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-[480px]">
+        <div className="lg:col-span-4 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-120">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">how_to_reg</span>
+              <span className="material-symbols-outlined text-[20px]"><MdHowToReg /></span>
               Pending Approvals
             </h2>
             <Link
@@ -76,7 +79,7 @@ export default async function AdminOverview() {
           <div className="flex-1 overflow-y-auto pr-1 space-y-3">
             {pendingFarmers.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-outline text-xs text-center space-y-2">
-                <span className="material-symbols-outlined text-4xl">check_circle</span>
+                <span className="material-symbols-outlined text-4xl"><FaCheckCircle /></span>
                 <p className="font-heading font-bold text-on-surface text-sm">All caught up!</p>
                 <p>No new farmer registration requests pending.</p>
               </div>
@@ -93,7 +96,7 @@ export default async function AdminOverview() {
                     </span>
                   </div>
                   <p className="text-xs text-on-surface-variant flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">location_on</span>
+                    <span className="material-symbols-outlined text-[14px]"><FaLocationDot /></span>
                     {farmer.farmLocation}, {farmer.state}
                   </p>
                   <Link
@@ -109,10 +112,10 @@ export default async function AdminOverview() {
         </div>
 
         {/* Recent Orders */}
-        <div className="lg:col-span-8 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-[480px]">
+        <div className="lg:col-span-8 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-120">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">orders</span>
+              <span className="material-symbols-outlined text-[20px]"><MdOutlineShoppingCart /></span>
               Recent Platform Orders
             </h2>
             <Link
@@ -204,10 +207,10 @@ function StatCard({
   title: string;
   value: string;
   subtitle?: string;
-  icon: string;
+    icon: React.ReactNode;
 }) {
   return (
-    <div className="glass-card organic-shadow rounded-2xl p-5 flex flex-col justify-between hover:translate-y-[-2px] transition-all">
+    <div className="glass-card organic-shadow rounded-2xl p-5 flex flex-col justify-between hover:-translate-y-0.5 transition-all">
       <div className="flex justify-between items-start mb-3">
         <span className="text-xs font-bold text-outline uppercase tracking-wider">{title}</span>
         <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">

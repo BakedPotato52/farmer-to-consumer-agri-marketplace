@@ -1,6 +1,8 @@
 import { getAllFarmers, getPendingFarmers } from "@/lib/data/farmers";
 import { approveFarmerAction, rejectFarmerAction } from "./actions";
 import Link from "next/link";
+import { FaStar } from "react-icons/fa6";
+import { MdVerified } from "react-icons/md";
 
 export default async function FarmersManagement({
   searchParams,
@@ -96,7 +98,7 @@ export default async function FarmersManagement({
                         <div className="font-heading font-bold text-primary text-base flex items-center gap-1.5">
                           {farmer.farmName}
                           {farmer.isVerified && (
-                            <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]">verified</span>
+                            <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]"><MdVerified /></span>
                           )}
                         </div>
                         <span className="text-[11px] font-mono text-outline">{farmer.userId}</span>
@@ -125,7 +127,7 @@ export default async function FarmersManagement({
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-1 text-amber-500 font-bold text-xs">
                           <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                            star
+                            <FaStar />
                           </span>
                           <span className="text-on-surface">{farmer.rating.toFixed(1)}</span>
                           <span className="text-outline font-normal">({farmer.totalReviews})</span>

@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MdAnalytics, MdCategory, MdOutlineDashboard, MdPerson, MdSettings, MdShoppingCart } from "react-icons/md";
 
 export default function AdminNavigation() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/admin", label: "Overview", icon: "dashboard" },
-    { href: "/admin/farmers", label: "Farmers", icon: "agriculture" },
-    { href: "/admin/orders", label: "Global Orders", icon: "shopping_cart" },
-    { href: "/admin/categories", label: "Categories", icon: "category" },
-    { href: "/admin/analytics", label: "Financials", icon: "analytics" },
-    { href: "/admin/settings", label: "Platform Settings", icon: "settings" },
+    { href: "/admin", label: "Overview", icon: <MdOutlineDashboard /> },
+    { href: "/admin/farmers", label: "Farmers", icon: <MdPerson /> },
+    { href: "/admin/orders", label: "Global Orders", icon: <MdShoppingCart /> },
+    { href: "/admin/categories", label: "Categories", icon: <MdCategory /> },
+    { href: "/admin/analytics", label: "Analytics", icon: <MdAnalytics /> },
+    { href: "/admin/settings", label: "Platform Settings", icon: <MdSettings /> },
   ];
 
   return (

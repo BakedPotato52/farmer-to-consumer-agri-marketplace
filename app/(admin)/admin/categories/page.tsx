@@ -3,6 +3,8 @@
 import { CATEGORY_LABELS, CATEGORY_ICONS, ProductCategory } from "@/lib/types";
 import { addCategoryAction, deleteCategoryAction } from "./actions";
 import { useState } from "react";
+import { MdAddCircle, MdClose } from "react-icons/md";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 export default function CategoryManagement() {
   const [isAdding, setIsAdding] = useState(false);
@@ -42,7 +44,7 @@ export default function CategoryManagement() {
           className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
         >
           <span className="material-symbols-outlined text-[20px]">
-            {isAdding ? "close" : "add_circle"}
+            {isAdding ? <MdClose /> : <MdAddCircle />}
           </span>
           {isAdding ? "Cancel" : "Add New Category"}
         </button>
@@ -68,7 +70,7 @@ export default function CategoryManagement() {
                 type="text"
                 name="icon"
                 required
-                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm text-center text-lg outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm text-center outline-none focus:ring-2 focus:ring-primary/20"
                 placeholder="🌱"
               />
             </div>
@@ -104,7 +106,7 @@ export default function CategoryManagement() {
               className="p-2 text-error hover:bg-error-container/30 rounded-xl transition-colors opacity-70 group-hover:opacity-100"
               title="Delete Category"
             >
-              <span className="material-symbols-outlined text-[20px]">delete</span>
+              <span className="material-symbols-outlined text-[20px]"><RiDeleteBinLine /></span>
             </button>
           </div>
         ))}

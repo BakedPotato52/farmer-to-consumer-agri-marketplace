@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { logoutAction } from "@/lib/auth/actions";
 import AdminNavigation from "./navigation";
+import { MdLogout, MdOutlineMenu } from "react-icons/md";
+import { RiSearchLine } from "react-icons/ri";
 
 export default async function AdminLayout({
   children,
@@ -54,7 +56,7 @@ export default async function AdminLayout({
               type="submit"
               className="flex items-center gap-2 px-3 py-2 w-full rounded-xl hover:bg-error-container/30 text-error text-xs font-semibold transition-colors"
             >
-              <span className="material-symbols-outlined text-[18px]">logout</span>
+              <span className="material-symbols-outlined text-[18px]"><MdLogout /></span>
               Log out
             </button>
           </form>
@@ -69,14 +71,14 @@ export default async function AdminLayout({
               htmlFor="admin-sidebar-toggle"
               className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary"
             >
-              <span className="material-symbols-outlined text-2xl">menu</span>
+              <span className="material-symbols-outlined text-2xl"><MdOutlineMenu /></span>
             </label>
             <h2 className="font-heading text-lg font-bold text-primary">Platform Control Center</h2>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/20 text-xs">
-              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2"><RiSearchLine /> </span>
               <input
                 type="text"
                 placeholder="Search platform..."

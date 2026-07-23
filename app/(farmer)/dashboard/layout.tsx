@@ -5,7 +5,7 @@ import { ReactNode } from "react";
 import Navigation from "./navigation";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdOutlineMenu } from "react-icons/md";
 import { RiSearchLine } from "react-icons/ri";
 
 export default async function DashboardLayout({
@@ -76,7 +76,7 @@ export default async function DashboardLayout({
               htmlFor="sidebar-toggle"
               className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary"
             >
-              <span className="material-symbols-outlined text-2xl">menu</span>
+              <span className="material-symbols-outlined text-2xl"><MdOutlineMenu /></span>
             </label>
             <h2 className="font-heading text-lg font-bold text-primary">Merchant Dashboard</h2>
           </div>

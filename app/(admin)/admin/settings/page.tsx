@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { MdCheckCircle, MdPercent, MdTune } from "react-icons/md";
 
 export default function PlatformSettings() {
   const [isSaved, setIsSaved] = useState(false);
@@ -24,7 +25,7 @@ export default function PlatformSettings() {
       <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
         {isSaved && (
           <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">check_circle</span>
+            <span className="material-symbols-outlined text-[18px]"><MdCheckCircle /></span>
             Platform settings updated successfully!
           </div>
         )}
@@ -33,7 +34,7 @@ export default function PlatformSettings() {
           {/* Section 1: General Platform Details */}
           <div className="space-y-6">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-              <span className="material-symbols-outlined text-[20px]">tune</span>
+              <span className="material-symbols-outlined text-[20px]"><MdTune /></span>
               1. General Information & Identity
             </h2>
 
@@ -65,7 +66,7 @@ export default function PlatformSettings() {
           {/* Section 2: Commission & Financials */}
           <div className="space-y-6">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-              <span className="material-symbols-outlined text-[20px]">percent</span>
+              <span className="material-symbols-outlined text-[20px]"><MdPercent /></span>
               2. Financial Parameters
             </h2>
 

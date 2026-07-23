@@ -6,6 +6,7 @@ import {
   getOrderTrends,
 } from "@/lib/data/analytics";
 import { CATEGORY_ICONS } from "@/lib/types";
+import { MdGroups, MdPayments, MdShoppingBag, MdTaskAlt } from "react-icons/md";
 
 export default async function PlatformAnalytics() {
   const [stats, topFarmers, topProducts, categoryDist, orderTrends] =
@@ -36,25 +37,25 @@ export default async function PlatformAnalytics() {
           title="Total Gross Revenue"
           value={`₹${stats.totalRevenue.toLocaleString()}`}
           change="+12.5% MoM"
-          icon="payments"
+          icon=<MdPayments />
         />
         <KpiCard
           title="Avg Order Value (AOV)"
           value={`₹${stats.averageOrderValue.toFixed(0)}`}
           change="+3.2% vs last month"
-          icon="shopping_bag"
+          icon=<MdShoppingBag />
         />
         <KpiCard
           title="Fulfillment Rate"
           value={`${stats.orderFulfilmentRate.toFixed(1)}%`}
           change="Optimal performance"
-          icon="task_alt"
+          icon=<MdTaskAlt />
         />
         <KpiCard
           title="Repeat Buyers"
           value={`${stats.repeatCustomerRate.toFixed(1)}%`}
           change="+5.8% Retention"
-          icon="groups"
+          icon=<MdGroups />
         />
       </div>
 
@@ -206,10 +207,10 @@ function KpiCard({
   title: string;
   value: string;
   change: string;
-  icon: string;
+    icon: React.ReactNode;
 }) {
   return (
-    <div className="glass-card organic-shadow rounded-3xl p-6 flex flex-col justify-between hover:translate-y-[-2px] transition-all">
+    <div className="glass-card organic-shadow rounded-3xl p-6 flex flex-col justify-between hover:-translate-y-0.5 transition-all">
       <div className="flex justify-between items-start mb-3">
         <span className="text-xs font-bold text-outline uppercase tracking-wider">{title}</span>
         <div className="w-9 h-9 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center">
