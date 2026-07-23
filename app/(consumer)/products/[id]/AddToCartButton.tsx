@@ -2,6 +2,9 @@
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart/CartContext";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { MdAddShoppingCart } from "react-icons/md";
+
 
 export default function AddToCartButton({
   product,
@@ -79,12 +82,12 @@ export default function AddToCartButton({
       >
         {added ? (
           <>
-            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+            <span className="material-symbols-outlined text-[20px]"><FaRegCheckCircle /></span>
             Added to Basket!
           </>
         ) : product.quantityAvailable > 0 ? (
           <>
-            <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+              <span className="material-symbols-outlined text-[20px]"><MdAddShoppingCart /></span>
             Add to Basket (₹{product.price * quantity})
           </>
         ) : (

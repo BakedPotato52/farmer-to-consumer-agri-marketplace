@@ -57,7 +57,7 @@ export default async function OrdersPage() {
             return (
               <div
                 key={order.id}
-                className="glass-card organic-shadow rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 transition-all hover:translate-y-[-2px]"
+                className="glass-card organic-shadow rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 transition-all hover:-translate-y-0.5 hover:shadow-lg duration-300 border border-outline-variant/10"
               >
                 {/* Visual Icon Badge */}
                 <div className="w-full md:w-36 h-36 bg-surface-container-low rounded-2xl flex flex-col items-center justify-center shrink-0 border border-outline-variant/10 text-primary">

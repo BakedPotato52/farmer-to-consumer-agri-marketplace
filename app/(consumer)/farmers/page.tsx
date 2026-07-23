@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getVerifiedFarmers } from "@/lib/data/farmers";
+import { MdVerified } from "react-icons/md";
+import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 export default async function FarmersPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -46,7 +48,7 @@ export default async function FarmersPage(props: {
               className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline"
             />
             <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">
-              location_on
+              <FaLocationDot />
             </span>
           </div>
 
@@ -97,14 +99,14 @@ export default async function FarmersPage(props: {
               className="group relative bg-white rounded-2xl overflow-hidden organic-shadow border border-outline-variant/10 transition-all hover:-translate-y-1 flex flex-col"
             >
               {/* Header Banner & Avatar */}
-              <div className="h-32 bg-gradient-to-r from-primary to-primary-container relative p-4 flex items-start justify-between">
+              <div className="h-32 bg-linear-to-r from-primary to-primary-container relative p-4 flex items-start justify-between">
                 <div className="flex gap-2">
                   <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold shadow-sm capitalize">
                     {farmer.farmingMethod}
                   </span>
                   {farmer.isVerified && (
                     <span className="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold shadow-sm flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]">verified</span> Verified
+                      <span className="material-symbols-outlined text-[14px]"><MdVerified /></span> Verified
                     </span>
                   )}
                 </div>
@@ -117,7 +119,7 @@ export default async function FarmersPage(props: {
                 </div>
                 <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
                   <span className="material-symbols-outlined text-amber-500 text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    star
+                    <FaStar />
                   </span>
                   <span className="text-xs font-bold text-amber-900">{farmer.rating.toFixed(1)}</span>
                 </div>
@@ -128,7 +130,7 @@ export default async function FarmersPage(props: {
                   {farmer.farmName}
                 </h3>
                 <div className="flex items-center text-on-surface-variant text-xs mb-3">
-                  <span className="material-symbols-outlined text-[16px] mr-1 text-outline">location_on</span>
+                  <span className="material-symbols-outlined text-[16px] mr-1 text-outline"></span>
                   {farmer.farmLocation}, {farmer.state}
                 </div>
 

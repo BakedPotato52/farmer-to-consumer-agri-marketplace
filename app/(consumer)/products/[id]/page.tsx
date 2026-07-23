@@ -4,6 +4,9 @@ import { getProductById } from "@/lib/data/products";
 import { getFarmerById } from "@/lib/data/farmers";
 import { getReviewsByProduct } from "@/lib/data/reviews";
 import AddToCartButton from "./AddToCartButton";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { MdOutlineRateReview, MdVerified } from "react-icons/md";
+import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 export default async function ProductDetailPage(props: {
   params: Promise<{ id: string }>;
@@ -48,7 +51,7 @@ export default async function ProductDetailPage(props: {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Left Column: Visual Showcase */}
         <div className="lg:col-span-7 space-y-6">
-          <div className={`relative aspect-square md:aspect-[4/3] rounded-3xl bg-gradient-to-br ${bgGradient} organic-shadow flex items-center justify-center p-8 overflow-hidden`}>
+          <div className={`relative aspect-square md:aspect-4/3 rounded-3xl bg-linear-to-br ${bgGradient} organic-shadow flex items-center justify-center p-8 overflow-hidden`}>
             {/* Background Emoji watermark */}
             <div className="text-9xl opacity-20 transform -rotate-12 scale-150 select-none">
               {product.category === "vegetables" && "🥬"}
@@ -62,7 +65,7 @@ export default async function ProductDetailPage(props: {
             <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
               {product.isOrganic && (
                 <span className="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
-                  <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                  <span className="material-symbols-outlined text-[16px]"><FaRegCheckCircle /></span>
                   Certified Organic
                 </span>
               )}
@@ -83,7 +86,7 @@ export default async function ProductDetailPage(props: {
 
             {reviews.length === 0 ? (
               <div className="text-center py-8 text-on-surface-variant">
-                <span className="material-symbols-outlined text-4xl text-outline mb-2">rate_review</span>
+                <span className="material-symbols-outlined text-4xl text-outline mb-2"><MdOutlineRateReview /></span>
                 <p className="text-sm">No reviews yet for this product. Be the first to share your thoughts!</p>
               </div>
             ) : (
@@ -103,7 +106,7 @@ export default async function ProductDetailPage(props: {
                           className="material-symbols-outlined text-[18px]"
                           style={{ fontVariationSettings: star <= review.rating ? "'FILL' 1" : "'FILL' 0" }}
                         >
-                          star
+                          <FaStar />
                         </span>
                       ))}
                     </div>
@@ -118,7 +121,7 @@ export default async function ProductDetailPage(props: {
         {/* Right Column: Product Info & Purchase Sidebar */}
         <div className="lg:col-span-5 space-y-6">
           {/* Main Action Box */}
-          <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6 sticky top-24">
+          <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6 sticky top-24 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:overscroll-contain">
             <div>
               <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">
                 {product.category}
@@ -134,8 +137,11 @@ export default async function ProductDetailPage(props: {
                   <span className="text-sm text-outline ml-1">/ {product.unit}</span>
                 </div>
                 <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-                  <span className="material-symbols-outlined text-amber-500 text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                    star
+                  <span
+                    className="material-symbols-outlined text-amber-500 text-[18px]"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
+                    <FaStar />
                   </span>
                   <span className="text-sm font-bold text-amber-900">{product.rating.toFixed(1)}</span>
                   <span className="text-xs text-amber-700">({product.totalReviews})</span>
@@ -173,11 +179,11 @@ export default async function ProductDetailPage(props: {
                 <h4 className="font-heading text-lg font-bold text-primary flex items-center gap-1.5">
                   {farmer.farmName}
                   {farmer.isVerified && (
-                    <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]">verified</span>
+                    <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]"><MdVerified /></span>
                   )}
                 </h4>
                 <p className="text-xs text-on-surface-variant flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[14px]">location_on</span>
+                  <span className="material-symbols-outlined text-[14px]"><FaLocationDot /></span>
                   {farmer.farmLocation}
                 </p>
               </div>

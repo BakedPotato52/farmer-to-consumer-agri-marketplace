@@ -3,6 +3,8 @@ import { filterProducts } from "@/lib/data/products";
 import { getAllFarmers } from "@/lib/data/farmers";
 import { ProductCategory } from "@/lib/types";
 import { BiSearch } from "react-icons/bi";
+import { FaLeaf } from "react-icons/fa6";
+import { MdVerified, MdVisibility } from "react-icons/md";
 
 export default async function ProductsPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -119,7 +121,7 @@ export default async function ProductsPage(props: {
                   className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
                 />
                 <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-secondary">eco</span>
+                  <span className="material-symbols-outlined text-[16px] text-secondary"><FaLeaf /></span>
                   Organic Certified Only
                 </span>
               </label>
@@ -233,7 +235,7 @@ export default async function ProductsPage(props: {
                       {product.isOrganic && (
                         <div className="absolute top-4 left-4">
                           <span className="bg-amber-100/90 backdrop-blur-md text-amber-900 text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-sm">
-                            <span className="material-symbols-outlined text-[14px]">verified</span> Organic
+                            <span className="material-symbols-outlined text-[14px]"><MdVerified /></span> Organic
                           </span>
                         </div>
                       )}
@@ -259,7 +261,7 @@ export default async function ProductsPage(props: {
                           <span className="text-xs text-outline">per {product.unit}</span>
                         </div>
                         <span className="bg-primary hover:bg-primary-container text-on-primary px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm">
-                          <span className="material-symbols-outlined text-[16px]">visibility</span> View
+                          <span className="material-symbols-outlined text-[16px]"><MdVisibility /></span> View
                         </span>
                       </div>
                     </div>

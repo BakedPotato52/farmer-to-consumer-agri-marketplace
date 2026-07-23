@@ -3,6 +3,8 @@ import Link from "next/link";
 import { getFarmerById } from "@/lib/data/farmers";
 import { filterProducts } from "@/lib/data/products";
 import { getReviewsByFarmer } from "@/lib/data/reviews";
+import { MdVerified } from "react-icons/md";
+import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 export default async function FarmerProfilePage(props: {
   params: Promise<{ id: string }>;
@@ -20,8 +22,8 @@ export default async function FarmerProfilePage(props: {
   return (
     <div className="w-full min-h-screen pb-16 bg-background">
       {/* Hero Banner Section */}
-      <section className="relative h-[320px] md:h-[400px] overflow-hidden bg-gradient-to-r from-primary to-primary-container text-white flex items-end pb-12">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,_var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+      <section className="relative h-80 md:h-100 overflow-hidden bg-linear-to-r from-primary to-primary-container text-white flex items-end pb-12">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
 
         <div className="relative z-10 max-w-[1280px] mx-auto w-full px-4 md:px-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex items-center md:items-end gap-6">
@@ -30,14 +32,14 @@ export default async function FarmerProfilePage(props: {
             </div>
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold mb-2 shadow-sm">
-                <span className="material-symbols-outlined text-[16px]">verified</span>
+                <span className="material-symbols-outlined text-[16px]"><MdVerified /></span>
                 <span className="capitalize">{farmer.farmingMethod} Farmer</span>
               </div>
               <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-1 tracking-tight">
                 {farmer.farmName}
               </h1>
               <p className="text-sm md:text-base text-white/90 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[18px]">location_on</span>
+                <span className="material-symbols-outlined text-[18px]"><FaLocationDot /></span>
                 {farmer.farmLocation}, {farmer.state}
               </p>
             </div>
@@ -78,7 +80,7 @@ export default async function FarmerProfilePage(props: {
       {/* Main Content Grid */}
       <section className="max-w-[1280px] mx-auto px-4 md:px-10 py-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Farm Details & Reviews */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4 space-y-6 sticky top-24 self-start">
           {/* About Farm */}
           <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6">
             <h2 className="font-heading text-2xl font-bold text-primary">About Our Farm</h2>
@@ -122,7 +124,7 @@ export default async function FarmerProfilePage(props: {
                             className="material-symbols-outlined text-[14px]"
                             style={{ fontVariationSettings: star <= review.rating ? "'FILL' 1" : "'FILL' 0" }}
                           >
-                            star
+                            <FaStar />
                           </span>
                         ))}
                       </div>
@@ -166,9 +168,9 @@ export default async function FarmerProfilePage(props: {
                   <Link
                     key={product.id}
                     href={`/products/${product.id}`}
-                    className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:translate-y-[-4px] transition-all duration-300 border border-outline-variant/10"
+                    className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
-                    <div className={`h-40 relative bg-gradient-to-br ${gradient} flex items-center justify-center p-4`}>
+                    <div className={`h-40 relative bg-linear-to-br ${gradient} flex items-center justify-center p-4`}>
                       <div className="text-7xl opacity-30 transform -rotate-12 group-hover:scale-110 transition-transform duration-700 select-none">
                         {product.category === "vegetables" && "🥬"}
                         {product.category === "fruits" && "🍎"}

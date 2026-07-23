@@ -2,6 +2,11 @@
 
 import Link from "next/link";
 import { useCart } from "@/lib/cart/CartContext";
+import { MdAgriculture } from "react-icons/md";
+import { RiDeleteBin6Line, RiShoppingBag3Fill, RiTruckLine } from "react-icons/ri";
+import { CiBookmarkRemove } from "react-icons/ci";
+import { FaMinus, FaPlus } from "react-icons/fa6";
+import { AiOutlineArrowLeft } from "react-icons/ai";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, getTotal } = useCart();
@@ -29,7 +34,7 @@ export default function CartPage() {
     return (
       <div className="pt-24 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 flex flex-col items-center justify-center min-h-[60vh]">
         <div className="w-20 h-20 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mb-6 organic-shadow">
-          <span className="material-symbols-outlined text-4xl">shopping_basket</span>
+          <span className="material-symbols-outlined text-4xl"><RiShoppingBag3Fill /></span>
         </div>
         <h1 className="font-heading text-3xl font-bold text-primary mb-2">Your basket is empty</h1>
         <p className="text-on-surface-variant mb-8 max-w-md text-center text-sm">
@@ -58,7 +63,7 @@ export default function CartPage() {
           {Object.entries(groupedItems).map(([farmerId, group]) => (
             <div key={farmerId} className="glass-card organic-shadow rounded-2xl overflow-hidden">
               <div className="bg-surface-container-low px-6 py-3 border-b border-outline-variant/10 flex items-center gap-2">
-                <span className="material-symbols-outlined text-secondary text-[20px]">agriculture</span>
+                <span className="material-symbols-outlined text-secondary text-[20px]"><MdAgriculture /></span>
                 <span className="text-xs font-bold text-outline uppercase tracking-wider">Farmer:</span>
                 <span className="font-heading font-bold text-primary text-sm">{group.farmerName}</span>
               </div>
@@ -91,7 +96,7 @@ export default function CartPage() {
                           onClick={() => updateQuantity(item.productId, item.quantity - 1)}
                           className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors text-primary"
                         >
-                          <span className="material-symbols-outlined text-[16px]">remove</span>
+                          <span className="material-symbols-outlined text-[16px]"><FaMinus /></span>
                         </button>
                         <span className="px-3 font-semibold text-sm text-on-surface">{item.quantity}</span>
                         <button
@@ -100,12 +105,12 @@ export default function CartPage() {
                           disabled={item.quantity >= item.maxQuantity}
                           className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white transition-colors text-primary disabled:opacity-40"
                         >
-                          <span className="material-symbols-outlined text-[16px]">add</span>
+                          <span className="material-symbols-outlined text-[16px]"><FaPlus /></span>
                         </button>
                       </div>
 
                       {/* Subtotal */}
-                      <div className="font-heading text-lg font-bold text-primary min-w-[70px] text-right">
+                      <div className="font-heading text-lg font-bold text-primary min-w-17.5 text-right">
                         ₹{(item.price * item.quantity).toFixed(2)}
                       </div>
 
@@ -116,7 +121,7 @@ export default function CartPage() {
                         className="text-error hover:opacity-80 transition-opacity p-1"
                         title="Remove item"
                       >
-                        <span className="material-symbols-outlined text-[20px]">delete</span>
+                        <span className="material-symbols-outlined text-[20px]"><RiDeleteBin6Line /></span>
                       </button>
                     </div>
                   </div>
@@ -130,7 +135,7 @@ export default function CartPage() {
               href="/products"
               className="text-primary font-semibold hover:underline flex items-center gap-1 text-sm"
             >
-              <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+              <span className="material-symbols-outlined text-[18px]"><AiOutlineArrowLeft /></span>
               Continue Shopping
             </Link>
             <button
@@ -144,7 +149,7 @@ export default function CartPage() {
         </div>
 
         {/* Order Summary Sidebar */}
-        <div className="w-full lg:w-[360px] shrink-0">
+        <div className="w-full lg:w-90 shrink-0">
           <div className="glass-card organic-shadow rounded-2xl p-6 sticky top-24 space-y-6">
             <h2 className="font-heading text-xl font-bold text-on-surface border-b border-outline-variant/10 pb-3">
               Order Summary
@@ -174,7 +179,7 @@ export default function CartPage() {
             </Link>
 
             <div className="p-3 bg-surface-container-low rounded-xl border border-outline-variant/10 flex items-center gap-3 text-xs text-on-surface-variant">
-              <span className="material-symbols-outlined text-secondary text-[20px]">local_shipping</span>
+              <span className="material-symbols-outlined text-secondary text-[20px]"><RiTruckLine /></span>
               <div>
                 <p className="font-bold text-on-surface">Farm-Fresh Delivery</p>
                 <p className="text-[11px]">Direct cold-chain shipping from growers</p>
