@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { logoutAction } from "@/lib/auth/actions";
+import AdminNavigation from "./navigation";
 
 export default async function AdminLayout({
   children,
@@ -15,90 +16,90 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row font-sans text-gray-900">
-      {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-gray-900 text-white flex-shrink-0 flex flex-col">
-        <div className="p-6">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="text-2xl">🌱</span>
-            <span className="font-bold text-xl tracking-tight text-emerald-400">
-              FarmFresh Admin
-            </span>
+    <div className="flex h-screen bg-background text-on-surface overflow-hidden">
+      {/* Mobile sidebar toggle checkbox */}
+      <input type="checkbox" id="admin-sidebar-toggle" className="peer hidden" />
+
+      {/* ── Sidebar ── */}
+      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-outline-variant/10 shadow-[4px_0_30px_0_rgba(69,26,3,0.08)] transform -translate-x-full peer-checked:translate-x-0 md:relative md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col p-6">
+        <div className="mb-8 flex items-center justify-between">
+          <Link href="/admin">
+            <h1 className="font-heading text-2xl font-bold text-primary tracking-tight">FarmFresh</h1>
+            <p className="text-on-surface-variant text-[11px] font-semibold uppercase tracking-wider">Super Admin Portal</p>
           </Link>
+          <label
+            htmlFor="admin-sidebar-toggle"
+            className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary text-xl font-bold"
+          >
+            ✕
+          </label>
         </div>
 
-        <nav className="flex-1 px-4 py-4 space-y-1">
-          <NavLink href="/admin" icon="📊" label="Dashboard" exact />
-          <NavLink href="/admin/farmers" icon="👨‍🌾" label="Farmers" />
-          <NavLink href="/admin/orders" icon="🛒" label="Orders" />
-          <NavLink href="/admin/categories" icon="📂" label="Categories" />
-          <NavLink href="/admin/analytics" icon="📈" label="Analytics" />
-          <NavLink href="/admin/settings" icon="⚙️" label="Settings" />
+        <AdminNavigation />
 
-          <div className="my-6 border-t border-gray-800"></div>
+        {/* Admin Profile & Logout */}
+        <div className="mt-auto pt-6 border-t border-outline-variant/10 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary text-on-primary font-heading font-bold text-base flex items-center justify-center shadow-md shrink-0">
+              {session.name.charAt(0).toUpperCase()}
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-heading text-sm font-bold text-primary truncate">{session.name}</span>
+              <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">System Administrator</span>
+            </div>
+          </div>
 
           <form action={logoutAction}>
-            <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-gray-800 transition-colors text-sm font-medium">
-              <span className="text-lg">🚪</span>
-              Logout
+            <button
+              type="submit"
+              className="flex items-center gap-2 px-3 py-2 w-full rounded-xl hover:bg-error-container/30 text-error text-xs font-semibold transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">logout</span>
+              Log out
             </button>
           </form>
-        </nav>
+        </div>
       </aside>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col min-h-screen overflow-hidden">
-        {/* Topbar */}
-        <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 shrink-0">
-          <div className="font-semibold text-lg text-gray-800">
-            Admin Portal
+      {/* ── Main Content Area ── */}
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 h-16 flex items-center justify-between px-6 z-40">
+          <div className="flex items-center gap-4">
+            <label
+              htmlFor="admin-sidebar-toggle"
+              className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary"
+            >
+              <span className="material-symbols-outlined text-2xl">menu</span>
+            </label>
+            <h2 className="font-heading text-lg font-bold text-primary">Platform Control Center</h2>
           </div>
-          <div className="flex items-center gap-3">
-            <div className="flex flex-col items-end">
-              <span className="text-sm font-medium text-gray-900">
-                {session.name}
-              </span>
-              <span className="text-xs text-emerald-600 font-medium capitalize">
-                {session.role}
-              </span>
+
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/20 text-xs">
+              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+              <input
+                type="text"
+                placeholder="Search platform..."
+                className="bg-transparent border-none outline-none text-xs w-36 text-on-surface placeholder:text-outline"
+              />
             </div>
-            <div className="w-9 h-9 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">
+
+            <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
               {session.name.charAt(0).toUpperCase()}
             </div>
           </div>
         </header>
 
-        {/* Page Content */}
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">{children}</main>
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
+          {children}
+        </main>
       </div>
-    </div>
-  );
-}
 
-// Note: In a real app we'd use usePathname for active state,
-// but since it's a server component we'll use a simple CSS trick or rely on Next.js client-side navigation features
-function NavLink({
-  href,
-  icon,
-  label,
-  exact = false,
-}: {
-  href: string;
-  icon: string;
-  label: string;
-  exact?: boolean;
-}) {
-  // Using active state visually through a Client Component or Next.js built-in active links if preferred.
-  // For simplicity here, hover states will look good.
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 transition-colors group text-sm font-medium"
-    >
-      <span className="text-lg group-hover:scale-110 transition-transform">
-        {icon}
-      </span>
-      {label}
-    </Link>
+      {/* Overlay for mobile sidebar */}
+      <label
+        htmlFor="admin-sidebar-toggle"
+        className="fixed inset-0 bg-black/50 z-40 hidden peer-checked:block md:peer-checked:hidden cursor-pointer"
+      />
+    </div>
   );
 }

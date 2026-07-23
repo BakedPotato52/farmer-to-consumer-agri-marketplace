@@ -30,7 +30,7 @@ export default async function OrdersManagement({
   );
 
   const tabs = [
-    { id: "all", label: "All", count: allOrders.length },
+    { id: "all", label: "All Orders", count: allOrders.length },
     ...ORDER_STATUS_FLOW.map((status) => ({
       id: status,
       label: ORDER_STATUS_LABELS[status],
@@ -44,35 +44,34 @@ export default async function OrdersManagement({
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Order Monitoring
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Track and manage all marketplace orders across farmers and consumers.
+    <div className="space-y-8">
+      {/* Header Card */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
+        <h1 className="font-heading text-3xl font-extrabold text-primary">Global Order Monitoring</h1>
+        <p className="text-on-surface-variant text-sm mt-1">
+          Oversee platform transaction activity, fulfillment progress, and multi-merchant logistics ({allOrders.length} total orders).
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-        {/* Tabs */}
-        <div className="border-b border-gray-100 flex overflow-x-auto">
+      <div className="glass-card organic-shadow rounded-3xl overflow-hidden flex flex-col">
+        {/* Tabs Bar */}
+        <div className="p-3 bg-surface-container-low border-b border-outline-variant/10 flex overflow-x-auto gap-2">
           {tabs.map((tab) => (
             <Link
               key={tab.id}
               href={`/admin/orders?status=${tab.id}`}
-              className={`flex items-center px-5 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-heading text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
                 currentStatus === tab.id
-                  ? "border-emerald-500 text-emerald-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "bg-secondary-container text-on-secondary-container shadow-sm"
+                  : "text-on-surface-variant hover:bg-surface-container-high/50"
               }`}
             >
-              {tab.label}
+              <span>{tab.label}</span>
               <span
-                className={`ml-2 py-0.5 px-2 rounded-full text-xs ${
+                className={`py-0.5 px-2 rounded-full text-[10px] font-extrabold ${
                   currentStatus === tab.id
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-gray-100 text-gray-600"
+                    ? "bg-primary text-on-primary"
+                    : "bg-surface-container-high text-outline"
                 }`}
               >
                 {tab.count}
@@ -83,79 +82,55 @@ export default async function OrdersManagement({
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+          <table className="w-full text-left text-sm text-on-surface">
+            <thead className="bg-surface-container-low text-xs font-bold text-outline uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-4 font-semibold">Order Info</th>
-                <th className="px-6 py-4 font-semibold">Parties</th>
-                <th className="px-6 py-4 font-semibold">Amount</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold">Date</th>
-                <th className="px-6 py-4 font-semibold text-right">Details</th>
+                <th className="px-6 py-4">Order ID & Items</th>
+                <th className="px-6 py-4">Parties</th>
+                <th className="px-6 py-4">Amount</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Date Placed</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {displayedOrders.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-8 text-center text-gray-500"
-                  >
-                    No orders found.
+                  <td colSpan={5} className="px-6 py-12 text-center text-outline italic">
+                    No orders found in this category.
                   </td>
                 </tr>
               ) : (
-                displayedOrders.map((order) => {
-                  return (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-gray-50 transition-colors group"
-                    >
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">
-                          #{order.id.split("-")[0]}
-                        </div>
-                        <div className="text-xs text-gray-500 mt-1">
-                          {order.items.length} items
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="text-sm">
-                          <span className="text-gray-500 text-xs uppercase tracking-wider block mb-0.5">
-                            Consumer
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {order.consumerName}
-                          </span>
-                        </div>
-                        <div className="text-sm mt-2">
-                          <span className="text-gray-500 text-xs uppercase tracking-wider block mb-0.5">
-                            Farmer
-                          </span>
-                          <span className="font-medium text-gray-900">
-                            {order.farmerName}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">
-                          ₹{order.totalAmount.toLocaleString("en-IN")}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <StatusBadge status={order.status} />
-                      </td>
-                      <td className="px-6 py-4 text-gray-600">
-                        {new Date(order.createdAt).toLocaleDateString()}
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <button className="text-sm font-medium text-emerald-600 hover:text-emerald-800">
-                          View
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
+                displayedOrders.map((order) => (
+                  <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="font-mono font-bold text-primary text-sm">
+                        #{order.id.slice(-6).toUpperCase()}
+                      </div>
+                      <div className="text-xs text-outline mt-0.5">
+                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 space-y-1">
+                      <div className="text-xs">
+                        <span className="text-outline uppercase font-bold text-[10px] block">Buyer:</span>
+                        <span className="font-semibold text-on-surface">{order.consumerName}</span>
+                      </div>
+                      <div className="text-xs">
+                        <span className="text-outline uppercase font-bold text-[10px] block">Farmer:</span>
+                        <span className="font-semibold text-primary">{order.farmerName}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 font-heading font-bold text-primary text-base">
+                      ₹{order.totalAmount.toLocaleString("en-IN")}
+                    </td>
+                    <td className="px-6 py-4">
+                      <StatusBadge status={order.status} />
+                    </td>
+                    <td className="px-6 py-4 text-xs text-outline">
+                      {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>
@@ -167,17 +142,17 @@ export default async function OrdersManagement({
 
 function StatusBadge({ status }: { status: OrderStatus }) {
   const styles: Record<OrderStatus, string> = {
-    pending: "bg-amber-100 text-amber-800",
-    confirmed: "bg-blue-100 text-blue-800",
-    packed: "bg-purple-100 text-purple-800",
-    shipped: "bg-cyan-100 text-cyan-800",
-    delivered: "bg-emerald-100 text-emerald-800",
-    cancelled: "bg-red-100 text-red-800",
+    pending: "bg-amber-100 text-amber-900 border-amber-200",
+    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    packed: "bg-purple-100 text-purple-900 border-purple-200",
+    shipped: "bg-sky-100 text-sky-900 border-sky-200",
+    delivered: "bg-primary text-on-primary border-primary",
+    cancelled: "bg-error-container text-on-error-container border-error/20",
   };
 
   return (
     <span
-      className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${styles[status]}`}
+      className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full border ${styles[status]}`}
     >
       {ORDER_STATUS_LABELS[status]}
     </span>

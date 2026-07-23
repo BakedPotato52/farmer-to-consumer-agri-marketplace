@@ -7,7 +7,6 @@ import { useState } from "react";
 export default function CategoryManagement() {
   const [isAdding, setIsAdding] = useState(false);
 
-  // Derive categories from types
   const categories = (Object.keys(CATEGORY_LABELS) as ProductCategory[]).map(
     (slug) => ({
       id: slug,
@@ -20,7 +19,6 @@ export default function CategoryManagement() {
   const handleAdd = async (formData: FormData) => {
     await addCategoryAction(formData);
     setIsAdding(false);
-    // In a real app, toast success
   };
 
   const handleDelete = async (id: string) => {
@@ -30,104 +28,83 @@ export default function CategoryManagement() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-            Category Management
-          </h1>
-          <p className="text-gray-500 mt-1">
-            Manage product categories available on the platform.
+          <h1 className="font-heading text-3xl font-extrabold text-primary">Marketplace Categories</h1>
+          <p className="text-on-surface-variant text-sm mt-1">
+            Organize produce taxonomies, icons, and marketplace navigation tags ({categories.length} active categories).
           </p>
         </div>
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="bg-emerald-600 text-white px-4 py-2 rounded-lg font-medium text-sm hover:bg-emerald-700 transition-colors shadow-sm self-start sm:self-auto"
+          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
         >
-          {isAdding ? "Cancel" : "+ Add Category"}
+          <span className="material-symbols-outlined text-[20px]">
+            {isAdding ? "close" : "add_circle"}
+          </span>
+          {isAdding ? "Cancel" : "Add New Category"}
         </button>
       </div>
 
       {isAdding && (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-emerald-100 animate-in slide-in-from-top-4">
-          <h2 className="text-lg font-semibold mb-4 text-gray-900">
-            New Category
-          </h2>
-          <form
-            action={handleAdd}
-            className="flex flex-col sm:flex-row gap-4 items-end"
-          >
-            <div className="flex-1 w-full">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name
-              </label>
+        <div className="glass-card p-8 rounded-3xl organic-shadow border-2 border-primary/20">
+          <h2 className="font-heading text-xl font-bold text-primary mb-4">Create New Category</h2>
+          <form action={handleAdd} className="flex flex-col sm:flex-row gap-4 items-end">
+            <div className="flex-1 w-full space-y-2">
+              <label className="block text-xs font-bold text-outline uppercase tracking-wider">Category Name *</label>
               <input
                 type="text"
                 name="name"
                 required
-                className="w-full border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 py-2 px-3 border"
-                placeholder="e.g. Exotic Fruits"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
+                placeholder="e.g. Exotic Microgreens"
               />
             </div>
-            <div className="w-full sm:w-32">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Icon (Emoji)
-              </label>
+            <div className="w-full sm:w-36 space-y-2">
+              <label className="block text-xs font-bold text-outline uppercase tracking-wider">Emoji Icon *</label>
               <input
                 type="text"
                 name="icon"
                 required
-                className="w-full border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 py-2 px-3 border"
-                placeholder="🥑"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm text-center text-lg outline-none focus:ring-2 focus:ring-primary/20"
+                placeholder="🌱"
               />
             </div>
             <button
               type="submit"
-              className="w-full sm:w-auto bg-gray-900 text-white px-6 py-2 rounded-lg font-medium hover:bg-black transition-colors"
+              className="w-full sm:w-auto bg-primary text-on-primary px-8 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow"
             >
-              Save
+              Save Category
             </button>
           </form>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      {/* Category Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center gap-4 group hover:border-emerald-200 transition-colors"
+            className="glass-card organic-shadow rounded-3xl p-6 flex items-center justify-between transition-all hover:translate-y-[-2px] group"
           >
-            <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center text-2xl shrink-0 group-hover:scale-110 transition-transform duration-300">
-              {category.icon}
-            </div>
-            <div className="flex-1 min-w-0">
-              <div className="font-semibold text-gray-900 truncate">
-                {category.name}
+            <div className="flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center text-3xl shrink-0 group-hover:scale-110 transition-transform">
+                {category.icon}
               </div>
-              <div className="text-xs text-gray-500 font-mono truncate">
-                {category.slug}
+              <div>
+                <h3 className="font-heading text-lg font-bold text-primary">{category.name}</h3>
+                <span className="text-xs font-mono text-outline">slug: {category.slug}</span>
               </div>
             </div>
+
             <button
               onClick={() => handleDelete(category.id)}
-              className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 p-2 rounded-lg hover:bg-red-50 transition-all shrink-0"
-              title="Delete"
+              className="p-2 text-error hover:bg-error-container/30 rounded-xl transition-colors opacity-70 group-hover:opacity-100"
+              title="Delete Category"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 6h18"></path>
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-              </svg>
+              <span className="material-symbols-outlined text-[20px]">delete</span>
             </button>
           </div>
         ))}

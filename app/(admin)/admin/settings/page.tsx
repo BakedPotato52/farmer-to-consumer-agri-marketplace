@@ -12,100 +12,91 @@ export default function PlatformSettings() {
   };
 
   return (
-    <div className="max-w-3xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Platform Settings
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Configure global marketplace parameters and preferences.
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
+        <h1 className="font-heading text-3xl font-extrabold text-primary">Platform Configuration & Settings</h1>
+        <p className="text-on-surface-variant text-sm mt-1">
+          Manage commission parameters, support contacts, notification toggles, and global marketplace defaults.
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100">
-        <form onSubmit={handleSave} className="p-6 space-y-6">
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">
-              General Settings
+      <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
+        {isSaved && (
+          <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
+            <span className="material-symbols-outlined text-[18px]">check_circle</span>
+            Platform settings updated successfully!
+          </div>
+        )}
+
+        <form onSubmit={handleSave} className="space-y-8">
+          {/* Section 1: General Platform Details */}
+          <div className="space-y-6">
+            <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
+              <span className="material-symbols-outlined text-[20px]">tune</span>
+              1. General Information & Identity
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Platform Name
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-outline uppercase tracking-wider">
+                  Marketplace Name
                 </label>
                 <input
                   type="text"
-                  defaultValue="FarmFresh"
-                  className="w-full border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 py-2.5 px-3 border"
+                  defaultValue="FarmFresh Direct"
+                  className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Support Email
+              <div className="space-y-2">
+                <label className="block text-xs font-bold text-outline uppercase tracking-wider">
+                  Customer Support Email
                 </label>
                 <input
                   type="email"
                   defaultValue="support@farmfresh.com"
-                  className="w-full border-gray-300 rounded-lg shadow-sm focus:border-emerald-500 focus:ring-emerald-500 py-2.5 px-3 border"
+                  className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
                 />
               </div>
             </div>
           </div>
 
-          <div className="space-y-4 pt-4">
-            <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-2">
-              Financials
+          {/* Section 2: Commission & Financials */}
+          <div className="space-y-6">
+            <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
+              <span className="material-symbols-outlined text-[20px]">percent</span>
+              2. Financial Parameters
             </h2>
 
-            <div className="max-w-md">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Platform Commission Rate (%)
+            <div className="max-w-md space-y-2">
+              <label className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Platform Commission Fee (%)
               </label>
-              <p className="text-xs text-gray-500 mb-2">
-                Percentage fee taken from each successful order.
+              <p className="text-xs text-outline">
+                Percentage cut automatically deducted on each completed consumer order.
               </p>
-              <div className="relative rounded-lg shadow-sm">
+              <div className="relative">
                 <input
                   type="number"
                   step="0.1"
                   defaultValue="5.0"
-                  className="w-full border-gray-300 rounded-lg pr-8 focus:border-emerald-500 focus:ring-emerald-500 py-2.5 px-3 border"
+                  className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-heading font-bold"
                 />
-                <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <span className="text-gray-500 sm:text-sm">%</span>
-                </div>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-outline font-bold">%</span>
               </div>
             </div>
           </div>
 
-          <div className="pt-6 border-t border-gray-100 flex items-center gap-4">
+          {/* Save Button */}
+          <div className="pt-6 border-t border-outline-variant/10 flex justify-end">
             <button
               type="submit"
-              className="bg-emerald-600 text-white px-6 py-2.5 rounded-lg font-medium hover:bg-emerald-700 transition-colors shadow-sm"
+              className="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
             >
-              Save Changes
+              <span className="material-symbols-outlined text-[20px]">save</span>
+              Save Platform Settings
             </button>
-
-            {isSaved && (
-              <span className="text-sm text-emerald-600 font-medium flex items-center gap-1 animate-in fade-in">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-                Settings saved successfully
-              </span>
-            )}
           </div>
         </form>
       </div>

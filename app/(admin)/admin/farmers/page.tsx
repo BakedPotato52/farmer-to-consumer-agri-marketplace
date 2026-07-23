@@ -1,5 +1,6 @@
 import { getAllFarmers, getPendingFarmers } from "@/lib/data/farmers";
 import { approveFarmerAction, rejectFarmerAction } from "./actions";
+import Link from "next/link";
 
 export default async function FarmersManagement({
   searchParams,
@@ -30,120 +31,108 @@ export default async function FarmersManagement({
   ];
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Farmer Management
-        </h1>
-        <p className="text-gray-500 mt-1">
-          Review and manage farmer accounts on the platform.
+    <div className="space-y-8">
+      {/* Header Card */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
+        <h1 className="font-heading text-3xl font-extrabold text-primary">Farmer Merchant Management</h1>
+        <p className="text-on-surface-variant text-sm mt-1">
+          Review application credentials, verify sustainable farming methods, and manage merchant accounts.
         </p>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
-        {/* Tabs */}
-        <div className="border-b border-gray-100 flex overflow-x-auto">
+      <div className="glass-card organic-shadow rounded-3xl overflow-hidden flex flex-col">
+        {/* Tabs Bar */}
+        <div className="p-3 bg-surface-container-low border-b border-outline-variant/10 flex overflow-x-auto gap-2">
           {tabs.map((tab) => (
-            <a
+            <Link
               key={tab.id}
               href={`/admin/farmers?tab=${tab.id}`}
-              className={`flex items-center px-6 py-4 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-heading text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
                 currentTab === tab.id
-                  ? "border-emerald-500 text-emerald-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                  ? "bg-secondary-container text-on-secondary-container shadow-sm"
+                  : "text-on-surface-variant hover:bg-surface-container-high/50"
               }`}
             >
-              {tab.label}
+              <span>{tab.label}</span>
               <span
-                className={`ml-2 py-0.5 px-2 rounded-full text-xs ${
+                className={`py-0.5 px-2 rounded-full text-[10px] font-extrabold ${
                   currentTab === tab.id
-                    ? "bg-emerald-100 text-emerald-700"
-                    : "bg-gray-100 text-gray-600"
+                    ? "bg-primary text-on-primary"
+                    : "bg-surface-container-high text-outline"
                 }`}
               >
                 {tab.count}
               </span>
-            </a>
+            </Link>
           ))}
         </div>
 
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left">
-            <thead className="text-xs text-gray-500 uppercase bg-gray-50">
+          <table className="w-full text-left text-sm text-on-surface">
+            <thead className="bg-surface-container-low text-xs font-bold text-outline uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-4 font-semibold">Farm Details</th>
-                <th className="px-6 py-4 font-semibold">Location</th>
-                <th className="px-6 py-4 font-semibold">Method</th>
-                <th className="px-6 py-4 font-semibold">Status</th>
-                <th className="px-6 py-4 font-semibold">Rating</th>
-                <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                <th className="px-6 py-4">Farm Identity</th>
+                <th className="px-6 py-4">Location</th>
+                <th className="px-6 py-4">Farming Method</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Rating</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {displayedFarmers.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-8 text-center text-gray-500"
-                  >
-                    No farmers found in this category.
+                  <td colSpan={6} className="px-6 py-12 text-center text-outline italic">
+                    No farmer merchants found in this category.
                   </td>
                 </tr>
               ) : (
                 displayedFarmers.map((farmer) => {
-                  const isPending = !farmer.isVerified && farmer.rating === 0; // Mock pending check
+                  const isPending = !farmer.isVerified && farmer.rating === 0;
                   return (
-                    <tr
-                      key={farmer.userId}
-                      className="hover:bg-gray-50 transition-colors group"
-                    >
+                    <tr key={farmer.userId} className="hover:bg-surface-container-low/50 transition-colors">
                       <td className="px-6 py-4">
-                        <div className="font-medium text-gray-900">
+                        <div className="font-heading font-bold text-primary text-base flex items-center gap-1.5">
                           {farmer.farmName}
+                          {farmer.isVerified && (
+                            <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]">verified</span>
+                          )}
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {farmer.userId}
-                        </div>
+                        <span className="text-[11px] font-mono text-outline">{farmer.userId}</span>
                       </td>
-                      <td className="px-6 py-4 text-gray-600">
-                        {farmer.farmLocation}
+                      <td className="px-6 py-4 text-xs font-medium text-on-surface-variant">
+                        {farmer.farmLocation}, {farmer.state}
                       </td>
                       <td className="px-6 py-4">
-                        <span className="capitalize text-gray-600">
+                        <span className="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full text-xs font-semibold border border-outline-variant/20 capitalize">
                           {farmer.farmingMethod}
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <span
-                          className={`px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
                             farmer.isVerified
-                              ? "bg-emerald-100 text-emerald-800"
+                              ? "bg-secondary-container text-on-secondary-container border-secondary/20"
                               : isPending
-                                ? "bg-amber-100 text-amber-800"
-                                : "bg-red-100 text-red-800"
+                              ? "bg-amber-100 text-amber-900 border-amber-200"
+                              : "bg-error-container text-on-error-container border-error/20"
                           }`}
                         >
-                          {farmer.isVerified
-                            ? "Verified"
-                            : isPending
-                              ? "Pending"
-                              : "Rejected"}
+                          {farmer.isVerified ? "Verified" : isPending ? "Pending" : "Rejected"}
                         </span>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="flex items-center text-amber-500">
-                          <span className="mr-1">★</span>
-                          <span className="text-gray-900 font-medium">
-                            {farmer.rating.toFixed(1)}
+                        <div className="flex items-center gap-1 text-amber-500 font-bold text-xs">
+                          <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                            star
                           </span>
-                          <span className="text-gray-500 text-xs ml-1">
-                            ({farmer.totalReviews})
-                          </span>
+                          <span className="text-on-surface">{farmer.rating.toFixed(1)}</span>
+                          <span className="text-outline font-normal">({farmer.totalReviews})</span>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        {!farmer.isVerified && (
+                        {!farmer.isVerified ? (
                           <div className="flex items-center justify-end gap-2">
                             <form
                               action={async () => {
@@ -151,7 +140,10 @@ export default async function FarmersManagement({
                                 await approveFarmerAction(farmer.userId);
                               }}
                             >
-                              <button className="px-3 py-1.5 bg-emerald-50 text-emerald-600 hover:bg-emerald-100 rounded-md font-medium text-xs transition-colors border border-emerald-200">
+                              <button
+                                type="submit"
+                                className="px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-semibold hover:bg-primary-container transition-all"
+                              >
                                 Approve
                               </button>
                             </form>
@@ -161,16 +153,21 @@ export default async function FarmersManagement({
                                 await rejectFarmerAction(farmer.userId);
                               }}
                             >
-                              <button className="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 rounded-md font-medium text-xs transition-colors border border-red-200">
+                              <button
+                                type="submit"
+                                className="px-3 py-1.5 bg-error-container text-on-error-container rounded-lg text-xs font-semibold hover:opacity-80 transition-opacity"
+                              >
                                 Reject
                               </button>
                             </form>
                           </div>
-                        )}
-                        {farmer.isVerified && (
-                          <button className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                            View Details
-                          </button>
+                        ) : (
+                          <Link
+                            href={`/farmers/${farmer.userId}`}
+                            className="text-xs font-semibold text-primary hover:underline"
+                          >
+                            Public Profile →
+                          </Link>
                         )}
                       </td>
                     </tr>
