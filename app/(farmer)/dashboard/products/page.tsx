@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CATEGORY_LABELS } from "@/lib/types";
 import { deleteProductAction, toggleProductAction } from "./actions";
 import { cookies } from "next/headers";
+import { MdAddCircleOutline, MdDelete, MdEco, MdEdit, MdInventory2 } from "react-icons/md";
 
 export default async function ProductsPage() {
   await cookies();
@@ -26,7 +27,7 @@ export default async function ProductsPage() {
           href="/dashboard/products/new"
           className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
         >
-          <span className="material-symbols-outlined text-[20px]">add_circle</span>
+          <span className="material-symbols-outlined text-[20px]"><MdAddCircleOutline /></span>
           Add New Product
         </Link>
       </div>
@@ -50,7 +51,7 @@ export default async function ProductsPage() {
                 <tr>
                   <td colSpan={6} className="px-6 py-12 text-center text-outline italic">
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <span className="material-symbols-outlined text-4xl text-outline">inventory_2</span>
+                      <span className="material-symbols-outlined text-4xl text-outline"><MdInventory2 /></span>
                       <p className="font-heading font-bold text-on-surface">No products listed yet</p>
                       <p className="text-xs">Start selling by adding your first harvest product.</p>
                     </div>
@@ -66,7 +67,7 @@ export default async function ProductsPage() {
                         </span>
                         {product.isOrganic && (
                           <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1 mt-0.5">
-                            <span className="material-symbols-outlined text-[14px]">eco</span> Certified Organic
+                            <span className="material-symbols-outlined text-[14px]"><MdEco /></span> Certified Organic
                           </span>
                         )}
                       </div>
@@ -116,7 +117,7 @@ export default async function ProductsPage() {
                           className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                           title="Edit product"
                         >
-                          <span className="material-symbols-outlined text-[20px]">edit</span>
+                          <span className="material-symbols-outlined text-[20px]"><MdEdit /></span>
                         </Link>
                         <form
                           action={async () => {
@@ -129,7 +130,7 @@ export default async function ProductsPage() {
                             className="p-2 text-error hover:bg-error-container/30 rounded-lg transition-colors"
                             title="Delete product"
                           >
-                            <span className="material-symbols-outlined text-[20px]">delete</span>
+                            <span className="material-symbols-outlined text-[20px]"><MdDelete /></span>
                           </button>
                         </form>
                       </div>

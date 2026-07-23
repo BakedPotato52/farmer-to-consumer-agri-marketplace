@@ -4,6 +4,9 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { createProductAction } from "../actions";
+import { RiProgress5Line } from "react-icons/ri";
+import { FaRegSave } from "react-icons/fa";
+import { FaArrowLeft, FaLeaf } from "react-icons/fa6";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -15,14 +18,14 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
-          Saving Harvest...
+          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+          Updating...
         </>
       ) : (
         <>
-          <span className="material-symbols-outlined text-[20px]">add_circle</span>
-          List Product
-        </>
+            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
+            Save Changes
+          </>
       )}
     </button>
   );
@@ -42,7 +45,7 @@ export default function NewProductPage() {
           href="/dashboard/products"
           className="text-on-surface-variant text-sm font-semibold hover:text-primary transition-colors flex items-center gap-1"
         >
-          <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+          <span className="material-symbols-outlined text-[18px]"><FaArrowLeft /></span>
           Cancel
         </Link>
       </div>
@@ -174,7 +177,7 @@ export default function NewProductPage() {
                   className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
                 />
                 <span className="text-sm font-semibold text-on-surface flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[18px] text-secondary">eco</span>
+                  <span className="material-symbols-outlined text-[18px] text-secondary"><FaLeaf /></span>
                   This product is Certified Organic
                 </span>
               </label>

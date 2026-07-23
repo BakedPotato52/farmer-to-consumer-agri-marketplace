@@ -8,6 +8,7 @@ import {
 } from "@/lib/types";
 import { updateOrderStatusAction } from "./actions";
 import { cookies } from "next/headers";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 export default async function OrdersPage({
   searchParams,
@@ -107,7 +108,7 @@ export default async function OrdersPage({
                 <tr>
                   <td colSpan={7} className="px-6 py-12 text-center text-outline italic">
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <span className="material-symbols-outlined text-4xl text-outline">shopping_cart</span>
+                      <span className="material-symbols-outlined text-4xl text-outline"><MdOutlineShoppingCart /></span>
                       <p className="font-heading font-bold text-on-surface">No orders in this category</p>
                     </div>
                   </td>

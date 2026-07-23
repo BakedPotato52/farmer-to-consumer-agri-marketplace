@@ -2,15 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MdInventory2, MdOutlineDashboard, MdPerson, MdShoppingCart } from "react-icons/md";
 
 export default function Navigation() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/dashboard", label: "Overview", icon: "dashboard" },
-    { href: "/dashboard/products", label: "Products", icon: "inventory_2" },
-    { href: "/dashboard/orders", label: "Orders", icon: "shopping_cart" },
-    { href: "/dashboard/profile", label: "Profile", icon: "person" },
+    { href: "/dashboard", label: "Overview", icon: <MdOutlineDashboard /> },
+    { href: "/dashboard/products", label: "Products", icon: <MdInventory2 /> },
+    { href: "/dashboard/orders", label: "Orders", icon: <MdShoppingCart /> },
+    { href: "/dashboard/profile", label: "Profile", icon: <MdPerson /> },
   ];
 
   return (

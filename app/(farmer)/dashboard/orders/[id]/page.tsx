@@ -10,6 +10,9 @@ import {
 } from "@/lib/types";
 import { updateOrderStatusAction } from "../actions";
 import { cookies } from "next/headers";
+import { FaArrowLeft, FaUser } from "react-icons/fa6";
+import { FaCheckCircle, FaShoppingCart } from "react-icons/fa";
+import { MdOutlineLocalShipping } from "react-icons/md";
 
 export default async function OrderDetailPage({
   params,
@@ -53,7 +56,7 @@ export default async function OrderDetailPage({
             href="/dashboard/orders"
             className="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors"
           >
-            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+            <span className="material-symbols-outlined text-[20px]"><FaArrowLeft /></span>
           </Link>
           <div>
             <div className="flex items-center gap-2">
@@ -83,7 +86,7 @@ export default async function OrderDetailPage({
               type="submit"
               className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
             >
-              <span className="material-symbols-outlined text-[18px]">check_circle</span>
+              <span className="material-symbols-outlined text-[18px]"><FaCheckCircle /></span>
               Mark as {ORDER_STATUS_LABELS[nextStatus]}
             </button>
           </form>
@@ -102,7 +105,7 @@ export default async function OrderDetailPage({
                 <li key={idx} className="p-6 flex items-center justify-between hover:bg-surface-container-low/50 transition-colors">
                   <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">
-                      <span className="material-symbols-outlined text-[24px]">inventory_2</span>
+                      <span className="material-symbols-outlined text-[24px]"><FaShoppingCart /></span>
                     </div>
                     <div>
                       <h3 className="font-heading font-bold text-primary text-base">{item.productName}</h3>
@@ -169,7 +172,7 @@ export default async function OrderDetailPage({
         <div className="space-y-6">
           <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">person</span>
+              <span className="material-symbols-outlined text-[20px]"><FaUser /></span>
               Customer Details
             </h2>
             <div className="space-y-2 text-xs text-on-surface-variant">
@@ -186,7 +189,7 @@ export default async function OrderDetailPage({
 
           <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">local_shipping</span>
+              <span className="material-symbols-outlined text-[20px]"><MdOutlineLocalShipping /></span>
               Schedule Slot
             </h2>
             <div className="space-y-2 text-xs text-on-surface-variant">

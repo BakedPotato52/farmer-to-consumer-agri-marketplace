@@ -5,6 +5,9 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { updateProductAction } from "../../actions";
 import { Product } from "@/lib/types";
+import { RiProgress5Line } from "react-icons/ri";
+import { FaRegSave } from "react-icons/fa";
+import { MdEco } from "react-icons/md";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -16,12 +19,12 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
           Updating...
         </>
       ) : (
         <>
-          <span className="material-symbols-outlined text-[20px]">save</span>
+            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
           Save Changes
         </>
       )}
@@ -168,7 +171,7 @@ export default function EditProductForm({ product }: { product: Product }) {
                 className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
               />
               <span className="text-sm font-semibold text-on-surface flex items-center gap-1">
-                <span className="material-symbols-outlined text-[18px] text-secondary">eco</span>
+                <span className="material-symbols-outlined text-[18px] text-secondary"><MdEco /></span>
                 Certified Organic
               </span>
             </label>

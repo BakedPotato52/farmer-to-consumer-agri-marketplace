@@ -5,6 +5,8 @@ import { getProductsByFarmer } from "@/lib/data/products";
 import { getFarmerById } from "@/lib/data/farmers";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { MdAddCircleOutline, MdInventory2, MdOutlinePayments, MdOutlineTrendingUp, MdShoppingCart } from "react-icons/md";
+import { FaStar } from "react-icons/fa6";
 
 export default async function DashboardOverview() {
   await cookies();
@@ -51,13 +53,13 @@ export default async function DashboardOverview() {
       {/* ── 4 Hero Stat Cards ── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Sales */}
-        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:translate-y-[-4px]">
+        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
           <div className="flex justify-between items-start">
             <div className="p-3 bg-primary-container rounded-xl text-on-primary-container">
-              <span className="material-symbols-outlined">payments</span>
+              <span className="material-symbols-outlined"><MdOutlinePayments /></span>
             </div>
             <div className="flex items-center gap-1 text-secondary text-xs font-bold">
-              <span className="material-symbols-outlined text-sm">trending_up</span>
+              <span className="material-symbols-outlined text-sm"><MdOutlineTrendingUp /></span>
               <span>+12%</span>
             </div>
           </div>
@@ -70,10 +72,10 @@ export default async function DashboardOverview() {
         </div>
 
         {/* Active Orders */}
-        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:translate-y-[-4px]">
+        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
           <div className="flex justify-between items-start">
             <div className="p-3 bg-secondary-container rounded-xl text-on-secondary-container">
-              <span className="material-symbols-outlined">shopping_basket</span>
+              <span className="material-symbols-outlined"><MdShoppingCart /></span>
             </div>
             <span className="px-2 py-0.5 bg-surface-container-highest rounded text-on-background text-[10px] font-bold uppercase">
               Today
@@ -88,10 +90,10 @@ export default async function DashboardOverview() {
         </div>
 
         {/* Total Products */}
-        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:translate-y-[-4px]">
+        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
           <div className="flex justify-between items-start">
             <div className="p-3 bg-tertiary-fixed rounded-xl text-on-tertiary-fixed">
-              <span className="material-symbols-outlined">inventory_2</span>
+              <span className="material-symbols-outlined"><MdInventory2 /></span>
             </div>
           </div>
           <div className="mt-4">
@@ -103,11 +105,11 @@ export default async function DashboardOverview() {
         </div>
 
         {/* Average Rating */}
-        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:translate-y-[-4px]">
+        <div className="glass-card organic-shadow rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 hover:-translate-y-1">
           <div className="flex justify-between items-start">
             <div className="p-3 bg-amber-100 rounded-xl text-amber-900">
               <span className="material-symbols-outlined text-amber-600" style={{ fontVariationSettings: "'FILL' 1" }}>
-                star
+                <FaStar />
               </span>
             </div>
           </div>
@@ -134,7 +136,7 @@ export default async function DashboardOverview() {
             </span>
           </div>
 
-          <div className="flex-1 flex items-end justify-between gap-4 min-h-[200px] pt-4">
+          <div className="flex-1 flex items-end justify-between gap-4 min-h-50 pt-4">
             {chartData.map((item) => (
               <div key={item.day} className="flex flex-col items-center gap-3 w-full h-full justify-end">
                 <div
@@ -161,14 +163,14 @@ export default async function DashboardOverview() {
               href="/dashboard/products/new"
               className="w-full bg-primary text-on-primary flex items-center justify-center gap-2 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow"
             >
-              <span className="material-symbols-outlined text-[20px]">add_circle</span>
+              <span className="material-symbols-outlined text-[20px]"><MdAddCircleOutline /></span>
               Add New Product
             </Link>
             <Link
               href="/dashboard/orders"
               className="w-full border-2 border-primary/20 text-primary flex items-center justify-center gap-2 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary/5 transition-all active:scale-[0.98]"
             >
-              <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+              <span className="material-symbols-outlined text-[20px]"><MdShoppingCart /></span>
               Manage Orders
             </Link>
           </div>

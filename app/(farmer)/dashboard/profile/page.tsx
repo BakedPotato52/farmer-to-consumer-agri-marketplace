@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import ProfileForm from "./profile-form";
 import { cookies } from "next/headers";
+import { MdOutlineSchedule, MdVerified } from "react-icons/md";
 
 export default async function ProfilePage() {
   await cookies();
@@ -29,12 +30,12 @@ export default async function ProfilePage() {
 
         {profile.isVerified ? (
           <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold shadow-sm">
-            <span className="material-symbols-outlined text-[18px]">verified</span>
+            <span className="material-symbols-outlined text-[18px]"><MdVerified /></span>
             <span>Verified Master Farmer</span>
           </div>
         ) : (
           <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-100 text-amber-900 rounded-full text-xs font-bold shadow-sm">
-            <span className="material-symbols-outlined text-[18px]">schedule</span>
+              <span className="material-symbols-outlined text-[18px]"><MdOutlineSchedule /></span>
             <span>Verification Pending</span>
           </div>
         )}

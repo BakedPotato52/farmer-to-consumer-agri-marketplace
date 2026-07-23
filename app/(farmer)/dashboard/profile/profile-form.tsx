@@ -4,6 +4,10 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { updateProfileAction } from "./actions";
 import { FarmerProfile } from "@/lib/types";
+import { MdStorefront } from "react-icons/md";
+import { RiProgress5Line } from "react-icons/ri";
+import { FaCheckCircle, FaExclamationTriangle, FaRegSave } from "react-icons/fa";
+import { FaLocationDot } from "react-icons/fa6";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -15,13 +19,13 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
-          Saving Profile...
+          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+          Updating...
         </>
       ) : (
         <>
-          <span className="material-symbols-outlined text-[20px]">save</span>
-          Save Profile Details
+            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
+            Save Changes
         </>
       )}
     </button>
@@ -35,13 +39,13 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
     <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
       {state?.success && (
         <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]">check_circle</span>
+          <span className="material-symbols-outlined text-[18px]"><FaCheckCircle /></span>
           {state.message}
         </div>
       )}
       {state?.error && (
         <div className="p-4 rounded-xl bg-error-container/30 text-on-error-container border border-error/20 text-xs font-semibold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]">error</span>
+          <span className="material-symbols-outlined text-[18px]"><FaExclamationTriangle /></span>
           {state.error}
         </div>
       )}
@@ -50,7 +54,7 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
         {/* Section 1: Basic Farm Information */}
         <div className="space-y-6">
           <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-            <span className="material-symbols-outlined text-[20px]">storefront</span>
+            <span className="material-symbols-outlined text-[20px]"><MdStorefront /></span>
             1. Farm Identity & Bio
           </h2>
 
@@ -119,7 +123,7 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
         {/* Section 2: Location */}
         <div className="space-y-6">
           <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-            <span className="material-symbols-outlined text-[20px]">location_on</span>
+            <span className="material-symbols-outlined text-[20px]"><FaLocationDot /></span>
             2. Farm Location Details
           </h2>
 

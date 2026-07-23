@@ -5,6 +5,8 @@ import { ReactNode } from "react";
 import Navigation from "./navigation";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { MdLogout } from "react-icons/md";
+import { RiSearchLine } from "react-icons/ri";
 
 export default async function DashboardLayout({
   children,
@@ -59,7 +61,7 @@ export default async function DashboardLayout({
               type="submit"
               className="flex items-center gap-2 px-3 py-2 w-full rounded-xl hover:bg-error-container/30 text-error text-xs font-semibold transition-colors"
             >
-              <span className="material-symbols-outlined text-[18px]">logout</span>
+              <span className="material-symbols-outlined text-[18px]"><MdLogout /></span>
               Log out
             </button>
           </form>
@@ -81,7 +83,7 @@ export default async function DashboardLayout({
 
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/20 text-xs">
-              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2"><RiSearchLine /></span>
               <input
                 type="text"
                 placeholder="Search orders..."
