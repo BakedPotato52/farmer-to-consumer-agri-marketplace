@@ -7,6 +7,7 @@ import { RiAccountCircleLine } from "react-icons/ri";
 import { IoIosSearch, IoMdInformation, IoMdPeople } from "react-icons/io";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { IoStorefrontOutline } from "react-icons/io5";
+import { MdLogout, MdOutlineDashboard } from "react-icons/md";
 
 export default function Navbar({
   session,
@@ -115,7 +116,7 @@ export default function Navbar({
                     className="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container-high rounded-lg mx-1 transition-colors"
                   >
                     <span className="material-symbols-outlined text-[18px]">
-                      dashboard
+                      <MdOutlineDashboard />
                     </span>
                     Dashboard
                   </Link>
@@ -125,7 +126,7 @@ export default function Navbar({
                       className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-error hover:bg-error-container/30 rounded-lg mx-1 transition-colors"
                     >
                       <span className="material-symbols-outlined text-[18px]">
-                        logout
+                        <MdLogout />
                       </span>
                       Log out
                     </button>

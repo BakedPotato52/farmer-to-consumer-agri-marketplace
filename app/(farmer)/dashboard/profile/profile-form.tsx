@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { updateProfileAction } from "./actions";
 import { FarmerProfile } from "@/lib/types";
@@ -11,9 +11,19 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto"
+      className="w-full sm:w-auto bg-primary text-on-primary px-8 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center justify-center gap-2 disabled:opacity-50"
     >
-      {pending ? "Saving Changes..." : "Save Changes"}
+      {pending ? (
+        <>
+          <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+          Saving Profile...
+        </>
+      ) : (
+        <>
+          <span className="material-symbols-outlined text-[20px]">save</span>
+          Save Profile Details
+        </>
+      )}
     </button>
   );
 }
@@ -22,30 +32,31 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
   const [state, formAction] = useActionState(updateProfileAction, null);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
       {state?.success && (
-        <div className="bg-emerald-50 text-emerald-700 p-4 m-6 mb-0 rounded-lg text-sm font-medium border border-emerald-100">
+        <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
+          <span className="material-symbols-outlined text-[18px]">check_circle</span>
           {state.message}
         </div>
       )}
       {state?.error && (
-        <div className="bg-red-50 text-red-700 p-4 m-6 mb-0 rounded-lg text-sm font-medium border border-red-100">
+        <div className="p-4 rounded-xl bg-error-container/30 text-on-error-container border border-error/20 text-xs font-semibold flex items-center gap-2">
+          <span className="material-symbols-outlined text-[18px]">error</span>
           {state.error}
         </div>
       )}
 
-      <form action={formAction} className="p-6 sm:p-8 space-y-8">
+      <form action={formAction} className="space-y-8">
+        {/* Section 1: Basic Farm Information */}
         <div className="space-y-6">
-          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2">
-            Basic Information
+          <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
+            <span className="material-symbols-outlined text-[20px]">storefront</span>
+            1. Farm Identity & Bio
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2 sm:col-span-2">
-              <label
-                htmlFor="farmName"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="farmName" className="block text-xs font-bold text-outline uppercase tracking-wider">
                 Farm Name *
               </label>
               <input
@@ -54,15 +65,12 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 name="farmName"
                 defaultValue={profile.farmName}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="farmingMethod"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="farmingMethod" className="block text-xs font-bold text-outline uppercase tracking-wider">
                 Farming Method *
               </label>
               <select
@@ -70,61 +78,55 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 name="farmingMethod"
                 defaultValue={profile.farmingMethod}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium"
               >
-                <option value="organic">Organic</option>
+                <option value="organic">Organic Certified</option>
                 <option value="conventional">Conventional</option>
-                <option value="mixed">Mixed</option>
+                <option value="mixed">Mixed Methods</option>
               </select>
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="cropTypes"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Crop Types (comma separated)
+              <label htmlFor="cropTypes" className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Primary Crop Types (comma-separated)
               </label>
               <input
                 type="text"
                 id="cropTypes"
                 name="cropTypes"
                 defaultValue={profile.cropTypes.join(", ")}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-                placeholder="e.g. Wheat, Tomatoes, Potatoes"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
+                placeholder="Tomatoes, Kale, Berries..."
               />
             </div>
 
             <div className="space-y-2 sm:col-span-2">
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Farm Description
+              <label htmlFor="description" className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Farm Story & Description
               </label>
               <textarea
                 id="description"
                 name="description"
                 rows={5}
                 defaultValue={profile.description}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-              ></textarea>
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface resize-none"
+                placeholder="Share your farm heritage, soil care techniques, and harvest philosophy..."
+              />
             </div>
           </div>
         </div>
 
+        {/* Section 2: Location */}
         <div className="space-y-6">
-          <h2 className="text-lg font-bold text-gray-800 border-b border-gray-100 pb-2">
-            Location
+          <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
+            <span className="material-symbols-outlined text-[20px]">location_on</span>
+            2. Farm Location Details
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2 sm:col-span-2">
-              <label
-                htmlFor="farmLocation"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Farm Address / Location *
+              <label htmlFor="farmLocation" className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Address / City *
               </label>
               <input
                 type="text"
@@ -132,15 +134,12 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 name="farmLocation"
                 defaultValue={profile.farmLocation}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="state"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="state" className="block text-xs font-bold text-outline uppercase tracking-wider">
                 State *
               </label>
               <input
@@ -149,15 +148,12 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 name="state"
                 defaultValue={profile.state}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
               />
             </div>
 
             <div className="space-y-2">
-              <label
-                htmlFor="pincode"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="pincode" className="block text-xs font-bold text-outline uppercase tracking-wider">
                 Pincode *
               </label>
               <input
@@ -166,13 +162,13 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 name="pincode"
                 defaultValue={profile.pincode}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
               />
             </div>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-gray-100 flex justify-end">
+        <div className="pt-6 border-t border-outline-variant/10 flex justify-end">
           <SubmitButton />
         </div>
       </form>

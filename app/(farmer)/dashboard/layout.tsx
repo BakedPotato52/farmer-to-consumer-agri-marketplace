@@ -4,6 +4,7 @@ import { logoutAction } from "@/lib/auth/actions";
 import { ReactNode } from "react";
 import Navigation from "./navigation";
 import { cookies } from "next/headers";
+import Link from "next/link";
 
 export default async function DashboardLayout({
   children,
@@ -20,17 +21,20 @@ export default async function DashboardLayout({
   const initials = session.name ? session.name.charAt(0).toUpperCase() : "F";
 
   return (
-    <div className="flex h-screen bg-gray-50 overflow-hidden">
+    <div className="flex h-screen bg-background text-on-surface overflow-hidden">
       {/* Mobile sidebar toggle checkbox */}
       <input type="checkbox" id="sidebar-toggle" className="peer hidden" />
 
-      {/* Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform -translate-x-full peer-checked:translate-x-0 md:relative md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col">
-        <div className="p-6 flex items-center justify-between md:block">
-          <h1 className="text-2xl font-bold text-emerald-600">FarmFresh</h1>
+      {/* ── Sidebar ── */}
+      <aside className="fixed inset-y-0 left-0 z-50 w-64 bg-surface border-r border-outline-variant/10 shadow-[4px_0_30px_0_rgba(69,26,3,0.08)] transform -translate-x-full peer-checked:translate-x-0 md:relative md:translate-x-0 transition-transform duration-200 ease-in-out flex flex-col p-6">
+        <div className="mb-8 flex items-center justify-between">
+          <Link href="/">
+            <h1 className="font-heading text-2xl font-bold text-primary tracking-tight">FarmFresh</h1>
+            <p className="text-on-surface-variant text-[11px] font-semibold uppercase tracking-wider">Merchant Portal</p>
+          </Link>
           <label
             htmlFor="sidebar-toggle"
-            className="md:hidden cursor-pointer text-gray-500 hover:text-gray-700 text-xl font-bold"
+            className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary text-xl font-bold"
           >
             ✕
           </label>
@@ -38,49 +42,60 @@ export default async function DashboardLayout({
 
         <Navigation />
 
-        <div className="p-4 border-t border-gray-200">
+        {/* Profile Card & Logout */}
+        <div className="mt-auto pt-6 border-t border-outline-variant/10 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary text-on-primary font-heading font-bold text-base flex items-center justify-center shadow-md shrink-0">
+              {initials}
+            </div>
+            <div className="flex flex-col min-w-0">
+              <span className="font-heading text-sm font-bold text-primary truncate">{session.name}</span>
+              <span className="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Verified Farmer</span>
+            </div>
+          </div>
+
           <form action={logoutAction}>
-            <button className="flex items-center gap-3 px-4 py-3 w-full rounded-xl hover:bg-red-50 text-gray-700 hover:text-red-700 transition-all duration-200">
-              <span>🚪</span> Logout
+            <button
+              type="submit"
+              className="flex items-center gap-2 px-3 py-2 w-full rounded-xl hover:bg-error-container/30 text-error text-xs font-semibold transition-colors"
+            >
+              <span className="material-symbols-outlined text-[18px]">logout</span>
+              Log out
             </button>
           </form>
         </div>
       </aside>
 
-      {/* Main Content */}
+      {/* ── Main Content Area ── */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center">
+        <header className="bg-surface/80 backdrop-blur-md border-b border-outline-variant/10 h-16 flex items-center justify-between px-6 z-40">
+          <div className="flex items-center gap-4">
             <label
               htmlFor="sidebar-toggle"
-              className="md:hidden mr-4 cursor-pointer text-gray-500 hover:text-gray-700"
+              className="md:hidden cursor-pointer text-on-surface-variant hover:text-primary"
             >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+              <span className="material-symbols-outlined text-2xl">menu</span>
             </label>
-            <h2 className="text-xl font-semibold text-gray-800">Dashboard</h2>
+            <h2 className="font-heading text-lg font-bold text-primary">Merchant Dashboard</h2>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-700">
-              {session.name}
-            </span>
-            <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+
+          <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/20 text-xs">
+              <span className="material-symbols-outlined text-on-surface-variant text-[16px] mr-2">search</span>
+              <input
+                type="text"
+                placeholder="Search orders..."
+                className="bg-transparent border-none outline-none text-xs w-36 text-on-surface placeholder:text-outline"
+              />
+            </div>
+
+            <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm">
               {initials}
             </div>
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+
+        <main className="flex-1 overflow-y-auto p-6 md:p-8">
           {children}
         </main>
       </div>
@@ -89,7 +104,7 @@ export default async function DashboardLayout({
       <label
         htmlFor="sidebar-toggle"
         className="fixed inset-0 bg-black/50 z-40 hidden peer-checked:block md:peer-checked:hidden cursor-pointer"
-      ></label>
+      />
     </div>
   );
 }

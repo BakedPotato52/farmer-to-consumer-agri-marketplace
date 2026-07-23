@@ -7,14 +7,14 @@ export default function Navigation() {
   const pathname = usePathname();
 
   const links = [
-    { href: "/dashboard", label: "Overview", icon: "📊" },
-    { href: "/dashboard/products", label: "Products", icon: "📦" },
-    { href: "/dashboard/orders", label: "Orders", icon: "🛒" },
-    { href: "/dashboard/profile", label: "Profile", icon: "👤" },
+    { href: "/dashboard", label: "Overview", icon: "dashboard" },
+    { href: "/dashboard/products", label: "Products", icon: "inventory_2" },
+    { href: "/dashboard/orders", label: "Orders", icon: "shopping_cart" },
+    { href: "/dashboard/profile", label: "Profile", icon: "person" },
   ];
 
   return (
-    <nav className="flex-1 px-4 space-y-2">
+    <nav className="flex-1 space-y-1.5 px-3">
       {links.map((link) => {
         const isActive =
           pathname === link.href ||
@@ -23,13 +23,14 @@ export default function Navigation() {
           <Link
             key={link.href}
             href={link.href}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl font-heading text-sm font-semibold transition-all duration-200 ${
               isActive
-                ? "bg-emerald-50 text-emerald-700 font-medium"
-                : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-700"
+                ? "bg-secondary-container text-on-secondary-container shadow-sm"
+                : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high/50"
             }`}
           >
-            <span>{link.icon}</span> {link.label}
+            <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
+            <span>{link.label}</span>
           </Link>
         );
       })}

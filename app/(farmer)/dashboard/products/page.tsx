@@ -13,92 +13,80 @@ export default async function ProductsPage() {
   const products = await getProductsByFarmer(session.userId);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
+    <div className="space-y-8">
+      {/* Header card */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Products Management
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">
-            You have {products.length} products listed.
+          <h1 className="font-heading text-3xl font-extrabold text-primary">Products Management</h1>
+          <p className="text-on-surface-variant text-sm mt-1">
+            Manage your harvest listings, stock levels, and active status ({products.length} listed).
           </p>
         </div>
         <Link
           href="/dashboard/products/new"
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm flex items-center gap-2"
+          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
         >
-          <span>+</span> Add Product
+          <span className="material-symbols-outlined text-[20px]">add_circle</span>
+          Add New Product
         </Link>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Table */}
+      <div className="glass-card organic-shadow rounded-3xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600">
-            <thead className="bg-gray-50 text-gray-500">
+          <table className="w-full text-left text-sm text-on-surface">
+            <thead className="bg-surface-container-low text-xs font-bold text-outline uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-4 font-medium">Product Name</th>
-                <th className="px-6 py-4 font-medium">Category</th>
-                <th className="px-6 py-4 font-medium">Price</th>
-                <th className="px-6 py-4 font-medium">Stock</th>
-                <th className="px-6 py-4 font-medium">Status</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-6 py-4">Product</th>
+                <th className="px-6 py-4">Category</th>
+                <th className="px-6 py-4">Price</th>
+                <th className="px-6 py-4">Stock</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {products.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-12 text-center text-gray-500"
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <span className="text-4xl mb-3">📦</span>
-                      <p className="text-lg font-medium text-gray-700 mb-1">
-                        No products found
-                      </p>
-                      <p className="text-sm">
-                        Get started by adding your first product.
-                      </p>
+                  <td colSpan={6} className="px-6 py-12 text-center text-outline italic">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <span className="material-symbols-outlined text-4xl text-outline">inventory_2</span>
+                      <p className="font-heading font-bold text-on-surface">No products listed yet</p>
+                      <p className="text-xs">Start selling by adding your first harvest product.</p>
                     </div>
                   </td>
                 </tr>
               ) : (
                 products.map((product) => (
-                  <tr
-                    key={product.id}
-                    className="hover:bg-gray-50 transition-colors"
-                  >
+                  <tr key={product.id} className="hover:bg-surface-container-low/50 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex flex-col">
-                        <span className="font-semibold text-gray-800">
+                        <span className="font-heading font-bold text-primary text-base">
                           {product.name}
                         </span>
                         {product.isOrganic && (
-                          <span className="text-xs text-emerald-600 font-medium mt-0.5">
-                            🌱 Organic
+                          <span className="text-[10px] font-bold text-emerald-700 uppercase tracking-wider flex items-center gap-1 mt-0.5">
+                            <span className="material-symbols-outlined text-[14px]">eco</span> Certified Organic
                           </span>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                      <span className="px-3 py-1 bg-surface-container-low text-on-surface-variant rounded-full text-xs font-semibold border border-outline-variant/20">
                         {CATEGORY_LABELS[product.category]}
                       </span>
                     </td>
-                    <td className="px-6 py-4 font-medium text-gray-900">
-                      ₹{product.price}{" "}
-                      <span className="text-gray-500 font-normal text-xs">
-                        / {product.unit}
-                      </span>
+                    <td className="px-6 py-4 font-heading font-bold text-primary">
+                      ₹{product.price} <span className="text-xs font-normal text-outline">/ {product.unit}</span>
                     </td>
                     <td className="px-6 py-4">
                       {product.quantityAvailable > 0 ? (
-                        <span className="font-medium">
-                          {product.quantityAvailable} {product.unit}
+                        <span className="font-semibold text-xs text-on-surface">
+                          {product.quantityAvailable} {product.unit}s
                         </span>
                       ) : (
-                        <span className="text-red-500 font-medium text-xs bg-red-50 px-2 py-1 rounded">
-                          Out of stock
+                        <span className="text-error font-bold text-[10px] uppercase bg-error-container/30 border border-error/20 px-2 py-1 rounded-full">
+                          Out of Stock
                         </span>
                       )}
                     </td>
@@ -106,18 +94,15 @@ export default async function ProductsPage() {
                       <form
                         action={async () => {
                           "use server";
-                          await toggleProductAction(
-                            product.id,
-                            !product.isActive,
-                          );
+                          await toggleProductAction(product.id, !product.isActive);
                         }}
                       >
                         <button
                           type="submit"
-                          className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border transition-colors ${
                             product.isActive
-                              ? "bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              ? "bg-secondary-container text-on-secondary-container border-secondary/20"
+                              : "bg-surface-container-high text-outline border-outline-variant/30"
                           }`}
                         >
                           {product.isActive ? "Active" : "Inactive"}
@@ -125,12 +110,13 @@ export default async function ProductsPage() {
                       </form>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <div className="flex items-center justify-end gap-3">
+                      <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/dashboard/products/${product.id}/edit`}
-                          className="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+                          className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                          title="Edit product"
                         >
-                          Edit
+                          <span className="material-symbols-outlined text-[20px]">edit</span>
                         </Link>
                         <form
                           action={async () => {
@@ -140,9 +126,10 @@ export default async function ProductsPage() {
                         >
                           <button
                             type="submit"
-                            className="text-red-600 hover:text-red-800 font-medium text-sm transition-colors"
+                            className="p-2 text-error hover:bg-error-container/30 rounded-lg transition-colors"
+                            title="Delete product"
                           >
-                            Delete
+                            <span className="material-symbols-outlined text-[20px]">delete</span>
                           </button>
                         </form>
                       </div>

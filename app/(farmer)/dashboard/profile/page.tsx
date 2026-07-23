@@ -17,22 +17,26 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Header Card */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Farm Profile</h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Manage your farm's public information and settings.
+          <h1 className="font-heading text-3xl font-extrabold text-primary">Farm Profile Settings</h1>
+          <p className="text-on-surface-variant text-sm mt-1">
+            Manage public farm story, location details, crop categories, and verification status.
           </p>
         </div>
+
         {profile.isVerified ? (
-          <span className="flex items-center gap-2 bg-emerald-100 text-emerald-800 px-4 py-2 rounded-full font-medium text-sm">
-            <span>✓</span> Verified Farmer
-          </span>
+          <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold shadow-sm">
+            <span className="material-symbols-outlined text-[18px]">verified</span>
+            <span>Verified Master Farmer</span>
+          </div>
         ) : (
-          <span className="flex items-center gap-2 bg-amber-100 text-amber-800 px-4 py-2 rounded-full font-medium text-sm">
-            <span>⌛</span> Verification Pending
-          </span>
+          <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-100 text-amber-900 rounded-full text-xs font-bold shadow-sm">
+            <span className="material-symbols-outlined text-[18px]">schedule</span>
+            <span>Verification Pending</span>
+          </div>
         )}
       </div>
 

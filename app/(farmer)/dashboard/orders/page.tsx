@@ -3,7 +3,6 @@ import { getOrdersByFarmer } from "@/lib/data/orders";
 import Link from "next/link";
 import {
   ORDER_STATUS_LABELS,
-  ORDER_STATUS_COLORS,
   OrderStatus,
   ORDER_STATUS_FLOW,
 } from "@/lib/types";
@@ -28,7 +27,6 @@ export default async function OrdersPage({
     orders = orders.filter((o) => o.status === statusFilter);
   }
 
-  // Sort by newest first
   orders.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
@@ -42,6 +40,15 @@ export default async function OrdersPage({
     "delivered",
   ];
 
+  const statusBadgeStyle: Record<string, string> = {
+    pending: "bg-amber-100 text-amber-900 border-amber-200",
+    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    packed: "bg-purple-100 text-purple-900 border-purple-200",
+    shipped: "bg-sky-100 text-sky-900 border-sky-200",
+    delivered: "bg-primary text-on-primary",
+    cancelled: "bg-error-container text-on-error-container border-error/20",
+  };
+
   const getNextStatus = (currentStatus: OrderStatus): OrderStatus | null => {
     const currentIndex = ORDER_STATUS_FLOW.indexOf(currentStatus);
     if (currentIndex >= 0 && currentIndex < ORDER_STATUS_FLOW.length - 1) {
@@ -51,67 +58,57 @@ export default async function OrdersPage({
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-xl border border-gray-100 shadow-sm">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Orders Management
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">
-            Manage and track your customer orders.
-          </p>
-        </div>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
+        <h1 className="font-heading text-3xl font-extrabold text-primary">Orders Management</h1>
+        <p className="text-on-surface-variant text-sm mt-1">
+          Track customer orders, fulfill shipments, and update status workflow ({orders.length} orders listed).
+        </p>
       </div>
 
-      {/* Tabs */}
-      <div className="bg-white p-2 rounded-xl shadow-sm border border-gray-100 flex overflow-x-auto gap-2">
+      {/* Tabs Filter Bar */}
+      <div className="glass-card p-2 rounded-2xl organic-shadow flex overflow-x-auto gap-2">
         {tabs.map((tab) => {
           const isActive = (statusFilter || "all") === tab;
           return (
             <Link
               key={tab}
               href={`/dashboard/orders${tab === "all" ? "" : `?status=${tab}`}`}
-              className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-colors ${
+              className={`px-5 py-2.5 rounded-xl font-heading text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all ${
                 isActive
-                  ? "bg-emerald-100 text-emerald-800"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-secondary-container text-on-secondary-container shadow-sm"
+                  : "text-on-surface-variant hover:bg-surface-container-high/50"
               }`}
             >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab}
             </Link>
           );
         })}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      {/* Table */}
+      <div className="glass-card organic-shadow rounded-3xl overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-gray-600">
-            <thead className="bg-gray-50 text-gray-500">
+          <table className="w-full text-left text-sm text-on-surface">
+            <thead className="bg-surface-container-low text-xs font-bold text-outline uppercase tracking-wider">
               <tr>
-                <th className="px-6 py-4 font-medium">Order ID</th>
-                <th className="px-6 py-4 font-medium">Customer</th>
-                <th className="px-6 py-4 font-medium">Items</th>
-                <th className="px-6 py-4 font-medium">Total</th>
-                <th className="px-6 py-4 font-medium">Status</th>
-                <th className="px-6 py-4 font-medium">Date</th>
-                <th className="px-6 py-4 font-medium text-right">Actions</th>
+                <th className="px-6 py-4">Order ID</th>
+                <th className="px-6 py-4">Customer</th>
+                <th className="px-6 py-4">Items Summary</th>
+                <th className="px-6 py-4">Total</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {orders.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={7}
-                    className="px-6 py-12 text-center text-gray-500"
-                  >
-                    <div className="flex flex-col items-center justify-center">
-                      <span className="text-4xl mb-3">🛒</span>
-                      <p className="text-lg font-medium text-gray-700 mb-1">
-                        No orders found
-                      </p>
-                      <p className="text-sm">
-                        When you receive orders, they will appear here.
-                      </p>
+                  <td colSpan={7} className="px-6 py-12 text-center text-outline italic">
+                    <div className="flex flex-col items-center justify-center space-y-2">
+                      <span className="material-symbols-outlined text-4xl text-outline">shopping_cart</span>
+                      <p className="font-heading font-bold text-on-surface">No orders in this category</p>
                     </div>
                   </td>
                 </tr>
@@ -119,65 +116,47 @@ export default async function OrdersPage({
                 orders.map((order) => {
                   const nextStatus = getNextStatus(order.status);
                   return (
-                    <tr
-                      key={order.id}
-                      className="hover:bg-gray-50 transition-colors"
-                    >
-                      <td className="px-6 py-4">
-                        <Link
-                          href={`/dashboard/orders/${order.id}`}
-                          className="text-emerald-600 hover:underline font-medium"
-                        >
-                          #{order.id.split("-")[0]}
+                    <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
+                      <td className="px-6 py-4 font-mono text-xs font-bold text-primary">
+                        <Link href={`/dashboard/orders/${order.id}`} className="hover:underline">
+                          #{order.id.slice(-6).toUpperCase()}
                         </Link>
                       </td>
-                      <td className="px-6 py-4 font-medium text-gray-900">
-                        {order.consumerName}
+                      <td className="px-6 py-4 font-semibold text-on-surface">{order.consumerName}</td>
+                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
                       </td>
-                      <td className="px-6 py-4">
-                        <div className="text-xs text-gray-500">
-                          {order.items.length} items
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 font-medium text-gray-900">
-                        ₹{order.totalAmount}
-                      </td>
+                      <td className="px-6 py-4 font-heading font-bold text-primary">₹{order.totalAmount}</td>
                       <td className="px-6 py-4">
                         <span
-                          className="px-3 py-1 rounded-full text-xs font-medium"
-                          style={{
-                            backgroundColor:
-                              ORDER_STATUS_COLORS[order.status] + "20",
-                            color: ORDER_STATUS_COLORS[order.status],
-                          }}
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                            statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                          }`}
                         >
                           {ORDER_STATUS_LABELS[order.status]}
                         </span>
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 text-xs text-outline">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-3">
+                        <div className="flex items-center justify-end gap-2">
                           <Link
                             href={`/dashboard/orders/${order.id}`}
-                            className="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors"
+                            className="px-3 py-1.5 rounded-lg border border-outline-variant/30 text-xs font-semibold text-primary hover:bg-primary/5 transition-colors"
                           >
-                            View
+                            Details
                           </Link>
                           {nextStatus && (
                             <form
                               action={async () => {
                                 "use server";
-                                await updateOrderStatusAction(
-                                  order.id,
-                                  nextStatus,
-                                );
+                                await updateOrderStatusAction(order.id, nextStatus);
                               }}
                             >
                               <button
                                 type="submit"
-                                className="text-emerald-600 hover:text-emerald-800 font-medium text-sm transition-colors"
+                                className="px-3 py-1.5 rounded-lg bg-primary text-on-primary text-xs font-semibold hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm"
                               >
                                 Mark {ORDER_STATUS_LABELS[nextStatus]}
                               </button>

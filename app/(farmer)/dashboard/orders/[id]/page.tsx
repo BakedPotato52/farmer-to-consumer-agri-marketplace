@@ -5,7 +5,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   ORDER_STATUS_LABELS,
-  ORDER_STATUS_COLORS,
   OrderStatus,
   ORDER_STATUS_FLOW,
 } from "@/lib/types";
@@ -36,28 +35,41 @@ export default async function OrderDetailPage({
       ? ORDER_STATUS_FLOW[currentIndex + 1]
       : null;
 
+  const statusBadgeStyle: Record<string, string> = {
+    pending: "bg-amber-100 text-amber-900 border-amber-200",
+    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    packed: "bg-purple-100 text-purple-900 border-purple-200",
+    shipped: "bg-sky-100 text-sky-900 border-sky-200",
+    delivered: "bg-primary text-on-primary",
+    cancelled: "bg-error-container text-on-error-container border-error/20",
+  };
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <div className="max-w-4xl mx-auto space-y-8">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
           <Link
             href="/dashboard/orders"
-            className="text-gray-500 hover:text-gray-900 transition-colors"
+            className="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors"
           >
-            ← Back to Orders
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Order #{order.id.split("-")[0]}
-          </h1>
-          <span
-            className="px-3 py-1 rounded-full text-xs font-medium"
-            style={{
-              backgroundColor: ORDER_STATUS_COLORS[order.status] + "20",
-              color: ORDER_STATUS_COLORS[order.status],
-            }}
-          >
-            {ORDER_STATUS_LABELS[order.status]}
-          </span>
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="font-heading text-2xl font-bold text-primary">
+                Order #{order.id.slice(-6).toUpperCase()}
+              </h1>
+              <span
+                className={`px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
+                  statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                }`}
+              >
+                {ORDER_STATUS_LABELS[order.status]}
+              </span>
+            </div>
+            <p className="text-xs text-outline">Placed on {new Date(order.createdAt).toLocaleString()}</p>
+          </div>
         </div>
 
         {nextStatus && (
@@ -69,8 +81,9 @@ export default async function OrderDetailPage({
           >
             <button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-medium transition-colors shadow-sm"
+              className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
             >
+              <span className="material-symbols-outlined text-[18px]">check_circle</span>
               Mark as {ORDER_STATUS_LABELS[nextStatus]}
             </button>
           </form>
@@ -78,158 +91,118 @@ export default async function OrderDetailPage({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Left Column: Items & Progress Timeline */}
         <div className="md:col-span-2 space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-800">Order Items</h2>
+          <div className="glass-card organic-shadow rounded-3xl overflow-hidden">
+            <div className="p-6 border-b border-outline-variant/10">
+              <h2 className="font-heading text-lg font-bold text-primary">Items Ordered</h2>
             </div>
-            <ul className="divide-y divide-gray-100">
+            <ul className="divide-y divide-outline-variant/10">
               {order.items.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors"
-                >
+                <li key={idx} className="p-6 flex items-center justify-between hover:bg-surface-container-low/50 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-emerald-50 rounded-lg flex items-center justify-center text-2xl">
-                      📦
+                    <div className="w-12 h-12 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">
+                      <span className="material-symbols-outlined text-[24px]">inventory_2</span>
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">
-                        {item.productName}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {item.quantity} {item.unit} × ₹{item.pricePerUnit}
+                      <h3 className="font-heading font-bold text-primary text-base">{item.productName}</h3>
+                      <p className="text-xs text-outline">
+                        {item.quantity} {item.unit} × ₹{item.pricePerUnit} per {item.unit}
                       </p>
                     </div>
                   </div>
-                  <div className="font-bold text-gray-900">
-                    ₹{item.totalPrice}
+                  <div className="font-heading text-lg font-bold text-primary">
+                    ₹{item.totalPrice.toFixed(2)}
                   </div>
                 </li>
               ))}
             </ul>
-            <div className="p-6 bg-gray-50 border-t border-gray-100">
-              <div className="flex justify-between items-center text-lg font-bold text-gray-900">
-                <span>Total Amount</span>
-                <span className="text-emerald-700">₹{order.totalAmount}</span>
-              </div>
+            <div className="p-6 bg-surface-container-low border-t border-outline-variant/10 flex justify-between items-center">
+              <span className="font-heading text-lg font-bold text-on-surface">Total Payable</span>
+              <span className="font-heading text-2xl font-bold text-primary">₹{order.totalAmount.toFixed(2)}</span>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-800">
-                Order Timeline
-              </h2>
-            </div>
-            <div className="p-6">
-              <div className="space-y-6">
-                {ORDER_STATUS_FLOW.map((status, index) => {
-                  const isCompleted =
-                    ORDER_STATUS_FLOW.indexOf(order.status) >= index;
-                  const isCurrent = order.status === status;
+          {/* Timeline */}
+          <div className="glass-card organic-shadow rounded-3xl p-6">
+            <h2 className="font-heading text-lg font-bold text-primary mb-6">Fulfillment Workflow</h2>
+            <div className="space-y-6 pl-2">
+              {ORDER_STATUS_FLOW.map((status, index) => {
+                const isCompleted = ORDER_STATUS_FLOW.indexOf(order.status) >= index;
+                const isCurrent = order.status === status;
 
-                  if (
-                    order.status === "cancelled" &&
-                    status !== "cancelled" &&
-                    status !== "pending"
-                  ) {
-                    return null; // Skip if cancelled
-                  }
+                if (order.status === "cancelled" && status !== "cancelled" && status !== "pending") {
+                  return null;
+                }
 
-                  return (
-                    <div key={status} className="flex gap-4">
-                      <div className="flex flex-col items-center">
-                        <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm z-10 ${
-                            isCompleted
-                              ? "bg-emerald-500 text-white"
-                              : "bg-gray-200 text-gray-500"
-                          }`}
-                        >
-                          {isCompleted ? "✓" : index + 1}
-                        </div>
-                        {index < ORDER_STATUS_FLOW.length - 1 && (
-                          <div
-                            className={`w-0.5 h-full my-1 ${
-                              ORDER_STATUS_FLOW.indexOf(order.status) > index
-                                ? "bg-emerald-500"
-                                : "bg-gray-200"
-                            }`}
-                          ></div>
-                        )}
-                      </div>
-                      <div className="pb-8">
-                        <h4
-                          className={`font-semibold ${isCompleted ? "text-gray-900" : "text-gray-500"}`}
-                        >
-                          {ORDER_STATUS_LABELS[status]}
-                        </h4>
-                        {isCurrent && (
-                          <p className="text-sm text-gray-500 mt-1">
-                            Current Status
-                          </p>
-                        )}
+                return (
+                  <div key={status} className="flex gap-4 items-start relative">
+                    <div className="flex flex-col items-center">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs z-10 transition-colors ${
+                          isCompleted
+                            ? "bg-primary text-on-primary shadow-sm"
+                            : "bg-surface-container-high text-outline"
+                        }`}
+                      >
+                        {isCompleted ? "✓" : index + 1}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                    <div>
+                      <h4 className={`font-heading text-sm font-bold ${isCompleted ? "text-primary" : "text-outline"}`}>
+                        {ORDER_STATUS_LABELS[status]}
+                      </h4>
+                      {isCurrent && (
+                        <span className="text-[10px] font-bold text-secondary uppercase tracking-wider block mt-0.5">
+                          Current Stage
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
+        {/* Right Column: Customer & Delivery Details */}
         <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-800">
-                Customer Details
-              </h2>
-            </div>
-            <div className="p-6 space-y-4">
+          <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
+            <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px]">person</span>
+              Customer Details
+            </h2>
+            <div className="space-y-2 text-xs text-on-surface-variant">
               <div>
-                <p className="text-sm text-gray-500 font-medium">Name</p>
-                <p className="font-semibold text-gray-900">
-                  {order.consumerName}
-                </p>
+                <span className="text-outline font-bold uppercase tracking-wider block">Customer Name</span>
+                <span className="font-semibold text-on-surface text-sm">{order.consumerName}</span>
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">
-                  Delivery Address
-                </p>
-                <p className="text-gray-900 whitespace-pre-line">
-                  {order.deliveryAddress}
-                </p>
+                <span className="text-outline font-bold uppercase tracking-wider block mt-2">Delivery Address</span>
+                <p className="text-on-surface font-medium whitespace-pre-line leading-relaxed">{order.deliveryAddress}</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
-              <h2 className="text-lg font-bold text-gray-800">
-                Delivery Information
-              </h2>
-            </div>
-            <div className="p-6 space-y-4">
+          <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
+            <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
+              <span className="material-symbols-outlined text-[20px]">local_shipping</span>
+              Schedule Slot
+            </h2>
+            <div className="space-y-2 text-xs text-on-surface-variant">
               <div>
-                <p className="text-sm text-gray-500 font-medium">Date</p>
-                <p className="font-semibold text-gray-900">
-                  {new Date(order.deliveryDate).toLocaleDateString()}
-                </p>
+                <span className="text-outline font-bold uppercase tracking-wider block">Target Delivery Date</span>
+                <span className="font-semibold text-on-surface">{new Date(order.deliveryDate).toLocaleDateString()}</span>
               </div>
               <div>
-                <p className="text-sm text-gray-500 font-medium">Time Slot</p>
-                <p className="font-semibold text-gray-900">
-                  {order.deliverySlot}
-                </p>
+                <span className="text-outline font-bold uppercase tracking-wider block mt-2">Window</span>
+                <span className="font-semibold text-on-surface">{order.deliverySlot}</span>
               </div>
               {order.notes && (
-                <div>
-                  <p className="text-sm text-gray-500 font-medium">
-                    Order Notes
-                  </p>
-                  <p className="text-gray-900 italic bg-amber-50 p-3 rounded-lg text-sm mt-1">
-                    {order.notes}
+                <div className="pt-2 border-t border-outline-variant/10">
+                  <span className="text-outline font-bold uppercase tracking-wider block">Special Notes</span>
+                  <p className="italic text-on-surface bg-amber-50 p-2.5 rounded-xl border border-amber-200 mt-1">
+                    &ldquo;{order.notes}&rdquo;
                   </p>
                 </div>
               )}

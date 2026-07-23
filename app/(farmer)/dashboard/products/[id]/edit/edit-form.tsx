@@ -12,9 +12,19 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+      className="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2 disabled:opacity-50"
     >
-      {pending ? "Saving..." : "Save Changes"}
+      {pending ? (
+        <>
+          <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+          Updating...
+        </>
+      ) : (
+        <>
+          <span className="material-symbols-outlined text-[20px]">save</span>
+          Save Changes
+        </>
+      )}
     </button>
   );
 }
@@ -27,9 +37,10 @@ export default function EditProductForm({ product }: { product: Product }) {
     : "";
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8">
+    <div className="glass-card organic-shadow rounded-3xl p-8">
       {state?.error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-lg mb-6 text-sm font-medium">
+        <div className="p-4 rounded-xl bg-error-container/30 border border-error/20 text-xs font-semibold text-on-error-container mb-6 flex items-center gap-2">
+          <span className="material-symbols-outlined text-[18px]">error</span>
           {state.error}
         </div>
       )}
@@ -38,10 +49,7 @@ export default function EditProductForm({ product }: { product: Product }) {
         <input type="hidden" name="id" value={product.id} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2 sm:col-span-2">
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="name" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Product Name *
             </label>
             <input
@@ -50,15 +58,12 @@ export default function EditProductForm({ product }: { product: Product }) {
               name="name"
               defaultValue={product.name}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="category" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Category *
             </label>
             <select
@@ -66,7 +71,7 @@ export default function EditProductForm({ product }: { product: Product }) {
               name="category"
               defaultValue={product.category}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium"
             >
               <option value="vegetables">Vegetables</option>
               <option value="fruits">Fruits</option>
@@ -77,10 +82,7 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="harvestDate"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="harvestDate" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Harvest Date *
             </label>
             <input
@@ -89,15 +91,12 @@ export default function EditProductForm({ product }: { product: Product }) {
               name="harvestDate"
               defaultValue={formattedDate}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="price" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Price (₹) *
             </label>
             <input
@@ -108,15 +107,12 @@ export default function EditProductForm({ product }: { product: Product }) {
               step="0.01"
               defaultValue={product.price}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
             />
           </div>
 
           <div className="space-y-2">
-            <label
-              htmlFor="unit"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="unit" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Unit *
             </label>
             <select
@@ -124,7 +120,7 @@ export default function EditProductForm({ product }: { product: Product }) {
               name="unit"
               defaultValue={product.unit}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium"
             >
               <option value="kg">Kilogram (kg)</option>
               <option value="litre">Litre</option>
@@ -135,10 +131,7 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <label
-              htmlFor="quantityAvailable"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="quantityAvailable" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Quantity Available *
             </label>
             <input
@@ -148,15 +141,12 @@ export default function EditProductForm({ product }: { product: Product }) {
               min="0"
               defaultValue={product.quantityAvailable}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface"
             />
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="description" className="block text-xs font-bold text-outline uppercase tracking-wider">
               Description *
             </label>
             <textarea
@@ -165,20 +155,21 @@ export default function EditProductForm({ product }: { product: Product }) {
               rows={4}
               defaultValue={product.description}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
-            ></textarea>
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface resize-none"
+            />
           </div>
 
-          <div className="space-y-4 sm:col-span-2 pt-2 border-t border-gray-100">
+          <div className="space-y-3 sm:col-span-2 pt-4 border-t border-outline-variant/10">
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 name="isOrganic"
                 defaultChecked={product.isOrganic}
-                className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
               />
-              <span className="text-gray-700 font-medium">
-                This product is Organic
+              <span className="text-sm font-semibold text-on-surface flex items-center gap-1">
+                <span className="material-symbols-outlined text-[18px] text-secondary">eco</span>
+                Certified Organic
               </span>
             </label>
 
@@ -187,19 +178,17 @@ export default function EditProductForm({ product }: { product: Product }) {
                 type="checkbox"
                 name="isActive"
                 defaultChecked={product.isActive}
-                className="w-5 h-5 text-emerald-600 border-gray-300 rounded focus:ring-emerald-500"
+                className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
               />
-              <span className="text-gray-700 font-medium">
-                Product is Active
-              </span>
+              <span className="text-sm font-semibold text-on-surface">Product is Active</span>
             </label>
           </div>
         </div>
 
-        <div className="pt-6 border-t border-gray-100 flex justify-between items-center">
+        <div className="pt-6 border-t border-outline-variant/10 flex justify-between items-center">
           <Link
             href="/dashboard/products"
-            className="text-gray-500 hover:text-gray-700 font-medium"
+            className="text-on-surface-variant text-sm font-semibold hover:text-primary transition-colors"
           >
             Cancel
           </Link>
