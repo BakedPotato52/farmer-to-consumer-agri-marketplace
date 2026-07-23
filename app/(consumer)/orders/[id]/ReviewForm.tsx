@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useFormStatus } from "react-dom";
-// Assuming there will be a server action or API for this. We will simulate for demo.
 
 export default function ReviewForm({
   orderId,
@@ -26,8 +24,20 @@ export default function ReviewForm({
     const formData = new FormData(e.currentTarget);
     const comment = formData.get("comment");
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      await fetch("/api/reviews", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          farmerId,
+          productId,
+          rating,
+          comment,
+        }),
+      });
+    } catch {
+      // Fallback for demo
+    }
 
     setSubmitted(true);
     setIsSubmitting(false);
@@ -35,41 +45,34 @@ export default function ReviewForm({
 
   if (submitted) {
     return (
-      <div className="mt-4 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 p-4 rounded-xl border border-green-100 dark:border-green-800 text-sm font-medium">
-        ✓ Thank you for your review!
+      <div className="mt-3 p-3 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-semibold flex items-center gap-1.5">
+        <span className="material-symbols-outlined text-[16px]">check_circle</span>
+        Thank you for reviewing {productName}!
       </div>
     );
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-4 space-y-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl"
-    >
-      <h4 className="font-medium text-sm text-gray-900 dark:text-white">
-        Review {productName}
+    <form onSubmit={handleSubmit} className="mt-3 p-4 bg-surface-container-low rounded-xl border border-outline-variant/15 space-y-3">
+      <h4 className="font-heading font-bold text-xs text-primary uppercase tracking-wider">
+        Leave a Review for {productName}
       </h4>
 
       <div>
-        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Rating
-        </label>
-        <div className="flex gap-1">
+        <label className="block text-xs text-outline mb-1">Rating</label>
+        <div className="flex gap-1 text-amber-500">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
               key={star}
               type="button"
               onClick={() => setRating(star)}
-              className="text-2xl focus:outline-none transition-colors"
+              className="focus:outline-none transition-transform hover:scale-110"
             >
               <span
-                className={
-                  star <= rating
-                    ? "text-amber-400"
-                    : "text-gray-300 dark:text-gray-600"
-                }
+                className="material-symbols-outlined text-[20px]"
+                style={{ fontVariationSettings: star <= rating ? "'FILL' 1" : "'FILL' 0" }}
               >
-                ★
+                star
               </span>
             </button>
           ))}
@@ -77,22 +80,20 @@ export default function ReviewForm({
       </div>
 
       <div>
-        <label className="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Comment
-        </label>
+        <label className="block text-xs text-outline mb-1">Comment</label>
         <textarea
           name="comment"
           required
           rows={2}
-          className="w-full px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
-          placeholder="What did you think of this product?"
-        ></textarea>
+          className="w-full px-3 py-2 rounded-lg bg-white border border-outline-variant/30 text-xs focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline outline-none"
+          placeholder="How was the quality and freshness of this produce?"
+        />
       </div>
 
       <button
         type="submit"
         disabled={isSubmitting}
-        className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+        className="px-4 py-2 bg-primary text-on-primary rounded-lg text-xs font-semibold hover:bg-primary-container transition-all disabled:opacity-50"
       >
         {isSubmitting ? "Submitting..." : "Submit Review"}
       </button>

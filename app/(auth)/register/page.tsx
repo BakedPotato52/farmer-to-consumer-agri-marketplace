@@ -4,18 +4,21 @@ import { useActionState, useState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { registerAction } from "@/lib/auth/actions";
-import { MdAgriculture, MdCheckCircle, MdLock, MdMail, MdVisibility, MdVisibilityOff } from "react-icons/md";
+import { MdAgriculture, MdCheckCircle, MdEgg, MdGrass, MdLock, MdMail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { FaArrowLeft, FaRegArrowAltCircleLeft, FaShoppingBasket } from "react-icons/fa";
-import { FaArrowRight, FaRegUser } from "react-icons/fa6";
+import { FaArrowRight, FaLeaf, FaRegUser } from "react-icons/fa6";
 import { AiOutlineReload } from "react-icons/ai";
+import { BiLocationPlus } from "react-icons/bi";
+import { IoNutritionOutline } from "react-icons/io5";
+import { LuFlower2 } from "react-icons/lu";
 
 /* ─── Crop Tag Data ─── */
 const CROP_OPTIONS = [
-  { label: "Vegetables", icon: "eco" },
-  { label: "Fruits", icon: "nutrition" },
-  { label: "Grains", icon: "grass" },
-  { label: "Flowers", icon: "local_florist" },
-  { label: "Dairy & Eggs", icon: "egg" },
+  { label: "Vegetables", icon: <FaLeaf /> },
+  { label: "Fruits", icon: <IoNutritionOutline /> },
+  { label: "Grains", icon: <MdGrass /> },
+  { label: "Flowers", icon: <LuFlower2 /> },
+  { label: "Dairy & Eggs", icon: <MdEgg /> },
 ];
 
 const FARMING_METHODS = [
@@ -327,7 +330,7 @@ export default function RegisterPage() {
                 </label>
                 <div className="relative">
                   <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline-variant text-[20px]">
-                    location_on
+                    <BiLocationPlus />
                   </span>
                   <input
                     name="farmLocation"

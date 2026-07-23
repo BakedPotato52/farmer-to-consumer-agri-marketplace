@@ -11,7 +11,7 @@ export default async function ConsumerLayout({
   const session = await getSession();
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen flex flex-col mt-16">
       <Navbar session={session} />
       <CartProvider>
         <main className="flex-1 flex flex-col">{children}</main>

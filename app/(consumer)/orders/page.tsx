@@ -12,118 +12,128 @@ export default async function OrdersPage() {
 
   const orders = await getOrdersByConsumer(session.userId);
 
-  const statusColors: Record<string, string> = {
-    pending:
-      "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400",
-    confirmed:
-      "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400",
-    packed:
-      "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400",
-    shipped: "bg-cyan-100 text-cyan-800 dark:bg-cyan-900/30 dark:text-cyan-400",
-    delivered:
-      "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400",
-    cancelled: "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400",
+  const statusBadgeStyle: Record<string, string> = {
+    pending: "bg-amber-100 text-amber-900 border-amber-200",
+    confirmed: "bg-blue-100 text-blue-900 border-blue-200",
+    packed: "bg-purple-100 text-purple-900 border-purple-200",
+    shipped: "bg-sky-100 text-sky-900 border-sky-200",
+    delivered: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    cancelled: "bg-error-container text-on-error-container border-error/20",
   };
 
   return (
-    <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-        My Orders
-      </h1>
+    <div className="pt-8 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 min-h-screen">
+      {/* Header Section */}
+      <header className="mb-8">
+        <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary mb-2 tracking-tight">
+          Order History
+        </h1>
+        <p className="font-body-md text-lg text-on-surface-variant">
+          Track, manage, and view your direct farm-to-table purchases.
+        </p>
+      </header>
 
       {orders.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700 p-12 text-center">
-          <div className="text-6xl mb-4">📦</div>
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-            No orders yet
-          </h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-md mx-auto">
-            You haven't placed any orders. Discover fresh, local produce and
-            support your community farmers!
+        <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
+          <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
+            <span className="material-symbols-outlined text-3xl">local_shipping</span>
+          </div>
+          <h2 className="font-heading text-2xl font-bold text-on-surface mb-2">No orders placed yet</h2>
+          <p className="text-on-surface-variant max-w-sm mx-auto mb-6 text-sm">
+            Discover local organic farmers and bring fresh harvests directly to your table.
           </p>
           <Link
             href="/products"
-            className="inline-block bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-all hover:shadow-lg"
+            className="inline-block px-8 py-3.5 bg-primary text-on-primary rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow"
           >
             Start Shopping
           </Link>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
           {orders.map((order) => {
-            const itemCount = order.items.reduce(
-              (sum, item) => sum + item.quantity,
-              0,
-            );
+            const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
 
             return (
-              <Link
+              <div
                 key={order.id}
-                href={`/orders/${order.id}`}
-                className="block bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 dark:border-gray-700 overflow-hidden"
+                className="glass-card organic-shadow rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 transition-all hover:translate-y-[-2px]"
               >
-                <div className="p-6 sm:p-8">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                    <div className="flex items-center gap-4">
-                      <div className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 w-12 h-12 rounded-xl flex items-center justify-center text-xl shadow-inner">
-                        🛍️
-                      </div>
+                {/* Visual Icon Badge */}
+                <div className="w-full md:w-36 h-36 bg-surface-container-low rounded-2xl flex flex-col items-center justify-center shrink-0 border border-outline-variant/10 text-primary">
+                  <span className="material-symbols-outlined text-4xl mb-1">inventory_2</span>
+                  <span className="text-xs font-bold text-outline uppercase">{itemCount} {itemCount === 1 ? "Item" : "Items"}</span>
+                </div>
+
+                {/* Order Details */}
+                <div className="flex-1 flex flex-col justify-between space-y-4">
+                  <div>
+                    <div className="flex flex-wrap justify-between items-start gap-2 mb-2">
                       <div>
-                        <div className="font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                        <span className="text-xs font-bold text-outline uppercase tracking-wider block">
                           Order #{order.id.slice(-6).toUpperCase()}
-                        </div>
-                        <div className="text-sm text-gray-500 dark:text-gray-400">
-                          {new Date(order.createdAt).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            },
-                          )}
-                        </div>
+                        </span>
+                        <h3 className="font-heading text-xl font-bold text-on-surface">
+                          Farmer: {order.farmerName}
+                        </h3>
+                      </div>
+
+                      <div
+                        className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 border ${
+                          statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                        }`}
+                      >
+                        <span className="material-symbols-outlined text-[16px]">
+                          {order.status === "delivered"
+                            ? "check_circle"
+                            : order.status === "cancelled"
+                            ? "cancel"
+                            : "schedule"}
+                        </span>
+                        {order.status}
                       </div>
                     </div>
 
-                    <div
-                      className={`px-3 py-1.5 rounded-lg text-sm font-bold uppercase tracking-wider ${statusColors[order.status] || "bg-gray-100 text-gray-800"}`}
-                    >
-                      {order.status}
+                    <p className="text-xs text-on-surface-variant">
+                      Placed on{" "}
+                      {new Date(order.createdAt).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </p>
+
+                    {/* Items summary */}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {order.items.map((item) => (
+                        <span
+                          key={item.productId}
+                          className="px-2.5 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg border border-outline-variant/10"
+                        >
+                          {item.quantity}x {item.productName}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-gray-100 dark:border-gray-700 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-outline-variant/10">
                     <div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">
-                        Farmer
-                      </div>
-                      <div className="font-medium text-gray-900 dark:text-white">
-                        {order.farmerName}
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">
-                        Items
-                      </div>
-                      <div className="font-medium text-gray-900 dark:text-white">
-                        {itemCount} items
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">
-                        Total Amount
-                      </div>
-                      <div className="font-bold text-emerald-600 dark:text-emerald-400 text-lg">
+                      <span className="text-xs text-outline block">Total Amount</span>
+                      <span className="font-heading text-2xl font-bold text-primary">
                         ₹{order.totalAmount.toFixed(2)}
-                      </div>
+                      </span>
                     </div>
+
+                    <Link
+                      href={`/orders/${order.id}`}
+                      className="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
+                    >
+                      View Details
+                      <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                    </Link>
                   </div>
                 </div>
-                <div className="bg-gray-50 dark:bg-gray-700/30 px-6 py-3 flex justify-between items-center text-sm font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-700">
-                  View Order Details
-                  <span>→</span>
-                </div>
-              </Link>
+              </div>
             );
           })}
         </div>

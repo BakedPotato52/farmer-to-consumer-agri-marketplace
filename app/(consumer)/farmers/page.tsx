@@ -23,129 +23,145 @@ export default async function FarmersPage(props: {
   }
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">
-          Our Farmers
+    <div className="pt-8 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 min-h-screen">
+      {/* Header Section */}
+      <header className="mb-8">
+        <h1 className="font-heading text-4xl md:text-5xl font-extrabold text-primary mb-3 tracking-tight">
+          Meet Our Producers
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-          Meet the dedicated people who grow your food. All our farmers are
-          verified for quality and sustainable practices.
+        <p className="font-body-md text-lg text-on-surface-variant max-w-2xl">
+          Connect directly with the local farmers providing your table with the freshest organic produce. Transparency from soil to shelf.
         </p>
-      </div>
+      </header>
 
-      {/* Filter Bar */}
-      <div className="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700 mb-8 max-w-4xl mx-auto">
-        <form
-          method="GET"
-          action="/farmers"
-          className="flex flex-col sm:flex-row gap-4 items-center"
-        >
-          <div className="flex-1 w-full">
+      {/* Filter & Search Bar */}
+      <div className="bg-surface-container-low p-6 rounded-2xl organic-shadow mb-8">
+        <form method="GET" action="/farmers" className="flex flex-col md:flex-row gap-4 items-center">
+          <div className="flex-1 w-full relative">
             <input
               type="text"
               name="location"
               defaultValue={location || ""}
-              placeholder="Search by location or state..."
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none"
+              placeholder="Search by location or state (e.g. Sonoma, California)..."
+              className="w-full pl-10 pr-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline"
             />
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">
+              location_on
+            </span>
           </div>
-          <div className="sm:w-64 w-full shrink-0">
+
+          <div className="w-full md:w-64 shrink-0">
             <select
               name="method"
               defaultValue={method || ""}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 focus:ring-2 focus:ring-emerald-500 outline-none"
+              className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium"
             >
               <option value="">All Farming Methods</option>
-              <option value="organic">Organic</option>
+              <option value="organic">Organic Certified</option>
               <option value="conventional">Conventional</option>
-              <option value="mixed">Mixed</option>
+              <option value="mixed">Mixed Methods</option>
             </select>
           </div>
+
           <button
             type="submit"
-            className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2.5 px-6 rounded-xl transition-colors shadow-sm"
+            className="w-full md:w-auto px-8 py-3 bg-primary text-on-primary rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow"
           >
-            Filter
+            Filter Producers
           </button>
         </form>
       </div>
 
-      {/* Farmer Grid */}
+      {/* Farmers Grid */}
       {farmers.length === 0 ? (
-        <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
-          <div className="text-4xl mb-4">🚜</div>
-          <h3 className="text-xl font-bold mb-2">No farmers found</h3>
-          <p className="text-gray-500">
-            Try adjusting your filters to find farmers.
+        <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
+          <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
+            <span className="material-symbols-outlined text-3xl">agriculture</span>
+          </div>
+          <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">No farmers found</h3>
+          <p className="text-on-surface-variant max-w-sm mx-auto mb-6">
+            Try adjusting your search criteria to discover local growers in other areas.
           </p>
+          <Link
+            href="/farmers"
+            className="inline-block px-6 py-3 bg-primary text-on-primary rounded-xl font-semibold text-sm hover:opacity-90 transition-opacity"
+          >
+            Show All Farmers
+          </Link>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {farmers.map((farmer) => {
-            const methodColors = {
-              organic:
-                "bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800",
-              conventional:
-                "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800",
-              mixed:
-                "bg-purple-100 text-purple-700 border-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:border-purple-800",
-            };
-
-            return (
-              <Link
-                key={farmer.userId}
-                href={`/farmers/${farmer.userId}`}
-                className="group bg-white dark:bg-gray-800 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 p-6 border border-gray-100 dark:border-gray-700 flex flex-col items-center text-center relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-br from-emerald-100 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/10 z-0"></div>
-
-                <div className="relative z-10 w-24 h-24 bg-linear-to-br from-emerald-500 to-teal-600 text-white rounded-full flex items-center justify-center font-bold text-4xl shadow-lg mb-4 border-4 border-white dark:border-gray-800 group-hover:scale-105 transition-transform">
-                  {farmer.farmName.charAt(0)}
-                </div>
-
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-emerald-600 transition-colors flex items-center gap-1 justify-center">
-                  {farmer.farmName}
-                  {farmer.isVerified && (
-                    <span className="text-blue-500 text-lg" title="Verified">
-                      ✓
-                    </span>
-                  )}
-                </h3>
-
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-4">
-                  {farmer.farmLocation}, {farmer.state}
-                </p>
-
-                <div className="flex gap-2 mb-6">
-                  <span
-                    className={`text-xs font-bold px-3 py-1 rounded-full border uppercase tracking-wide ${methodColors[farmer.farmingMethod]}`}
-                  >
+          {farmers.map((farmer) => (
+            <div
+              key={farmer.userId}
+              className="group relative bg-white rounded-2xl overflow-hidden organic-shadow border border-outline-variant/10 transition-all hover:-translate-y-1 flex flex-col"
+            >
+              {/* Header Banner & Avatar */}
+              <div className="h-32 bg-gradient-to-r from-primary to-primary-container relative p-4 flex items-start justify-between">
+                <div className="flex gap-2">
+                  <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold shadow-sm capitalize">
                     {farmer.farmingMethod}
                   </span>
+                  {farmer.isVerified && (
+                    <span className="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold shadow-sm flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[14px]">verified</span> Verified
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Avatar circle floating over banner */}
+              <div className="px-6 -mt-12 relative z-10 flex justify-between items-end mb-3">
+                <div className="w-20 h-20 rounded-full bg-primary text-on-primary border-4 border-white font-heading font-extrabold text-3xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
+                  {farmer.farmName.charAt(0)}
+                </div>
+                <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                  <span className="material-symbols-outlined text-amber-500 text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    star
+                  </span>
+                  <span className="text-xs font-bold text-amber-900">{farmer.rating.toFixed(1)}</span>
+                </div>
+              </div>
+
+              <div className="px-6 pb-6 flex-1 flex flex-col">
+                <h3 className="font-heading text-xl font-bold text-primary mb-1 group-hover:text-primary-container transition-colors">
+                  {farmer.farmName}
+                </h3>
+                <div className="flex items-center text-on-surface-variant text-xs mb-3">
+                  <span className="material-symbols-outlined text-[16px] mr-1 text-outline">location_on</span>
+                  {farmer.farmLocation}, {farmer.state}
                 </div>
 
-                <div className="w-full grid grid-cols-2 gap-4 pt-4 border-t border-gray-100 dark:border-gray-700 mt-auto">
-                  <div>
-                    <div className="text-amber-400 text-sm mb-1">
-                      {"★".repeat(Math.round(farmer.rating))}
-                    </div>
-                    <div className="text-xs font-medium text-gray-500">
-                      {farmer.rating.toFixed(1)} Rating
-                    </div>
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 dark:text-white text-sm mb-1">
-                      {farmer.totalProducts}
-                    </div>
-                    <div className="text-xs font-medium text-gray-500">
-                      Products
-                    </div>
-                  </div>
+                <p className="text-sm text-on-surface-variant line-clamp-2 mb-4 italic">
+                  &ldquo;{farmer.description}&rdquo;
+                </p>
+
+                {/* Crops Badges */}
+                <div className="flex flex-wrap gap-1.5 mb-6">
+                  {farmer.cropTypes.slice(0, 3).map((crop) => (
+                    <span
+                      key={crop}
+                      className="px-2.5 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg"
+                    >
+                      {crop}
+                    </span>
+                  ))}
+                  {farmer.cropTypes.length > 3 && (
+                    <span className="px-2 py-1 bg-surface-container-low text-outline text-xs font-medium rounded-lg">
+                      +{farmer.cropTypes.length - 3} more
+                    </span>
+                  )}
                 </div>
-              </Link>
-            );
-          })}
+
+                <Link
+                  href={`/farmers/${farmer.userId}`}
+                  className="mt-auto w-full py-3 rounded-xl bg-primary text-on-primary font-heading text-sm font-semibold text-center transition-all hover:bg-primary-container active:scale-[0.98] organic-shadow"
+                >
+                  View Farm Profile
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>

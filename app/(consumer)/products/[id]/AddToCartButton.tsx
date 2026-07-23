@@ -41,53 +41,51 @@ export default function AddToCartButton({
 
   return (
     <div className="space-y-4">
+      {/* Quantity Picker */}
       <div className="flex items-center gap-4">
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Quantity:
-        </label>
-        <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+        <span className="text-sm font-semibold text-on-surface-variant">Quantity:</span>
+        <div className="flex items-center bg-surface-container-low border border-outline-variant/30 rounded-xl p-1">
           <button
+            type="button"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="px-3 py-1 text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm"
           >
             -
           </button>
-          <input
-            type="number"
-            value={quantity}
-            readOnly
-            className="w-12 text-center bg-transparent border-none text-gray-900 dark:text-white focus:ring-0 text-sm font-medium"
-          />
+          <span className="w-12 text-center text-sm font-bold text-on-surface">{quantity}</span>
           <button
-            onClick={() =>
-              setQuantity(Math.min(product.quantityAvailable, quantity + 1))
-            }
-            className="px-3 py-1 text-gray-600 hover:bg-gray-200 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
+            type="button"
+            onClick={() => setQuantity(Math.min(product.quantityAvailable, quantity + 1))}
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm"
           >
             +
           </button>
         </div>
-        <span className="text-sm text-gray-500">{product.unit}s</span>
+        <span className="text-xs text-outline">{product.unit}s</span>
       </div>
 
+      {/* Button */}
       <button
+        type="button"
         onClick={handleAdd}
         disabled={product.quantityAvailable === 0}
-        className={`w-full py-3 px-6 rounded-xl font-bold transition-all duration-300 shadow-md flex items-center justify-center gap-2 ${
+        className={`w-full py-4 px-6 rounded-xl font-heading text-sm font-semibold transition-all duration-300 shadow-md flex items-center justify-center gap-2 organic-shadow ${
           added
-            ? "bg-green-500 text-white hover:bg-green-600"
+            ? "bg-secondary text-on-secondary hover:opacity-90"
             : product.quantityAvailable > 0
-              ? "bg-emerald-600 text-white hover:bg-emerald-700 hover:shadow-lg"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700"
+            ? "bg-primary text-on-primary hover:bg-primary-container active:scale-[0.98]"
+            : "bg-surface-container-high text-outline cursor-not-allowed"
         }`}
       >
         {added ? (
           <>
-            <span>✓</span> Added to Cart
+            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+            Added to Basket!
           </>
         ) : product.quantityAvailable > 0 ? (
           <>
-            <span>🛒</span> Add to Cart
+            <span className="material-symbols-outlined text-[20px]">add_shopping_cart</span>
+            Add to Basket (₹{product.price * quantity})
           </>
         ) : (
           "Out of Stock"

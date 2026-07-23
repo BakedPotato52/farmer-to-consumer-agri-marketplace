@@ -22,80 +22,92 @@ export default async function ProductDetailPage(props: {
 
   const reviews = await getReviewsByProduct(id);
 
-  const bgColors: Record<string, string> = {
-    vegetables: "from-green-400 to-emerald-500",
-    fruits: "from-orange-400 to-red-500",
-    dairy: "from-blue-300 to-blue-500",
-    grains: "from-yellow-400 to-amber-500",
-    herbs: "from-teal-400 to-emerald-600",
+  const bgGradients: Record<string, string> = {
+    vegetables: "from-emerald-700/80 to-emerald-900/90",
+    fruits: "from-amber-600/80 to-red-800/90",
+    dairy: "from-sky-700/80 to-blue-900/90",
+    grains: "from-amber-700/80 to-yellow-900/90",
+    herbs: "from-teal-700/80 to-emerald-900/90",
   };
-  const bgGradient = bgColors[product.category] || "from-gray-300 to-gray-400";
+  const bgGradient = bgGradients[product.category] || "from-primary to-primary-container";
 
   return (
-    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-      {/* Breadcrumb / Back Link */}
-      <div className="mb-6">
-        <Link
-          href="/products"
-          className="text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-2 text-sm font-medium"
-        >
-          ← Back to Products
+    <div className="pt-8 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 min-h-screen">
+      {/* Breadcrumb */}
+      <nav className="flex items-center text-on-surface-variant text-sm gap-2 mb-8">
+        <Link href="/products" className="hover:text-primary transition-colors">
+          Marketplace
         </Link>
-      </div>
+        <span>/</span>
+        <span className="capitalize">{product.category}</span>
+        <span>/</span>
+        <span className="text-primary font-semibold">{product.name}</span>
+      </nav>
 
-      <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-        {/* Left Column: Image & Details */}
-        <div className="flex-1 space-y-8">
-          {/* Image Placeholder */}
-          <div
-            className={`w-full aspect-[4/3] rounded-3xl bg-gradient-to-br ${bgGradient} shadow-lg relative overflow-hidden flex items-center justify-center`}
-          >
-            {product.isOrganic && (
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md text-emerald-700 text-sm font-bold px-3 py-1.5 rounded-xl shadow-sm z-10">
-                ORGANIC
-              </div>
-            )}
-            <div className="text-9xl opacity-20 transform -rotate-12 scale-150">
+      {/* Hero Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+        {/* Left Column: Visual Showcase */}
+        <div className="lg:col-span-7 space-y-6">
+          <div className={`relative aspect-square md:aspect-[4/3] rounded-3xl bg-gradient-to-br ${bgGradient} organic-shadow flex items-center justify-center p-8 overflow-hidden`}>
+            {/* Background Emoji watermark */}
+            <div className="text-9xl opacity-20 transform -rotate-12 scale-150 select-none">
               {product.category === "vegetables" && "🥬"}
               {product.category === "fruits" && "🍎"}
               {product.category === "dairy" && "🥛"}
               {product.category === "grains" && "🌾"}
               {product.category === "herbs" && "🌿"}
             </div>
+
+            {/* Badges Overlay */}
+            <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
+              {product.isOrganic && (
+                <span className="bg-secondary-container text-on-secondary-container px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-sm">
+                  <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                  Certified Organic
+                </span>
+              )}
+              <span className="bg-white/80 backdrop-blur-md text-primary px-4 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                Fresh Harvest
+              </span>
+            </div>
           </div>
 
-          {/* Reviews Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-8 border border-gray-100 dark:border-gray-700">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Customer Reviews
-            </h2>
+          {/* Customer Reviews Section */}
+          <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6">
+            <div className="flex items-center justify-between">
+              <h2 className="font-heading text-2xl font-bold text-on-surface">
+                Customer Reviews
+              </h2>
+              <span className="text-sm text-outline">({reviews.length} reviews)</span>
+            </div>
 
             {reviews.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 italic">
-                No reviews yet. Be the first to review this product!
-              </p>
+              <div className="text-center py-8 text-on-surface-variant">
+                <span className="material-symbols-outlined text-4xl text-outline mb-2">rate_review</span>
+                <p className="text-sm">No reviews yet for this product. Be the first to share your thoughts!</p>
+              </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-6 divide-y divide-outline-variant/10">
                 {reviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="border-b border-gray-100 dark:border-gray-700 last:border-0 pb-6 last:pb-0"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="font-medium text-gray-900 dark:text-white">
-                        {review.consumerName}
-                      </div>
-                      <div className="text-sm text-gray-500">
+                  <div key={review.id} className="pt-4 first:pt-0 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="font-semibold text-on-surface text-sm">{review.consumerName}</div>
+                      <span className="text-xs text-outline">
                         {new Date(review.createdAt).toLocaleDateString()}
-                      </div>
+                      </span>
                     </div>
-                    <div className="flex items-center text-amber-400 text-sm mb-3">
-                      {"★".repeat(review.rating)}
-                      {"☆".repeat(5 - review.rating)}
+                    <div className="flex text-amber-500 text-sm">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          className="material-symbols-outlined text-[18px]"
+                          style={{ fontVariationSettings: star <= review.rating ? "'FILL' 1" : "'FILL' 0" }}
+                        >
+                          star
+                        </span>
+                      ))}
                     </div>
-                    <p className="text-gray-600 dark:text-gray-300">
-                      {review.comment}
-                    </p>
+                    <p className="text-sm text-on-surface-variant leading-relaxed">{review.comment}</p>
                   </div>
                 ))}
               </div>
@@ -103,101 +115,90 @@ export default async function ProductDetailPage(props: {
           </div>
         </div>
 
-        {/* Right Column: Sidebar info */}
-        <div className="w-full lg:w-96 shrink-0 space-y-6">
-          {/* Product Action Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 sticky top-24">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-bold px-2.5 py-1 rounded-md uppercase tracking-wider">
+        {/* Right Column: Product Info & Purchase Sidebar */}
+        <div className="lg:col-span-5 space-y-6">
+          {/* Main Action Box */}
+          <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6 sticky top-24">
+            <div>
+              <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">
                 {product.category}
               </span>
-            </div>
+              <h1 className="font-heading text-3xl font-extrabold text-primary mb-3">
+                {product.name}
+              </h1>
 
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              {product.name}
-            </h1>
+              {/* Price & Rating */}
+              <div className="flex items-baseline justify-between mb-4">
+                <div>
+                  <span className="font-heading text-4xl font-extrabold text-primary">₹{product.price}</span>
+                  <span className="text-sm text-outline ml-1">/ {product.unit}</span>
+                </div>
+                <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                  <span className="material-symbols-outlined text-amber-500 text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                    star
+                  </span>
+                  <span className="text-sm font-bold text-amber-900">{product.rating.toFixed(1)}</span>
+                  <span className="text-xs text-amber-700">({product.totalReviews})</span>
+                </div>
+              </div>
 
-            <div className="flex items-center gap-4 mb-6">
-              <div className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">
-                ₹{product.price}
-                <span className="text-lg font-normal text-gray-500 ml-1">
-                  / {product.unit}
+              {/* Stock availability */}
+              <div className="flex items-center gap-2 mb-6">
+                <span className={`w-2.5 h-2.5 rounded-full ${product.quantityAvailable > 0 ? "bg-emerald-500" : "bg-error"}`} />
+                <span className="text-xs font-semibold text-on-surface-variant">
+                  {product.quantityAvailable > 0
+                    ? `${product.quantityAvailable} ${product.unit}s available in stock`
+                    : "Currently Out of Stock"}
                 </span>
               </div>
-              <div className="flex items-center text-amber-400 text-sm bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded-lg">
-                ★ {product.rating.toFixed(1)}{" "}
-                <span className="text-gray-500 ml-1">
-                  ({product.totalReviews})
-                </span>
-              </div>
+
+              <p className="text-sm text-on-surface-variant leading-relaxed mb-6">
+                {product.description}
+              </p>
             </div>
 
-            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-              {product.description}
-            </p>
-
-            <div className="mb-6 flex items-center gap-2">
-              <div
-                className={`w-3 h-3 rounded-full ${product.quantityAvailable > 0 ? "bg-green-500" : "bg-red-500"}`}
-              ></div>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                {product.quantityAvailable > 0
-                  ? `${product.quantityAvailable} ${product.unit}s available`
-                  : "Out of stock"}
-              </span>
-            </div>
-
+            {/* Add to Basket Component */}
             <AddToCartButton product={product} farmerName={farmer.farmName} />
           </div>
 
-          {/* Farmer Info Card */}
-          <div className="bg-emerald-50 dark:bg-gray-800 rounded-2xl shadow-sm p-6 border border-emerald-100 dark:border-gray-700">
-            <h3 className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">
-              Grown By
-            </h3>
+          {/* Farmer Card */}
+          <div className="bg-surface-container-low rounded-3xl p-6 organic-shadow border border-outline-variant/10 space-y-4">
+            <span className="text-xs font-bold text-outline uppercase tracking-wider block">Grown With Integrity By</span>
 
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-inner">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-primary text-on-primary font-heading font-bold text-lg flex items-center justify-center shadow-md">
                 {farmer.farmName.charAt(0)}
               </div>
               <div>
-                <h4 className="font-bold text-gray-900 dark:text-white flex items-center gap-1">
+                <h4 className="font-heading text-lg font-bold text-primary flex items-center gap-1.5">
                   {farmer.farmName}
                   {farmer.isVerified && (
-                    <span
-                      className="text-blue-500 text-sm"
-                      title="Verified Farmer"
-                    >
-                      ✓
-                    </span>
+                    <span className="material-symbols-outlined text-secondary-fixed-dim text-[18px]">verified</span>
                   )}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-on-surface-variant flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px]">location_on</span>
                   {farmer.farmLocation}
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center justify-between text-sm mb-6 pb-6 border-b border-emerald-200 dark:border-gray-700">
-              <div className="text-center">
-                <div className="font-bold text-gray-900 dark:text-white">
-                  {farmer.rating.toFixed(1)} ★
-                </div>
-                <div className="text-gray-500">Rating</div>
+            <div className="flex items-center justify-between text-xs pt-4 border-t border-outline-variant/10">
+              <div>
+                <span className="text-outline block">Farming Method</span>
+                <span className="font-semibold text-on-surface capitalize">{farmer.farmingMethod}</span>
               </div>
-              <div className="text-center">
-                <div className="font-bold text-gray-900 dark:text-white capitalize">
-                  {farmer.farmingMethod}
-                </div>
-                <div className="text-gray-500">Method</div>
+              <div className="text-right">
+                <span className="text-outline block">Farmer Rating</span>
+                <span className="font-semibold text-on-surface">{farmer.rating.toFixed(1)} ★</span>
               </div>
             </div>
 
             <Link
               href={`/farmers/${farmer.userId}`}
-              className="block w-full text-center py-2 px-4 rounded-xl border-2 border-emerald-600 text-emerald-600 font-medium hover:bg-emerald-600 hover:text-white transition-colors dark:border-emerald-500 dark:text-emerald-400 dark:hover:bg-emerald-500 dark:hover:text-white"
+              className="block w-full text-center py-3 px-4 rounded-xl border border-primary/30 text-primary font-heading text-sm font-semibold hover:bg-primary/5 transition-colors"
             >
-              View Farm Profile
+              Visit Farm Profile
             </Link>
           </div>
         </div>
