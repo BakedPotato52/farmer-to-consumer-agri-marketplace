@@ -89,7 +89,7 @@ export default function CategoryManagement() {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="glass-card organic-shadow rounded-3xl p-6 flex items-center justify-between transition-all hover:translate-y-[-2px] group"
+            className="glass-card organic-shadow rounded-3xl p-6 flex items-center justify-between transition-all hover:-translate-y-0.5 group"
           >
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center text-3xl shrink-0 group-hover:scale-110 transition-transform">
