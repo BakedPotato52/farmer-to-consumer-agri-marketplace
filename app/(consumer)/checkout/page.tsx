@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart/CartContext";
+import { FaLocationDot } from "react-icons/fa6";
+import { MdLocalAtm } from "react-icons/md";
+import { FaCheckCircle } from "react-icons/fa";
+import { RiProgress5Line } from "react-icons/ri";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -74,7 +78,7 @@ export default function CheckoutPage() {
           {/* Step 1: Address */}
           <section className="glass-card p-6 md:p-8 rounded-3xl organic-shadow space-y-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[22px]">location_on</span>
+              <span className="material-symbols-outlined text-[22px]"><FaLocationDot /></span>
               1. Delivery Address
             </h2>
 
@@ -144,7 +148,7 @@ export default function CheckoutPage() {
             </h2>
             <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-secondary text-2xl">local_atm</span>
+                <span className="material-symbols-outlined text-secondary text-2xl"><MdLocalAtm /></span>
                 <div>
                   <p className="font-heading font-bold text-on-surface text-sm">Pay on Delivery (COD) / UPI</p>
                   <p className="text-xs text-outline">Pay securely upon doorstep delivery</p>
@@ -206,12 +210,12 @@ export default function CheckoutPage() {
             >
               {isSubmitting ? (
                 <>
-                  <span className="material-symbols-outlined animate-spin text-[20px]">progress_activity</span>
+                  <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
                   Placing Order...
                 </>
               ) : (
                 <>
-                  <span className="material-symbols-outlined text-[20px]">check_circle</span>
+                    <span className="material-symbols-outlined text-[20px]"><FaCheckCircle /></span>
                   Place Order (₹{total.toFixed(2)})
                 </>
               )}

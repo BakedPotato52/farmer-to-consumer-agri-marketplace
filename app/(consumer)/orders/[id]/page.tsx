@@ -3,6 +3,9 @@ import Link from "next/link";
 import { getOrderById } from "@/lib/data/orders";
 import { ORDER_STATUS_FLOW } from "@/lib/types";
 import ReviewForm from "./ReviewForm";
+import { FaArrowLeft, FaCircleCheck, FaCircleXmark, FaLocationDot } from "react-icons/fa6";
+import { MdOutlineInventory, MdOutlineLocalShipping, MdPendingActions } from "react-icons/md";
+import { RiHomeLine } from "react-icons/ri";
 
 export default async function OrderDetailPage(props: {
   params: Promise<{ id: string }>;
@@ -16,13 +19,13 @@ export default async function OrderDetailPage(props: {
 
   const currentStatusIndex = ORDER_STATUS_FLOW.indexOf(order.status);
 
-  const statusIcons: Record<string, string> = {
-    pending: "schedule",
-    confirmed: "verified",
-    packed: "inventory_2",
-    shipped: "local_shipping",
-    delivered: "home",
-    cancelled: "cancel",
+  const statusIcons: Record<string, React.ReactNode> = {
+    pending: <MdPendingActions />,
+    confirmed: <FaCircleCheck />,
+    packed: <MdOutlineInventory />,
+    shipped: <MdOutlineLocalShipping />,
+    delivered: <RiHomeLine />,
+    cancelled: <FaCircleXmark />,
   };
 
   return (
@@ -47,7 +50,7 @@ export default async function OrderDetailPage(props: {
           href="/orders"
           className="inline-flex items-center gap-2 px-5 py-2.5 border border-outline-variant/30 text-primary font-heading text-sm font-semibold rounded-xl hover:bg-primary/5 transition-colors self-start md:self-end"
         >
-          <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+          <span className="material-symbols-outlined text-[18px]"><FaArrowLeft /></span>
           Back to Orders
         </Link>
       </header>
@@ -56,7 +59,7 @@ export default async function OrderDetailPage(props: {
       {order.status !== "cancelled" && (
         <section className="glass-card organic-shadow rounded-3xl p-6 md:p-8 mb-8 overflow-x-auto">
           <h2 className="font-heading text-xl font-bold text-primary mb-6">Delivery Timeline</h2>
-          <div className="min-w-[600px] flex items-center justify-between relative py-4">
+          <div className="min-w-150 flex items-center justify-between relative py-4">
             <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-high z-0" />
             <div
               className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary z-0 transition-all duration-700"
@@ -164,7 +167,7 @@ export default async function OrderDetailPage(props: {
           {/* Delivery Details */}
           <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]">location_on</span>
+              <span className="material-symbols-outlined text-[20px]"><FaLocationDot /></span>
               Delivery Details
             </h2>
             <div className="space-y-3 text-xs text-on-surface-variant">

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FaStar } from "react-icons/fa6";
 
 export default function ReviewForm({
   orderId,
@@ -72,7 +73,7 @@ export default function ReviewForm({
                 className="material-symbols-outlined text-[20px]"
                 style={{ fontVariationSettings: star <= rating ? "'FILL' 1" : "'FILL' 0" }}
               >
-                star
+                <FaStar />
               </span>
             </button>
           ))}

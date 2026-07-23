@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getSession } from "@/lib/auth/session";
 import { getOrdersByConsumer } from "@/lib/data/orders";
+import { MdOutlineLocalShipping } from "react-icons/md";
+import { FaArrowRight, FaCircleCheck, FaCircleXmark } from "react-icons/fa6";
+import { RiProgress5Line } from "react-icons/ri";
 
 export default async function OrdersPage() {
   const session = await getSession();
@@ -36,7 +39,7 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
           <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-            <span className="material-symbols-outlined text-3xl">local_shipping</span>
+            <span className="material-symbols-outlined text-3xl"><MdOutlineLocalShipping /></span>
           </div>
           <h2 className="font-heading text-2xl font-bold text-on-surface mb-2">No orders placed yet</h2>
           <p className="text-on-surface-variant max-w-sm mx-auto mb-6 text-sm">
@@ -61,7 +64,7 @@ export default async function OrdersPage() {
               >
                 {/* Visual Icon Badge */}
                 <div className="w-full md:w-36 h-36 bg-surface-container-low rounded-2xl flex flex-col items-center justify-center shrink-0 border border-outline-variant/10 text-primary">
-                  <span className="material-symbols-outlined text-4xl mb-1">inventory_2</span>
+                  <span className="material-symbols-outlined text-4xl mb-1"><MdOutlineLocalShipping /></span>
                   <span className="text-xs font-bold text-outline uppercase">{itemCount} {itemCount === 1 ? "Item" : "Items"}</span>
                 </div>
 
@@ -85,10 +88,10 @@ export default async function OrdersPage() {
                       >
                         <span className="material-symbols-outlined text-[16px]">
                           {order.status === "delivered"
-                            ? "check_circle"
+                            ? <FaCircleCheck />
                             : order.status === "cancelled"
-                            ? "cancel"
-                            : "schedule"}
+                              ? <FaCircleXmark />
+                              : <RiProgress5Line />}
                         </span>
                         {order.status}
                       </div>
@@ -129,7 +132,7 @@ export default async function OrdersPage() {
                       className="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
                     >
                       View Details
-                      <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                      <span className="material-symbols-outlined text-[18px]"><FaArrowRight /></span>
                     </Link>
                   </div>
                 </div>
