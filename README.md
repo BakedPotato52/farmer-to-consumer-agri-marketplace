@@ -9,6 +9,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 ## Key Features
 
 ### 1. Multi-Role Authentication & Session Management
+### 1. Multi-Role Authentication & Session Management
 - **Three Core User Roles**: Consumer, Farmer, and Administrator.
 - **Secure Cookie Sessions**: HTTP-Only, Base64-encoded session cookies (`farmfresh_session`) with 7-day persistence and strict path scoping (`/`).
 - **Next.js 16 Proxy Middleware (`proxy.ts`)**: Enforces strict role-based access control (RBAC):
@@ -18,6 +19,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ---
 
+### 2. Consumer Marketplace Experience
 ### 2. Consumer Marketplace Experience
 - **Interactive Landing Page**: Displays live verified farmers, platform statistics, produce categories, customer testimonials, and quick links.
 - **Produce Marketplace (`/products`)**:
@@ -43,6 +45,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 ---
 
 ### 3. Farmer Operations Dashboard (`/dashboard`)
+### 3. Farmer Operations Dashboard (`/dashboard`)
 - **Dashboard Overview**: Key performance indicators including Total Revenue, Pending Orders, Active Products, and Average Rating. Interactive monthly sales summary bar chart.
 - **Product Management (`/dashboard/products`)**:
   - Add & edit produce items with harvest dates, stock limits, unit types, organic indicators, and Cloudinary image uploads.
@@ -58,6 +61,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 ---
 
 ### 4. Administrator Portal (`/admin`)
+### 4. Administrator Portal (`/admin`)
 - **System Metrics & Analytics (`/admin/analytics`)**:
   - Platform revenue, order fulfillment rates, consumer retention, top-performing farmers, top produce items, and category revenue distribution.
 - **Farmer Approval Queue (`/admin/farmers`)**:
@@ -69,11 +73,13 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 ---
 
 ### 5. Cloudinary Image Upload Subsystem
+### 5. Cloudinary Image Upload Subsystem
 - **API Endpoint (`/api/upload`)**: Implements dual upload strategy (unsigned `farm-fresh` preset with signed fallback).
 - **Client Component (`components/ui/ImageUpload.tsx`)**: Drag-and-drop interface with live preview, upload progress indicator, and image removal.
 
 ---
 
+### 6. High-Performance Redis Caching Layer
 ### 6. High-Performance Redis Caching Layer
 - **Client Helper (`lib/redis/client.ts`)**: Built on `ioredis` with primitives `getCache`, `setCache`, `deleteCacheKey`, and `deleteCachePattern`.
 - **Automatic Invalidation**:
@@ -87,7 +93,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ## Workflow & System Design
 
-- Workflow documentation and System design diagrams: [WORKFLOW_SYSTEM_DIAGRAM.md](WORKFLOW_SYSTEM_DIAGRAM.md)
+- Workflow & System design diagrams documentation : [WORKFLOW.md](WORKFLOW.md)
 
 ## Technology Stack
 
@@ -103,6 +109,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ---
 
+## Project Structure
 ## Project Structure
 
 ```
@@ -133,6 +140,7 @@ farmer-to-consumer-agri-marketplace/
 
 ---
 
+## Environment Variables (`.env`)
 ## Environment Variables (`.env`)
 
 ```env
