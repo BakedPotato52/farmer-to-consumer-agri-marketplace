@@ -5,7 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { updateProductAction } from "../../actions";
 import { Product } from "@/lib/types";
-import { RiProgress5Line } from "react-icons/ri";
+import { RiErrorWarningLine, RiProgress5Line } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { MdEco } from "react-icons/md";
 
@@ -43,7 +43,7 @@ export default function EditProductForm({ product }: { product: Product }) {
     <div className="glass-card organic-shadow rounded-3xl p-8">
       {state?.error && (
         <div className="p-4 rounded-xl bg-error-container/30 border border-error/20 text-xs font-semibold text-on-error-container mb-6 flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]">error</span>
+          <span className="material-symbols-outlined text-[18px]"><RiErrorWarningLine /></span>
           {state.error}
         </div>
       )}

@@ -1,6 +1,12 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
+import { auth } from "@/lib/firebase/config";
 import { authenticateUser, createUser, getUserByEmail } from "@/lib/data/users";
 import { createFarmerProfile } from "@/lib/data/farmers";
 import { createSession, destroySession } from "@/lib/auth/session";
@@ -17,10 +23,33 @@ export async function loginAction(
     return { error: "Email and password are required" };
   }
 
-  const user = await authenticateUser(email, password);
+  let user = await getUserByEmail(email);
+
+  try {
+    // Authenticate with Firebase Auth
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (firebaseErr: any) {
+    // If Firebase Auth fails, check local/store fallback
+    const fallbackUser = authenticateUser(email, password);
+    if (!fallbackUser) {
+      const code = firebaseErr?.code;
+      if (code === "auth/user-not-found" || code === "auth/invalid-credential" || code === "auth/wrong-password") {
+        return { error: "Invalid email or password" };
+      }
+      if (code === "auth/invalid-email") {
+        return { error: "Invalid email address format" };
+      }
+      return { error: firebaseErr.message || "Authentication failed" };
+    }
+    user = fallbackUser;
+  }
 
   if (!user) {
-    return { error: "Invalid email or password" };
+    user = await getUserByEmail(email);
+  }
+
+  if (!user) {
+    return { error: "User account profile not found" };
   }
 
   await createSession({
@@ -54,9 +83,23 @@ export async function registerAction(
     return { error: "Missing required fields" };
   }
 
+  if (password.length < 6) {
+    return { error: "Password should be at least 6 characters" };
+  }
+
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return { error: "Email already exists" };
+  }
+
+  try {
+    // Register user with Firebase Auth Email/Password
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (firebaseErr: any) {
+    if (firebaseErr?.code === "auth/email-already-in-use") {
+      return { error: "Email is already registered with Firebase" };
+    }
+    console.warn("Firebase Auth registration warning (proceeding with profile creation):", firebaseErr.message);
   }
 
   const user = await createUser({
@@ -83,13 +126,13 @@ export async function registerAction(
 
     await createFarmerProfile({
       userId: user.id,
-      farmName,
-      farmLocation,
-      state,
-      pincode,
-      cropTypes,
-      farmingMethod,
-      description,
+      farmName: farmName || `${name}'s Farm`,
+      farmLocation: farmLocation || "Local Location",
+      state: state || "State",
+      pincode: pincode || "000000",
+      cropTypes: cropTypes.length ? cropTypes : ["Vegetables"],
+      farmingMethod: farmingMethod || "Organic",
+      description: description || "Fresh farm produce",
       isVerified: false,
       deliverySlots: [
         { id: "ds1", day: "Monday", startTime: "08:00", endTime: "12:00" },
@@ -117,6 +160,11 @@ export async function registerAction(
 }
 
 export async function logoutAction(): Promise<void> {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    console.error("Firebase signOut error:", err);
+  }
   await destroySession();
-  redirect("/");
+  redirect("/login");
 }

@@ -1,5 +1,6 @@
 import { store, generateId } from "@/lib/data/store";
 import type { Review } from "@/lib/types";
+import { saveReviewToFirestore } from "@/lib/firebase/services";
 
 export function getAllReviews(): Review[] {
   return [...store.reviews];
@@ -24,6 +25,7 @@ export function createReview(data: Omit<Review, "id" | "createdAt">): Review {
     createdAt: new Date().toISOString(),
   };
   store.reviews.push(newReview);
+  saveReviewToFirestore(newReview).catch(console.error);
   return newReview;
 }
 

@@ -1,5 +1,6 @@
 import { store } from "@/lib/data/store";
 import type { FarmerProfile, User, FarmerFilters } from "@/lib/types";
+import { saveFarmerToFirestore, updateFarmerInFirestore } from "@/lib/firebase/services";
 
 export function getAllFarmers(): (FarmerProfile & { user: User })[] {
   return store.farmerProfiles.map((profile) => {
@@ -27,6 +28,7 @@ export function createFarmerProfile(
     totalProducts: 0,
   };
   store.farmerProfiles.push(newProfile);
+  saveFarmerToFirestore(newProfile).catch(console.error);
   return newProfile;
 }
 
@@ -38,6 +40,7 @@ export function updateFarmerProfile(
   if (index === -1) return undefined;
 
   store.farmerProfiles[index] = { ...store.farmerProfiles[index], ...data };
+  updateFarmerInFirestore(userId, data).catch(console.error);
   return store.farmerProfiles[index];
 }
 
@@ -45,11 +48,16 @@ export function verifyFarmer(userId: string): FarmerProfile | undefined {
   const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
   if (index === -1) return undefined;
 
-  store.farmerProfiles[index] = {
-    ...store.farmerProfiles[index],
+  const updates = {
     isVerified: true,
     verificationDate: new Date().toISOString(),
   };
+
+  store.farmerProfiles[index] = {
+    ...store.farmerProfiles[index],
+    ...updates,
+  };
+  updateFarmerInFirestore(userId, updates).catch(console.error);
   return store.farmerProfiles[index];
 }
 

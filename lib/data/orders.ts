@@ -1,5 +1,6 @@
 import { store, generateId } from "@/lib/data/store";
 import type { Order, OrderStatus } from "@/lib/types";
+import { saveOrderToFirestore, updateOrderInFirestore } from "@/lib/firebase/services";
 
 export function getAllOrders(): Order[] {
   return [...store.orders];
@@ -29,6 +30,7 @@ export function createOrder(
     updatedAt: now,
   };
   store.orders.push(newOrder);
+  saveOrderToFirestore(newOrder).catch(console.error);
   return newOrder;
 }
 
@@ -39,11 +41,14 @@ export function updateOrderStatus(
   const index = store.orders.findIndex((o) => o.id === id);
   if (index === -1) return undefined;
 
-  store.orders[index] = {
+  const now = new Date().toISOString();
+  const updated = {
     ...store.orders[index],
     status,
-    updatedAt: new Date().toISOString(),
+    updatedAt: now,
   };
+  store.orders[index] = updated;
+  updateOrderInFirestore(id, { status, updatedAt: now }).catch(console.error);
   return store.orders[index];
 }
 

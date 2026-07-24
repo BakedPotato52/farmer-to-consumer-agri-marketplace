@@ -1,5 +1,6 @@
 import { store, generateId } from "@/lib/data/store";
 import type { User, UserRole } from "@/lib/types";
+import { saveUserToFirestore } from "@/lib/firebase/services";
 
 export function getUserByEmail(email: string): User | undefined {
   return store.users.find((u) => u.email === email);
@@ -20,6 +21,7 @@ export function createUser(
     updatedAt: now,
   };
   store.users.push(newUser);
+  saveUserToFirestore(newUser).catch(console.error);
   return newUser;
 }
 

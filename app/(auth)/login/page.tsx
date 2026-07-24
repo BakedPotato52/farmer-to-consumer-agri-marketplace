@@ -6,6 +6,7 @@ import Link from "next/link";
 import { loginAction } from "@/lib/auth/actions";
 import { MdAgriculture, MdLock, MdMail, MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { FaLeaf } from "react-icons/fa6";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 const HERO_IMAGE =
   "login_image.jpg";
@@ -161,7 +162,7 @@ export default function LoginPage() {
             {/* Error */}
             {state?.error && (
               <div className="flex items-center gap-2 p-3 rounded-xl bg-error-container/30 border border-error/20">
-                <span className="material-symbols-outlined text-error text-[18px]">error</span>
+                <span className="material-symbols-outlined text-error text-[18px]"><RiErrorWarningLine /></span>
                 <p className="text-sm text-on-error-container">{state.error}</p>
               </div>
             )}

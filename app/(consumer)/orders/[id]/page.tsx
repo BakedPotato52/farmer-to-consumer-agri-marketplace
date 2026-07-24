@@ -5,7 +5,7 @@ import { ORDER_STATUS_FLOW } from "@/lib/types";
 import ReviewForm from "./ReviewForm";
 import { FaArrowLeft, FaCircleCheck, FaCircleXmark, FaLocationDot } from "react-icons/fa6";
 import { MdOutlineInventory, MdOutlineLocalShipping, MdPendingActions } from "react-icons/md";
-import { RiHomeLine } from "react-icons/ri";
+import { RiErrorWarningLine, RiHomeLine } from "react-icons/ri";
 
 export default async function OrderDetailPage(props: {
   params: Promise<{ id: string }>;
@@ -101,7 +101,7 @@ export default async function OrderDetailPage(props: {
 
       {order.status === "cancelled" && (
         <div className="glass-card rounded-3xl p-6 border border-error/20 bg-error-container/20 mb-8 flex items-center gap-4">
-          <span className="material-symbols-outlined text-error text-3xl">error</span>
+          <span className="material-symbols-outlined text-error text-3xl"><RiErrorWarningLine /></span>
           <div>
             <h3 className="font-heading font-bold text-on-error-container text-lg">Order Cancelled</h3>
             <p className="text-xs text-on-surface-variant">This order has been cancelled.</p>

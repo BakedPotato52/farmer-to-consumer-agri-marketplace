@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { createProductAction } from "../actions";
-import { RiProgress5Line } from "react-icons/ri";
+import { RiErrorWarningLine, RiProgress5Line } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { FaArrowLeft, FaLeaf } from "react-icons/fa6";
 
@@ -53,7 +53,7 @@ export default function NewProductPage() {
       <div className="glass-card organic-shadow rounded-3xl p-8">
         {state?.error && (
           <div className="p-4 rounded-xl bg-error-container/30 border border-error/20 text-xs font-semibold text-on-error-container mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">error</span>
+            <span className="material-symbols-outlined text-[18px]"><RiErrorWarningLine /></span>
             {state.error}
           </div>
         )}

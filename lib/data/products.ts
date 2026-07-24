@@ -1,6 +1,11 @@
 import { store, generateId } from "@/lib/data/store";
 import type { Product, ProductCategory, ProductFilters } from "@/lib/types";
 import { getFarmerById } from "./farmers";
+import {
+  saveProductToFirestore,
+  updateProductInFirestore,
+  deleteProductFromFirestore,
+} from "@/lib/firebase/services";
 
 export function getAllProducts(): Product[] {
   return [...store.products];
@@ -38,6 +43,7 @@ export function createProduct(
     updatedAt: now,
   };
   store.products.push(newProduct);
+  saveProductToFirestore(newProduct).catch(console.error);
   return newProduct;
 }
 
@@ -48,11 +54,13 @@ export function updateProduct(
   const index = store.products.findIndex((p) => p.id === id);
   if (index === -1) return undefined;
 
-  store.products[index] = {
+  const updated = {
     ...store.products[index],
     ...data,
     updatedAt: new Date().toISOString(),
   };
+  store.products[index] = updated;
+  updateProductInFirestore(id, updated).catch(console.error);
   return store.products[index];
 }
 
@@ -60,6 +68,7 @@ export function deleteProduct(id: string): boolean {
   const index = store.products.findIndex((p) => p.id === id);
   if (index === -1) return false;
   store.products.splice(index, 1);
+  deleteProductFromFirestore(id).catch(console.error);
   return true;
 }
 
