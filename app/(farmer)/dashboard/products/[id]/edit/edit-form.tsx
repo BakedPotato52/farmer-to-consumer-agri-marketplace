@@ -165,7 +165,7 @@ export default function EditProductForm({ product }: { product: Product }) {
 
           <div className="sm:col-span-2">
             <ImageUpload
-              label="Product Images (Cloudinary Powered)"
+              label="Product Images"
               name="images"
               initialImages={product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : [])}
               multiple={true}

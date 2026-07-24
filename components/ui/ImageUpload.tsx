@@ -161,7 +161,7 @@ export default function ImageUpload({
                   Click or drag images to upload
                 </p>
                 <p className="text-xs text-outline mt-0.5">
-                  PNG, JPG, WEBP up to 10MB (Cloudinary Powered)
+                    PNG, JPG, WEBP up to 10MB
                 </p>
               </div>
             </>

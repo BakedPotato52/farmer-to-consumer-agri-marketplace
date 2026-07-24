@@ -51,7 +51,7 @@ export default async function ProductDetailPage(props: {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
         {/* Left Column: Visual Showcase */}
         <div className="lg:col-span-7 space-y-6">
-          <div className={`relative aspect-square md:aspect-4/3 rounded-3xl bg-linear-to-br ${bgGradient} organic-shadow flex items-center justify-center p-8 overflow-hidden`}>
+          <div className={`relative aspect-square md:aspect-4/3 rounded-3xl bg-linear-to-br ${bgGradient} organic-shadow flex items-center justify-center  overflow-hidden`}>
             {product.image || (product.images && product.images.length > 0) ? (
               <img
                 src={product.image || product.images[0]}

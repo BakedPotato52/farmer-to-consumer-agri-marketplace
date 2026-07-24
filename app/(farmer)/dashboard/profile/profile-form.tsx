@@ -121,7 +121,17 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
 
             <div className="sm:col-span-2">
               <ImageUpload
-                label="Farm Cover Photo (Cloudinary Powered)"
+                label="Farm Hero Banner Image (Cloudinary Powered)"
+                name="bannerImage"
+                initialImages={profile.bannerImage ? [profile.bannerImage] : []}
+                multiple={false}
+                maxFiles={1}
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <ImageUpload
+                label="Farm Logo / Profile Avatar (Cloudinary Powered)"
                 name="farmImage"
                 initialImages={profile.farmImage ? [profile.farmImage] : []}
                 multiple={false}

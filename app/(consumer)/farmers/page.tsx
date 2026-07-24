@@ -100,8 +100,18 @@ export default async function FarmersPage(props: {
               className="group relative bg-white rounded-2xl overflow-hidden organic-shadow border border-outline-variant/10 transition-all hover:-translate-y-1 flex flex-col"
             >
               {/* Header Banner & Avatar */}
-              <div className="h-32 bg-linear-to-r from-primary to-primary-container relative p-4 flex items-start justify-between">
-                <div className="flex gap-2">
+              <div className="h-32 bg-linear-to-r from-primary to-primary-container relative p-4 flex items-start justify-between overflow-hidden">
+                {farmer.bannerImage || farmer.farmImage ? (
+                  <>
+                    <img
+                      src={farmer.bannerImage || farmer.farmImage}
+                      alt={farmer.farmName}
+                      className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/40" />
+                  </>
+                ) : null}
+                <div className="flex gap-2 relative z-10">
                   <span className="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold shadow-sm capitalize">
                     {farmer.farmingMethod}
                   </span>
@@ -115,8 +125,16 @@ export default async function FarmersPage(props: {
 
               {/* Avatar circle floating over banner */}
               <div className="px-6 -mt-12 relative z-10 flex justify-between items-end mb-3">
-                <div className="w-20 h-20 rounded-full bg-primary text-on-primary border-4 border-white font-heading font-extrabold text-3xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                  {farmer.farmName.charAt(0)}
+                <div className="w-20 h-20 rounded-full bg-primary text-on-primary border-4 border-white font-heading font-extrabold text-3xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform overflow-hidden shrink-0">
+                  {farmer.farmImage ? (
+                    <img
+                      src={farmer.farmImage}
+                      alt={farmer.farmName}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    farmer.farmName.charAt(0)
+                  )}
                 </div>
                 <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
                   <span className="material-symbols-outlined text-amber-500 text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>

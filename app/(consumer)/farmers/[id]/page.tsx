@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getFarmerById } from "@/lib/data/farmers";
 import { filterProducts } from "@/lib/data/products";
 import { getReviewsByFarmer } from "@/lib/data/reviews";
-import { MdVerified } from "react-icons/md";
+import { MdInventory2, MdVerified } from "react-icons/md";
 import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 export default async function FarmerProfilePage(props: {
@@ -23,12 +23,31 @@ export default async function FarmerProfilePage(props: {
     <div className="w-full min-h-screen pb-16 bg-background">
       {/* Hero Banner Section */}
       <section className="relative h-80 md:h-100 overflow-hidden bg-linear-to-r from-primary to-primary-container text-white flex items-end pb-12">
-        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+        {farmer.bannerImage || farmer.farmImage ? (
+          <>
+            <img
+              src={farmer.bannerImage || farmer.farmImage}
+              alt={farmer.farmName}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/40 to-black/20" />
+          </>
+        ) : (
+            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+        )}
 
         <div className="relative z-10 max-w-[1280px] mx-auto w-full px-4 md:px-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="flex items-center md:items-end gap-6">
-            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white text-primary font-heading font-extrabold text-5xl flex items-center justify-center shadow-2xl border-4 border-white shrink-0">
-              {farmer.farmName.charAt(0)}
+            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full bg-white text-primary font-heading font-extrabold text-5xl flex items-center justify-center shadow-2xl border-4 border-white shrink-0 overflow-hidden">
+              {farmer.farmImage ? (
+                <img
+                  src={farmer.farmImage}
+                  alt={farmer.farmName}
+                  className="w-full h-full object-cover rounded-full"
+                />
+              ) : (
+                farmer.farmName.charAt(0)
+              )}
             </div>
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold mb-2 shadow-sm">
@@ -148,7 +167,7 @@ export default async function FarmerProfilePage(props: {
 
           {products.length === 0 ? (
             <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
-              <span className="material-symbols-outlined text-4xl text-outline mb-2">inventory_2</span>
+              <span className="material-symbols-outlined text-4xl text-outline mb-2"><MdInventory2 /></span>
               <h3 className="font-heading text-lg font-bold text-on-surface mb-1">No products listed</h3>
               <p className="text-xs text-on-surface-variant">Check back soon for fresh seasonal harvests!</p>
             </div>
@@ -170,12 +189,12 @@ export default async function FarmerProfilePage(props: {
                     href={`/products/${product.id}`}
                     className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
-                    <div className={`h-40 relative bg-linear-to-br ${gradient} flex items-center justify-center p-4 overflow-hidden`}>
+                    <div className={`h-64 relative bg-linear-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
                       {product.image || (product.images && product.images.length > 0) ? (
                         <img
                           src={product.image || product.images[0]}
                           alt={product.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-fill group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
                         <div className="text-7xl opacity-30 transform -rotate-12 group-hover:scale-110 transition-transform duration-700 select-none">

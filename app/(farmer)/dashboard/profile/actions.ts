@@ -20,6 +20,7 @@ export async function updateProfileAction(prevState: any, formData: FormData) {
   const farmingMethod = formData.get("farmingMethod") as FarmingMethod;
   const description = formData.get("description") as string;
   const farmImage = formData.get("farmImage") as string;
+  const bannerImage = formData.get("bannerImage") as string;
 
   const cropTypesString = formData.get("cropTypes") as string;
   const cropTypes = cropTypesString
@@ -43,14 +44,19 @@ export async function updateProfileAction(prevState: any, formData: FormData) {
     cropTypes,
   };
 
-  if (farmImage) {
+  if (farmImage !== undefined) {
     updates.farmImage = farmImage;
+  }
+  if (bannerImage !== undefined) {
+    updates.bannerImage = bannerImage;
   }
 
   try {
     await updateFarmerProfile(session.userId, updates);
     revalidatePath("/dashboard/profile");
     revalidatePath(`/farmers/${session.userId}`);
+    revalidatePath("/farmers");
+    revalidatePath("/");
     return { success: true, message: "Profile updated successfully" };
   } catch (error) {
     return { error: "Failed to update profile" };

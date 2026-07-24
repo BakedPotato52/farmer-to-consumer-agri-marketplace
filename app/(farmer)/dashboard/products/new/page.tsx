@@ -172,7 +172,7 @@ export default function NewProductPage() {
 
             <div className="sm:col-span-2">
               <ImageUpload
-                label="Product Images (Cloudinary Powered)"
+                label="Product Images"
                 name="images"
                 multiple={true}
                 maxFiles={5}

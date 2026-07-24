@@ -11,12 +11,12 @@ export default async function ConsumerLayout({
   const session = await getSession();
 
   return (
-    <div className="min-h-screen flex flex-col mt-16">
-      <Navbar session={session} />
-      <CartProvider>
+    <CartProvider>
+      <div className="min-h-screen flex flex-col mt-16">
+        <Navbar session={session} />
         <main className="flex-1 flex flex-col">{children}</main>
-      </CartProvider>
-      <Footer />
-    </div>
+        <Footer />
+      </div>
+    </CartProvider>
   );
 }

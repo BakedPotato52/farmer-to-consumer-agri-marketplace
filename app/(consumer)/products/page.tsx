@@ -4,7 +4,7 @@ import { getAllFarmers } from "@/lib/data/farmers";
 import { ProductCategory } from "@/lib/types";
 import { BiSearch } from "react-icons/bi";
 import { FaLeaf } from "react-icons/fa6";
-import { MdVerified, MdVisibility } from "react-icons/md";
+import { MdEco, MdVerified, MdVisibility } from "react-icons/md";
 
 export default async function ProductsPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -192,7 +192,7 @@ export default async function ProductsPage(props: {
           {products.length === 0 ? (
             <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
               <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-                <span className="material-symbols-outlined text-3xl">eco</span>
+                <span className="material-symbols-outlined text-3xl"><MdEco /></span>
               </div>
               <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">No produce found</h3>
               <p className="text-on-surface-variant max-w-sm mx-auto mb-6">
@@ -224,7 +224,7 @@ export default async function ProductsPage(props: {
                     href={`/products/${product.id}`}
                     className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
-                    <div className={`aspect-square relative overflow-hidden bg-linear-to-br ${gradient} flex items-center justify-center p-6`}>
+                    <div className={`aspect-square relative overflow-hidden bg-linear-to-br ${gradient} flex items-center justify-center`}>
                       {product.image || (product.images && product.images.length > 0) ? (
                         <img
                           src={product.image || product.images[0]}
