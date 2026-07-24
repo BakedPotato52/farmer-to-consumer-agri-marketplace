@@ -23,6 +23,17 @@ export const COLLECTIONS = {
   REVIEWS: "reviews",
 } as const;
 
+function handleFirestoreError(action: string, err: any) {
+  if (err?.code === "not-found" || err?.message?.includes("NOT_FOUND") || err?.code === 5) {
+    console.warn(
+      `[Firestore Setup Required] ${action} failed: Database (default) does not exist yet for project 'farm-fresh-52'.\n` +
+      `👉 Please visit https://console.firebase.google.com/u/0/project/farm-fresh-52/firestore and click 'Create database'.`
+    );
+  } else {
+    console.error(`[Firestore Error] ${action}:`, err);
+  }
+}
+
 /**
  * Sync initial seed data to Firestore if a collection is empty
  */
@@ -68,7 +79,7 @@ export async function seedFirestoreIfEmpty(): Promise<void> {
       }
     }
   } catch (err) {
-    console.warn("Firestore auto-seeding warning (can be ignored if offline):", err);
+    handleFirestoreError("seedFirestoreIfEmpty", err);
   }
 }
 
@@ -79,7 +90,8 @@ export async function fetchUsersFromFirestore(): Promise<User[]> {
     const snap = await getDocs(collection(db, COLLECTIONS.USERS));
     if (snap.empty) return store.users;
     return snap.docs.map((d) => d.data() as User);
-  } catch {
+  } catch (err) {
+    handleFirestoreError("fetchUsersFromFirestore", err);
     return store.users;
   }
 }
@@ -88,7 +100,7 @@ export async function saveUserToFirestore(user: User): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.USERS, user.id), user);
   } catch (err) {
-    console.error("Error saving user to Firestore:", err);
+    handleFirestoreError("saveUserToFirestore", err);
   }
 }
 
@@ -99,7 +111,8 @@ export async function fetchProductsFromFirestore(): Promise<Product[]> {
     const snap = await getDocs(collection(db, COLLECTIONS.PRODUCTS));
     if (snap.empty) return store.products;
     return snap.docs.map((d) => d.data() as Product);
-  } catch {
+  } catch (err) {
+    handleFirestoreError("fetchProductsFromFirestore", err);
     return store.products;
   }
 }
@@ -108,7 +121,7 @@ export async function saveProductToFirestore(product: Product): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.PRODUCTS, product.id), product);
   } catch (err) {
-    console.error("Error saving product to Firestore:", err);
+    handleFirestoreError("saveProductToFirestore", err);
   }
 }
 
@@ -116,7 +129,7 @@ export async function updateProductInFirestore(id: string, updates: Partial<Prod
   try {
     await updateDoc(doc(db, COLLECTIONS.PRODUCTS, id), updates as DocumentData);
   } catch (err) {
-    console.error("Error updating product in Firestore:", err);
+    handleFirestoreError("updateProductInFirestore", err);
   }
 }
 
@@ -124,7 +137,7 @@ export async function deleteProductFromFirestore(id: string): Promise<void> {
   try {
     await deleteDoc(doc(db, COLLECTIONS.PRODUCTS, id));
   } catch (err) {
-    console.error("Error deleting product from Firestore:", err);
+    handleFirestoreError("deleteProductFromFirestore", err);
   }
 }
 
@@ -135,7 +148,8 @@ export async function fetchFarmersFromFirestore(): Promise<FarmerProfile[]> {
     const snap = await getDocs(collection(db, COLLECTIONS.FARMERS));
     if (snap.empty) return store.farmerProfiles;
     return snap.docs.map((d) => d.data() as FarmerProfile);
-  } catch {
+  } catch (err) {
+    handleFirestoreError("fetchFarmersFromFirestore", err);
     return store.farmerProfiles;
   }
 }
@@ -144,7 +158,7 @@ export async function saveFarmerToFirestore(farmer: FarmerProfile): Promise<void
   try {
     await setDoc(doc(db, COLLECTIONS.FARMERS, farmer.userId), farmer);
   } catch (err) {
-    console.error("Error saving farmer to Firestore:", err);
+    handleFirestoreError("saveFarmerToFirestore", err);
   }
 }
 
@@ -152,7 +166,7 @@ export async function updateFarmerInFirestore(userId: string, updates: Partial<F
   try {
     await updateDoc(doc(db, COLLECTIONS.FARMERS, userId), updates as DocumentData);
   } catch (err) {
-    console.error("Error updating farmer in Firestore:", err);
+    handleFirestoreError("updateFarmerInFirestore", err);
   }
 }
 
@@ -163,7 +177,8 @@ export async function fetchOrdersFromFirestore(): Promise<Order[]> {
     const snap = await getDocs(collection(db, COLLECTIONS.ORDERS));
     if (snap.empty) return store.orders;
     return snap.docs.map((d) => d.data() as Order);
-  } catch {
+  } catch (err) {
+    handleFirestoreError("fetchOrdersFromFirestore", err);
     return store.orders;
   }
 }
@@ -172,7 +187,7 @@ export async function saveOrderToFirestore(order: Order): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.ORDERS, order.id), order);
   } catch (err) {
-    console.error("Error saving order to Firestore:", err);
+    handleFirestoreError("saveOrderToFirestore", err);
   }
 }
 
@@ -180,7 +195,7 @@ export async function updateOrderInFirestore(id: string, updates: Partial<Order>
   try {
     await updateDoc(doc(db, COLLECTIONS.ORDERS, id), updates as DocumentData);
   } catch (err) {
-    console.error("Error updating order in Firestore:", err);
+    handleFirestoreError("updateOrderInFirestore", err);
   }
 }
 
@@ -191,7 +206,8 @@ export async function fetchReviewsFromFirestore(): Promise<Review[]> {
     const snap = await getDocs(collection(db, COLLECTIONS.REVIEWS));
     if (snap.empty) return store.reviews;
     return snap.docs.map((d) => d.data() as Review);
-  } catch {
+  } catch (err) {
+    handleFirestoreError("fetchReviewsFromFirestore", err);
     return store.reviews;
   }
 }
@@ -200,6 +216,6 @@ export async function saveReviewToFirestore(review: Review): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.REVIEWS, review.id), review);
   } catch (err) {
-    console.error("Error saving review to Firestore:", err);
+    handleFirestoreError("saveReviewToFirestore", err);
   }
 }

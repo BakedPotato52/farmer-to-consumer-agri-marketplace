@@ -1,8 +1,8 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, setLogLevel } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
-const cleanEnv = (val?: string) => val ? val.replace(/['",\s]/g, "") : "";
+const cleanEnv = (val?: string) => (val ? val.replace(/['",\s]/g, "") : "");
 
 const firebaseConfig = {
   apiKey: cleanEnv(process.env.NEXT_PUBLIC_FIREBASE_API_KEY || process.env.APIKEY),
@@ -15,6 +15,14 @@ const firebaseConfig = {
 };
 
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+
+// Suppress internal gRPC stream retry log noise when Firestore database is disabled/not yet created
+try {
+  setLogLevel("silent");
+} catch {
+  // Ignore if setLogLevel is not supported in environment
+}
+
 const db = getFirestore(app);
 const auth = getAuth(app);
 

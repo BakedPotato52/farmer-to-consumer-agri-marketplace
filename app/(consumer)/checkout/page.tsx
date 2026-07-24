@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart/CartContext";
 import { FaLocationDot } from "react-icons/fa6";
@@ -18,8 +18,13 @@ export default function CheckoutPage() {
   const deliveryFee = items.length > 0 ? 40 : 0;
   const total = subtotal + deliveryFee;
 
+  useEffect(() => {
+    if (items.length === 0) {
+      router.push("/cart");
+    }
+  }, [items.length, router]);
+
   if (items.length === 0) {
-    router.push("/cart");
     return null;
   }
 

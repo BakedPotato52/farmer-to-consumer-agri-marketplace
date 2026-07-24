@@ -59,6 +59,8 @@ export async function loginAction(
     role: user.role,
   });
 
+  console.log("User logged in:", user);
+
   if (user.role === "admin") {
     redirect("/admin");
   } else if (user.role === "farmer") {
