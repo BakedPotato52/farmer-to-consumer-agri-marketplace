@@ -19,18 +19,21 @@ export async function updateProfileAction(prevState: any, formData: FormData) {
   const pincode = formData.get("pincode") as string;
   const farmingMethod = formData.get("farmingMethod") as FarmingMethod;
   const description = formData.get("description") as string;
+  const farmImage = formData.get("farmImage") as string;
 
   const cropTypesString = formData.get("cropTypes") as string;
   const cropTypes = cropTypesString
-    .split(",")
-    .map((c) => c.trim())
-    .filter(Boolean);
+    ? cropTypesString
+        .split(",")
+        .map((c) => c.trim())
+        .filter(Boolean)
+    : [];
 
   if (!farmName || !farmLocation || !state || !pincode || !farmingMethod) {
     return { error: "Missing required fields" };
   }
 
-  const updates = {
+  const updates: any = {
     farmName,
     farmLocation,
     state,
@@ -40,9 +43,14 @@ export async function updateProfileAction(prevState: any, formData: FormData) {
     cropTypes,
   };
 
+  if (farmImage) {
+    updates.farmImage = farmImage;
+  }
+
   try {
     await updateFarmerProfile(session.userId, updates);
     revalidatePath("/dashboard/profile");
+    revalidatePath(`/farmers/${session.userId}`);
     return { success: true, message: "Profile updated successfully" };
   } catch (error) {
     return { error: "Failed to update profile" };

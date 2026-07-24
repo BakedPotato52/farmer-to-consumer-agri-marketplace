@@ -225,13 +225,21 @@ export default async function ProductsPage(props: {
                     className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
                     <div className={`aspect-square relative overflow-hidden bg-linear-to-br ${gradient} flex items-center justify-center p-6`}>
-                      <div className="text-8xl opacity-30 transform -rotate-12 group-hover:scale-110 transition-transform duration-700 select-none">
-                        {product.category === "vegetables" && "🥬"}
-                        {product.category === "fruits" && "🍎"}
-                        {product.category === "dairy" && "🥛"}
-                        {product.category === "grains" && "🌾"}
-                        {product.category === "herbs" && "🌿"}
-                      </div>
+                      {product.image || (product.images && product.images.length > 0) ? (
+                        <img
+                          src={product.image || product.images[0]}
+                          alt={product.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="text-8xl opacity-30 transform -rotate-12 group-hover:scale-110 transition-transform duration-700 select-none">
+                          {product.category === "vegetables" && "🥬"}
+                          {product.category === "fruits" && "🍎"}
+                          {product.category === "dairy" && "🥛"}
+                          {product.category === "grains" && "🌾"}
+                          {product.category === "herbs" && "🌿"}
+                        </div>
+                      )}
                       {product.isOrganic && (
                         <div className="absolute top-4 left-4">
                           <span className="bg-amber-100/90 backdrop-blur-md text-amber-900 text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-sm">

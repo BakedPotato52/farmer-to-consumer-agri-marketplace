@@ -2,34 +2,36 @@
 
 import { revalidatePath } from "next/cache";
 import { getSession } from "@/lib/auth/session";
+import { verifyFarmer, rejectFarmer } from "@/lib/data/farmers";
 
-// In a real app we would import updateFarmerStatus from data/farmers
-// Here we mock the implementation to simulate approval/rejection
+export async function approveFarmerAction(formData: FormData): Promise<void> {
+  const userId = formData.get("userId") as string;
+  if (!userId) return;
 
-export async function approveFarmerAction(userId: string) {
   const session = await getSession();
   if (!session || session.role !== "admin") {
-    throw new Error("Unauthorized");
+    throw new Error("Unauthorized access");
   }
 
-  // TODO: Call actual db mutation, e.g., await approveFarmer(userId)
-  console.log(`Farmer ${userId} approved by admin`);
+  verifyFarmer(userId);
 
   revalidatePath("/admin/farmers");
   revalidatePath("/admin");
-  return { success: true };
+  revalidatePath("/farmers");
 }
 
-export async function rejectFarmerAction(userId: string) {
+export async function rejectFarmerAction(formData: FormData): Promise<void> {
+  const userId = formData.get("userId") as string;
+  if (!userId) return;
+
   const session = await getSession();
   if (!session || session.role !== "admin") {
-    throw new Error("Unauthorized");
+    throw new Error("Unauthorized access");
   }
 
-  // TODO: Call actual db mutation, e.g., await rejectFarmer(userId)
-  console.log(`Farmer ${userId} rejected by admin`);
+  rejectFarmer(userId);
 
   revalidatePath("/admin/farmers");
   revalidatePath("/admin");
-  return { success: true };
+  revalidatePath("/farmers");
 }

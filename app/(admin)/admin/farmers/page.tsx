@@ -136,28 +136,20 @@ export default async function FarmersManagement({
                       <td className="px-6 py-4 text-right">
                         {!farmer.isVerified ? (
                           <div className="flex items-center justify-end gap-2">
-                            <form
-                              action={async () => {
-                                "use server";
-                                await approveFarmerAction(farmer.userId);
-                              }}
-                            >
+                            <form action={approveFarmerAction}>
+                              <input type="hidden" name="userId" value={farmer.userId} />
                               <button
                                 type="submit"
-                                className="px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-semibold hover:bg-primary-container transition-all"
+                                className="px-3 py-1.5 bg-primary text-on-primary rounded-lg text-xs font-semibold hover:bg-primary-container transition-all cursor-pointer"
                               >
                                 Approve
                               </button>
                             </form>
-                            <form
-                              action={async () => {
-                                "use server";
-                                await rejectFarmerAction(farmer.userId);
-                              }}
-                            >
+                            <form action={rejectFarmerAction}>
+                              <input type="hidden" name="userId" value={farmer.userId} />
                               <button
                                 type="submit"
-                                className="px-3 py-1.5 bg-error-container text-on-error-container rounded-lg text-xs font-semibold hover:opacity-80 transition-opacity"
+                                className="px-3 py-1.5 bg-error-container text-on-error-container rounded-lg text-xs font-semibold hover:opacity-80 transition-opacity cursor-pointer"
                               >
                                 Reject
                               </button>

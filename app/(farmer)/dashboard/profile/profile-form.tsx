@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { updateProfileAction } from "./actions";
 import { FarmerProfile } from "@/lib/types";
+import ImageUpload from "@/components/ui/ImageUpload";
 import { MdStorefront } from "react-icons/md";
 import { RiProgress5Line } from "react-icons/ri";
 import { FaCheckCircle, FaExclamationTriangle, FaRegSave } from "react-icons/fa";
@@ -115,6 +116,16 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
                 defaultValue={profile.description}
                 className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface resize-none"
                 placeholder="Share your farm heritage, soil care techniques, and harvest philosophy..."
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <ImageUpload
+                label="Farm Cover Photo (Cloudinary Powered)"
+                name="farmImage"
+                initialImages={profile.farmImage ? [profile.farmImage] : []}
+                multiple={false}
+                maxFiles={1}
               />
             </div>
           </div>

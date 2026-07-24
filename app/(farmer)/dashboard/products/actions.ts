@@ -30,6 +30,12 @@ export async function createProductAction(prevState: any, formData: FormData) {
   const harvestDate = formData.get("harvestDate") as string;
   const isOrganic = formData.get("isOrganic") === "on";
   const isActive = formData.get("isActive") === "on";
+  const imagesStr = formData.get("images") as string;
+
+  const images = imagesStr
+    ? imagesStr.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+  const image = images[0] || undefined;
 
   if (
     !name ||
@@ -54,7 +60,8 @@ export async function createProductAction(prevState: any, formData: FormData) {
     harvestDate: new Date(harvestDate).toISOString(),
     isOrganic,
     isActive,
-    images: [],
+    image,
+    images,
   };
 
   try {
@@ -64,6 +71,7 @@ export async function createProductAction(prevState: any, formData: FormData) {
   }
 
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
   redirect("/dashboard/products");
 }
 
@@ -89,8 +97,14 @@ export async function updateProductAction(prevState: any, formData: FormData) {
   const harvestDate = formData.get("harvestDate") as string;
   const isOrganic = formData.get("isOrganic") === "on";
   const isActive = formData.get("isActive") === "on";
+  const imagesStr = formData.get("images") as string;
 
-  const updates = {
+  const images = imagesStr
+    ? imagesStr.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+  const image = images[0] || undefined;
+
+  const updates: any = {
     name,
     category,
     price,
@@ -102,6 +116,11 @@ export async function updateProductAction(prevState: any, formData: FormData) {
     isActive,
   };
 
+  if (images.length > 0) {
+    updates.images = images;
+    updates.image = image;
+  }
+
   try {
     await updateProduct(id, updates);
   } catch (error) {
@@ -109,6 +128,7 @@ export async function updateProductAction(prevState: any, formData: FormData) {
   }
 
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
   redirect("/dashboard/products");
 }
 
@@ -121,6 +141,7 @@ export async function deleteProductAction(productId: string) {
 
   await deleteProduct(productId);
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
 }
 
 export async function toggleProductAction(
@@ -135,4 +156,5 @@ export async function toggleProductAction(
 
   await updateProduct(productId, { isActive });
   revalidatePath("/dashboard/products");
+  revalidatePath("/products");
 }

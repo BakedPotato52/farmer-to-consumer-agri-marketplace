@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { updateProductAction } from "../../actions";
 import { Product } from "@/lib/types";
+import ImageUpload from "@/components/ui/ImageUpload";
 import { RiErrorWarningLine, RiProgress5Line } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { MdEco } from "react-icons/md";
@@ -159,6 +160,16 @@ export default function EditProductForm({ product }: { product: Product }) {
               defaultValue={product.description}
               required
               className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface resize-none"
+            />
+          </div>
+
+          <div className="sm:col-span-2">
+            <ImageUpload
+              label="Product Images (Cloudinary Powered)"
+              name="images"
+              initialImages={product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : [])}
+              multiple={true}
+              maxFiles={5}
             />
           </div>
 

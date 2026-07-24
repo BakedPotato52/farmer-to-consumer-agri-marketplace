@@ -38,6 +38,8 @@ export interface FarmerProfile {
   totalReviews: number;
   totalProducts: number;
   deliverySlots: DeliverySlot[];
+  farmImage?: string;
+  bannerImage?: string;
 }
 
 // --- Products ---
@@ -76,6 +78,7 @@ export interface Product {
   quantityAvailable: number;
   isOrganic: boolean;
   harvestDate: string;
+  image?: string;
   images: string[];
   rating: number;
   totalReviews: number;

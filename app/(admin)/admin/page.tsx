@@ -1,6 +1,7 @@
 import { getPlatformStats } from "@/lib/data/analytics";
 import { getAllOrders } from "@/lib/data/orders";
 import { getPendingFarmers } from "@/lib/data/farmers";
+import { approveFarmerAction, rejectFarmerAction } from "./farmers/actions";
 import Link from "next/link";
 import { FaCheckCircle } from "react-icons/fa";
 import { MdAgriculture, MdGroups3, MdHowToReg, MdOutlineLocalShipping, MdOutlineShoppingCart, MdPayments, MdVerified } from "react-icons/md";
@@ -99,12 +100,26 @@ export default async function AdminOverview() {
                     <span className="material-symbols-outlined text-[14px]"><FaLocationDot /></span>
                     {farmer.farmLocation}, {farmer.state}
                   </p>
-                  <Link
-                    href="/admin/farmers"
-                    className="block w-full text-center py-2 bg-primary text-on-primary rounded-xl text-xs font-bold hover:bg-primary-container transition-all"
-                  >
-                    Review Application
-                  </Link>
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <form action={approveFarmerAction}>
+                      <input type="hidden" name="userId" value={farmer.userId} />
+                      <button
+                        type="submit"
+                        className="w-full text-center py-2 bg-primary text-on-primary rounded-xl text-xs font-bold hover:bg-primary-container transition-all cursor-pointer"
+                      >
+                        Approve
+                      </button>
+                    </form>
+                    <form action={rejectFarmerAction}>
+                      <input type="hidden" name="userId" value={farmer.userId} />
+                      <button
+                        type="submit"
+                        className="w-full text-center py-2 bg-error-container text-on-error-container rounded-xl text-xs font-bold hover:opacity-80 transition-opacity cursor-pointer"
+                      >
+                        Reject
+                      </button>
+                    </form>
+                  </div>
                 </div>
               ))
             )}

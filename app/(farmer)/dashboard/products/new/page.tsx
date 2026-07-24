@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { createProductAction } from "../actions";
+import ImageUpload from "@/components/ui/ImageUpload";
 import { RiErrorWarningLine, RiProgress5Line } from "react-icons/ri";
 import { FaRegSave } from "react-icons/fa";
 import { FaArrowLeft, FaLeaf } from "react-icons/fa6";
@@ -166,6 +167,15 @@ export default function NewProductPage() {
                 required
                 className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface placeholder:text-outline resize-none"
                 placeholder="Tell consumers about your farming practices, flavor profile, and freshness..."
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <ImageUpload
+                label="Product Images (Cloudinary Powered)"
+                name="images"
+                multiple={true}
+                maxFiles={5}
               />
             </div>
 

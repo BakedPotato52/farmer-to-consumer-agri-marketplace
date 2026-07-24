@@ -52,14 +52,21 @@ export default async function ProductDetailPage(props: {
         {/* Left Column: Visual Showcase */}
         <div className="lg:col-span-7 space-y-6">
           <div className={`relative aspect-square md:aspect-4/3 rounded-3xl bg-linear-to-br ${bgGradient} organic-shadow flex items-center justify-center p-8 overflow-hidden`}>
-            {/* Background Emoji watermark */}
-            <div className="text-9xl opacity-20 transform -rotate-12 scale-150 select-none">
-              {product.category === "vegetables" && "🥬"}
-              {product.category === "fruits" && "🍎"}
-              {product.category === "dairy" && "🥛"}
-              {product.category === "grains" && "🌾"}
-              {product.category === "herbs" && "🌿"}
-            </div>
+            {product.image || (product.images && product.images.length > 0) ? (
+              <img
+                src={product.image || product.images[0]}
+                alt={product.name}
+                className="w-full h-full object-cover rounded-3xl"
+              />
+            ) : (
+              <div className="text-9xl opacity-20 transform -rotate-12 scale-150 select-none">
+                {product.category === "vegetables" && "🥬"}
+                {product.category === "fruits" && "🍎"}
+                {product.category === "dairy" && "🥛"}
+                {product.category === "grains" && "🌾"}
+                {product.category === "herbs" && "🌿"}
+              </div>
+            )}
 
             {/* Badges Overlay */}
             <div className="absolute top-6 left-6 flex flex-col gap-2 z-10">
