@@ -4,7 +4,7 @@ import { getAllFarmers } from "@/lib/data/farmers";
 import { ProductCategory } from "@/lib/types";
 import { BiSearch } from "react-icons/bi";
 import { FaLeaf } from "react-icons/fa6";
-import { MdEco, MdVerified, MdVisibility } from "react-icons/md";
+import { MdEco, MdPerson, MdVerified, MdVisibility } from "react-icons/md";
 
 export default async function ProductsPage(props: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
@@ -293,7 +293,7 @@ export default async function ProductsPage(props: {
                       </h3>
                       <div className="flex items-center gap-1.5 mb-4 text-on-surface-variant text-sm">
                         <span className="material-symbols-outlined text-secondary text-[16px]">
-                          person
+                          <MdPerson />
                         </span>
                         <span className="line-clamp-1">
                           {farmer?.farmName || "Local Farm"}
