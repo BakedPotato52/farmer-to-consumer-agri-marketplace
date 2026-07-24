@@ -1,6 +1,9 @@
 import { store, generateId } from "@/lib/data/store";
 import type { Review } from "@/lib/types";
-import { saveReviewToFirestore, fetchReviewsFromFirestore } from "@/lib/firebase/services";
+import {
+  saveReviewToFirestore,
+  fetchReviewsFromFirestore,
+} from "@/lib/firebase/services";
 
 export async function getAllReviews(): Promise<Review[]> {
   const reviews = await fetchReviewsFromFirestore();
@@ -12,17 +15,23 @@ export async function getReviewsByFarmer(farmerId: string): Promise<Review[]> {
   return reviews.filter((r) => r.farmerId === farmerId);
 }
 
-export async function getReviewsByProduct(productId: string): Promise<Review[]> {
+export async function getReviewsByProduct(
+  productId: string,
+): Promise<Review[]> {
   const reviews = await getAllReviews();
   return reviews.filter((r) => r.productId === productId);
 }
 
-export async function getReviewsByConsumer(consumerId: string): Promise<Review[]> {
+export async function getReviewsByConsumer(
+  consumerId: string,
+): Promise<Review[]> {
   const reviews = await getAllReviews();
   return reviews.filter((r) => r.consumerId === consumerId);
 }
 
-export async function createReview(data: Omit<Review, "id" | "createdAt">): Promise<Review> {
+export async function createReview(
+  data: Omit<Review, "id" | "createdAt">,
+): Promise<Review> {
   const newReview: Review = {
     ...data,
     id: generateId(),

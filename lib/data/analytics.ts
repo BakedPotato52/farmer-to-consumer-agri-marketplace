@@ -105,9 +105,7 @@ export async function getOrderTrends(): Promise<
     }));
 }
 
-export async function getTopFarmers(
-  limit: number = 5,
-): Promise<
+export async function getTopFarmers(limit: number = 5): Promise<
   {
     farmer: FarmerProfile & { user: User };
     revenue: number;
@@ -127,11 +125,13 @@ export async function getTopFarmers(
     }
   });
 
-  const farmerIds = Object.keys(farmerStats).sort(
-    (a, b) => farmerStats[b].revenue - farmerStats[a].revenue,
-  ).slice(0, limit);
+  const farmerIds = Object.keys(farmerStats)
+    .sort((a, b) => farmerStats[b].revenue - farmerStats[a].revenue)
+    .slice(0, limit);
 
-  const farmerList = await Promise.all(farmerIds.map((id) => getFarmerById(id)));
+  const farmerList = await Promise.all(
+    farmerIds.map((id) => getFarmerById(id)),
+  );
 
   return farmerList
     .map((farmer, idx) => {
@@ -225,7 +225,9 @@ export async function getCategoryDistribution(): Promise<
   }));
 }
 
-export async function getFarmerSalesSummary(farmerId: string): Promise<SalesSummary> {
+export async function getFarmerSalesSummary(
+  farmerId: string,
+): Promise<SalesSummary> {
   const allOrders = await getAllOrders();
   const farmerOrders = allOrders.filter((o) => o.farmerId === farmerId);
   const totalOrders = farmerOrders.length;

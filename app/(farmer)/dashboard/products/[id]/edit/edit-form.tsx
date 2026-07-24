@@ -20,12 +20,16 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+          <span className="material-symbols-outlined animate-spin text-[20px]">
+            <RiProgress5Line />
+          </span>
           Updating...
         </>
       ) : (
         <>
-            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
+          <span className="material-symbols-outlined text-[20px]">
+            <FaRegSave />
+          </span>
           Save Changes
         </>
       )}
@@ -44,7 +48,9 @@ export default function EditProductForm({ product }: { product: Product }) {
     <div className="glass-card organic-shadow rounded-3xl p-8">
       {state?.error && (
         <div className="p-4 rounded-xl bg-error-container/30 border border-error/20 text-xs font-semibold text-on-error-container mb-6 flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]"><RiErrorWarningLine /></span>
+          <span className="material-symbols-outlined text-[18px]">
+            <RiErrorWarningLine />
+          </span>
           {state.error}
         </div>
       )}
@@ -53,7 +59,10 @@ export default function EditProductForm({ product }: { product: Product }) {
         <input type="hidden" name="id" value={product.id} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div className="space-y-2 sm:col-span-2">
-            <label htmlFor="name" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="name"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Product Name *
             </label>
             <input
@@ -67,7 +76,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="category" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="category"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Category *
             </label>
             <select
@@ -86,7 +98,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="harvestDate" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="harvestDate"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Harvest Date *
             </label>
             <input
@@ -100,7 +115,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="price" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="price"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Price (₹) *
             </label>
             <input
@@ -116,7 +134,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="unit" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="unit"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Unit *
             </label>
             <select
@@ -135,7 +156,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <label htmlFor="quantityAvailable" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="quantityAvailable"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Quantity Available *
             </label>
             <input
@@ -150,7 +174,10 @@ export default function EditProductForm({ product }: { product: Product }) {
           </div>
 
           <div className="space-y-2 sm:col-span-2">
-            <label htmlFor="description" className="block text-xs font-bold text-outline uppercase tracking-wider">
+            <label
+              htmlFor="description"
+              className="block text-xs font-bold text-outline uppercase tracking-wider"
+            >
               Description *
             </label>
             <textarea
@@ -167,7 +194,13 @@ export default function EditProductForm({ product }: { product: Product }) {
             <ImageUpload
               label="Product Images"
               name="images"
-              initialImages={product.images && product.images.length > 0 ? product.images : (product.image ? [product.image] : [])}
+              initialImages={
+                product.images && product.images.length > 0
+                  ? product.images
+                  : product.image
+                    ? [product.image]
+                    : []
+              }
               multiple={true}
               maxFiles={5}
             />
@@ -182,7 +215,9 @@ export default function EditProductForm({ product }: { product: Product }) {
                 className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
               />
               <span className="text-sm font-semibold text-on-surface flex items-center gap-1">
-                <span className="material-symbols-outlined text-[18px] text-secondary"><MdEco /></span>
+                <span className="material-symbols-outlined text-[18px] text-secondary">
+                  <MdEco />
+                </span>
                 Certified Organic
               </span>
             </label>
@@ -194,7 +229,9 @@ export default function EditProductForm({ product }: { product: Product }) {
                 defaultChecked={product.isActive}
                 className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
               />
-              <span className="text-sm font-semibold text-on-surface">Product is Active</span>
+              <span className="text-sm font-semibold text-on-surface">
+                Product is Active
+              </span>
             </label>
           </div>
         </div>

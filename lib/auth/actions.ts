@@ -16,7 +16,6 @@ export async function loginAction(
   prevState: any,
   formData: FormData,
 ): Promise<{ error?: string; success?: boolean }> {
-
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -34,7 +33,11 @@ export async function loginAction(
     const fallbackUser = await authenticateUser(email, password);
     if (!fallbackUser) {
       const code = firebaseErr?.code;
-      if (code === "auth/user-not-found" || code === "auth/invalid-credential" || code === "auth/wrong-password") {
+      if (
+        code === "auth/user-not-found" ||
+        code === "auth/invalid-credential" ||
+        code === "auth/wrong-password"
+      ) {
         return { error: "Invalid email or password" };
       }
       if (code === "auth/invalid-email") {
@@ -59,7 +62,6 @@ export async function loginAction(
     name: user.name,
     role: user.role,
   });
-
 
   if (user.role === "admin") {
     redirect("/admin");
@@ -101,7 +103,10 @@ export async function registerAction(
     if (firebaseErr?.code === "auth/email-already-in-use") {
       return { error: "Email is already registered with Firebase" };
     }
-    console.warn("Firebase Auth registration warning (proceeding with profile creation):", firebaseErr.message);
+    console.warn(
+      "Firebase Auth registration warning (proceeding with profile creation):",
+      firebaseErr.message,
+    );
   }
 
   const user = await createUser({

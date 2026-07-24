@@ -16,16 +16,21 @@ export default function PlatformSettings() {
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
       <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
-        <h1 className="font-heading text-3xl font-extrabold text-primary">Platform Configuration & Settings</h1>
+        <h1 className="font-heading text-3xl font-extrabold text-primary">
+          Platform Configuration & Settings
+        </h1>
         <p className="text-on-surface-variant text-sm mt-1">
-          Manage commission parameters, support contacts, notification toggles, and global marketplace defaults.
+          Manage commission parameters, support contacts, notification toggles,
+          and global marketplace defaults.
         </p>
       </div>
 
       <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
         {isSaved && (
           <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]"><MdCheckCircle /></span>
+            <span className="material-symbols-outlined text-[18px]">
+              <MdCheckCircle />
+            </span>
             Platform settings updated successfully!
           </div>
         )}
@@ -34,7 +39,9 @@ export default function PlatformSettings() {
           {/* Section 1: General Platform Details */}
           <div className="space-y-6">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-              <span className="material-symbols-outlined text-[20px]"><MdTune /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <MdTune />
+              </span>
               1. General Information & Identity
             </h2>
 
@@ -66,7 +73,9 @@ export default function PlatformSettings() {
           {/* Section 2: Commission & Financials */}
           <div className="space-y-6">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-              <span className="material-symbols-outlined text-[20px]"><MdPercent /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <MdPercent />
+              </span>
               2. Financial Parameters
             </h2>
 
@@ -75,7 +84,8 @@ export default function PlatformSettings() {
                 Platform Commission Fee (%)
               </label>
               <p className="text-xs text-outline">
-                Percentage cut automatically deducted on each completed consumer order.
+                Percentage cut automatically deducted on each completed consumer
+                order.
               </p>
               <div className="relative">
                 <input
@@ -84,7 +94,9 @@ export default function PlatformSettings() {
                   defaultValue="5.0"
                   className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-heading font-bold"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-outline font-bold">%</span>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-outline font-bold">
+                  %
+                </span>
               </div>
             </div>
           </div>
@@ -95,7 +107,9 @@ export default function PlatformSettings() {
               type="submit"
               className="bg-primary text-on-primary px-8 py-3.5 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
             >
-              <span className="material-symbols-outlined text-[20px]">save</span>
+              <span className="material-symbols-outlined text-[20px]">
+                save
+              </span>
               Save Platform Settings
             </button>
           </div>

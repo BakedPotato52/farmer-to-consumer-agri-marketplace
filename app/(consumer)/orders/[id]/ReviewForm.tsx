@@ -47,14 +47,19 @@ export default function ReviewForm({
   if (submitted) {
     return (
       <div className="mt-3 p-3 bg-secondary-container text-on-secondary-container rounded-xl text-xs font-semibold flex items-center gap-1.5">
-        <span className="material-symbols-outlined text-[16px]">check_circle</span>
+        <span className="material-symbols-outlined text-[16px]">
+          check_circle
+        </span>
         Thank you for reviewing {productName}!
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-3 p-4 bg-surface-container-low rounded-xl border border-outline-variant/15 space-y-3">
+    <form
+      onSubmit={handleSubmit}
+      className="mt-3 p-4 bg-surface-container-low rounded-xl border border-outline-variant/15 space-y-3"
+    >
       <h4 className="font-heading font-bold text-xs text-primary uppercase tracking-wider">
         Leave a Review for {productName}
       </h4>
@@ -71,7 +76,10 @@ export default function ReviewForm({
             >
               <span
                 className="material-symbols-outlined text-[20px]"
-                style={{ fontVariationSettings: star <= rating ? "'FILL' 1" : "'FILL' 0" }}
+                style={{
+                  fontVariationSettings:
+                    star <= rating ? "'FILL' 1" : "'FILL' 0",
+                }}
               >
                 <FaStar />
               </span>

@@ -40,7 +40,8 @@ export default async function OrderDetailPage({
 
   const statusBadgeStyle: Record<string, string> = {
     pending: "bg-amber-100 text-amber-900 border-amber-200",
-    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    confirmed:
+      "bg-secondary-container text-on-secondary-container border-secondary/20",
     packed: "bg-purple-100 text-purple-900 border-purple-200",
     shipped: "bg-sky-100 text-sky-900 border-sky-200",
     delivered: "bg-primary text-on-primary",
@@ -56,7 +57,9 @@ export default async function OrderDetailPage({
             href="/dashboard/orders"
             className="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors"
           >
-            <span className="material-symbols-outlined text-[20px]"><FaArrowLeft /></span>
+            <span className="material-symbols-outlined text-[20px]">
+              <FaArrowLeft />
+            </span>
           </Link>
           <div>
             <div className="flex items-center gap-2">
@@ -65,13 +68,16 @@ export default async function OrderDetailPage({
               </h1>
               <span
                 className={`px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                  statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                  statusBadgeStyle[order.status] ||
+                  "bg-surface-container text-on-surface"
                 }`}
               >
                 {ORDER_STATUS_LABELS[order.status]}
               </span>
             </div>
-            <p className="text-xs text-outline">Placed on {new Date(order.createdAt).toLocaleString()}</p>
+            <p className="text-xs text-outline">
+              Placed on {new Date(order.createdAt).toLocaleString()}
+            </p>
           </div>
         </div>
 
@@ -86,7 +92,9 @@ export default async function OrderDetailPage({
               type="submit"
               className="bg-primary text-on-primary px-6 py-3 rounded-xl font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
             >
-              <span className="material-symbols-outlined text-[18px]"><FaCheckCircle /></span>
+              <span className="material-symbols-outlined text-[18px]">
+                <FaCheckCircle />
+              </span>
               Mark as {ORDER_STATUS_LABELS[nextStatus]}
             </button>
           </form>
@@ -98,11 +106,16 @@ export default async function OrderDetailPage({
         <div className="md:col-span-2 space-y-6">
           <div className="glass-card organic-shadow rounded-3xl overflow-hidden">
             <div className="p-6 border-b border-outline-variant/10">
-              <h2 className="font-heading text-lg font-bold text-primary">Items Ordered</h2>
+              <h2 className="font-heading text-lg font-bold text-primary">
+                Items Ordered
+              </h2>
             </div>
             <ul className="divide-y divide-outline-variant/10">
               {order.items.map((item, idx) => (
-                <li key={idx} className="p-6 flex items-center justify-between hover:bg-surface-container-low/50 transition-colors">
+                <li
+                  key={idx}
+                  className="p-6 flex items-center justify-between hover:bg-surface-container-low/50 transition-colors"
+                >
                   <div className="flex items-center gap-4">
                     {item.image ? (
                       <img
@@ -116,9 +129,12 @@ export default async function OrderDetailPage({
                       </div>
                     )}
                     <div>
-                      <h3 className="font-heading font-bold text-primary text-base">{item.productName}</h3>
+                      <h3 className="font-heading font-bold text-primary text-base">
+                        {item.productName}
+                      </h3>
                       <p className="text-xs text-outline">
-                        {item.quantity} {item.unit} × ₹{item.pricePerUnit} per {item.unit}
+                        {item.quantity} {item.unit} × ₹{item.pricePerUnit} per{" "}
+                        {item.unit}
                       </p>
                     </div>
                   </div>
@@ -129,20 +145,31 @@ export default async function OrderDetailPage({
               ))}
             </ul>
             <div className="p-6 bg-surface-container-low border-t border-outline-variant/10 flex justify-between items-center">
-              <span className="font-heading text-lg font-bold text-on-surface">Total Payable</span>
-              <span className="font-heading text-2xl font-bold text-primary">₹{order.totalAmount.toFixed(2)}</span>
+              <span className="font-heading text-lg font-bold text-on-surface">
+                Total Payable
+              </span>
+              <span className="font-heading text-2xl font-bold text-primary">
+                ₹{order.totalAmount.toFixed(2)}
+              </span>
             </div>
           </div>
 
           {/* Timeline */}
           <div className="glass-card organic-shadow rounded-3xl p-6">
-            <h2 className="font-heading text-lg font-bold text-primary mb-6">Fulfillment Workflow</h2>
+            <h2 className="font-heading text-lg font-bold text-primary mb-6">
+              Fulfillment Workflow
+            </h2>
             <div className="space-y-6 pl-2">
               {ORDER_STATUS_FLOW.map((status, index) => {
-                const isCompleted = ORDER_STATUS_FLOW.indexOf(order.status) >= index;
+                const isCompleted =
+                  ORDER_STATUS_FLOW.indexOf(order.status) >= index;
                 const isCurrent = order.status === status;
 
-                if (order.status === "cancelled" && status !== "cancelled" && status !== "pending") {
+                if (
+                  order.status === "cancelled" &&
+                  status !== "cancelled" &&
+                  status !== "pending"
+                ) {
                   return null;
                 }
 
@@ -160,7 +187,9 @@ export default async function OrderDetailPage({
                       </div>
                     </div>
                     <div>
-                      <h4 className={`font-heading text-sm font-bold ${isCompleted ? "text-primary" : "text-outline"}`}>
+                      <h4
+                        className={`font-heading text-sm font-bold ${isCompleted ? "text-primary" : "text-outline"}`}
+                      >
                         {ORDER_STATUS_LABELS[status]}
                       </h4>
                       {isCurrent && (
@@ -180,38 +209,60 @@ export default async function OrderDetailPage({
         <div className="space-y-6">
           <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]"><FaUser /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <FaUser />
+              </span>
               Customer Details
             </h2>
             <div className="space-y-2 text-xs text-on-surface-variant">
               <div>
-                <span className="text-outline font-bold uppercase tracking-wider block">Customer Name</span>
-                <span className="font-semibold text-on-surface text-sm">{order.consumerName}</span>
+                <span className="text-outline font-bold uppercase tracking-wider block">
+                  Customer Name
+                </span>
+                <span className="font-semibold text-on-surface text-sm">
+                  {order.consumerName}
+                </span>
               </div>
               <div>
-                <span className="text-outline font-bold uppercase tracking-wider block mt-2">Delivery Address</span>
-                <p className="text-on-surface font-medium whitespace-pre-line leading-relaxed">{order.deliveryAddress}</p>
+                <span className="text-outline font-bold uppercase tracking-wider block mt-2">
+                  Delivery Address
+                </span>
+                <p className="text-on-surface font-medium whitespace-pre-line leading-relaxed">
+                  {order.deliveryAddress}
+                </p>
               </div>
             </div>
           </div>
 
           <div className="glass-card organic-shadow rounded-3xl p-6 space-y-4">
             <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]"><MdOutlineLocalShipping /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <MdOutlineLocalShipping />
+              </span>
               Schedule Slot
             </h2>
             <div className="space-y-2 text-xs text-on-surface-variant">
               <div>
-                <span className="text-outline font-bold uppercase tracking-wider block">Target Delivery Date</span>
-                <span className="font-semibold text-on-surface">{new Date(order.deliveryDate).toLocaleDateString()}</span>
+                <span className="text-outline font-bold uppercase tracking-wider block">
+                  Target Delivery Date
+                </span>
+                <span className="font-semibold text-on-surface">
+                  {new Date(order.deliveryDate).toLocaleDateString()}
+                </span>
               </div>
               <div>
-                <span className="text-outline font-bold uppercase tracking-wider block mt-2">Window</span>
-                <span className="font-semibold text-on-surface">{order.deliverySlot}</span>
+                <span className="text-outline font-bold uppercase tracking-wider block mt-2">
+                  Window
+                </span>
+                <span className="font-semibold text-on-surface">
+                  {order.deliverySlot}
+                </span>
               </div>
               {order.notes && (
                 <div className="pt-2 border-t border-outline-variant/10">
-                  <span className="text-outline font-bold uppercase tracking-wider block">Special Notes</span>
+                  <span className="text-outline font-bold uppercase tracking-wider block">
+                    Special Notes
+                  </span>
                   <p className="italic text-on-surface bg-amber-50 p-2.5 rounded-xl border border-amber-200 mt-1">
                     &ldquo;{order.notes}&rdquo;
                   </p>

@@ -47,9 +47,12 @@ export default async function OrdersManagement({
     <div className="space-y-8">
       {/* Header Card */}
       <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
-        <h1 className="font-heading text-3xl font-extrabold text-primary">Global Order Monitoring</h1>
+        <h1 className="font-heading text-3xl font-extrabold text-primary">
+          Global Order Monitoring
+        </h1>
         <p className="text-on-surface-variant text-sm mt-1">
-          Oversee platform transaction activity, fulfillment progress, and multi-merchant logistics ({allOrders.length} total orders).
+          Oversee platform transaction activity, fulfillment progress, and
+          multi-merchant logistics ({allOrders.length} total orders).
         </p>
       </div>
 
@@ -95,13 +98,19 @@ export default async function OrdersManagement({
             <tbody className="divide-y divide-outline-variant/10">
               {displayedOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-outline italic">
+                  <td
+                    colSpan={5}
+                    className="px-6 py-12 text-center text-outline italic"
+                  >
                     No orders found in this category.
                   </td>
                 </tr>
               ) : (
                 displayedOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
+                  <tr
+                    key={order.id}
+                    className="hover:bg-surface-container-low/50 transition-colors"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         {order.items[0]?.image ? (
@@ -120,19 +129,28 @@ export default async function OrdersManagement({
                             #{order.id.slice(-6).toUpperCase()}
                           </div>
                           <div className="text-xs text-outline mt-0.5">
-                            {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                            {order.items.length}{" "}
+                            {order.items.length === 1 ? "item" : "items"}
                           </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 space-y-1">
                       <div className="text-xs">
-                        <span className="text-outline uppercase font-bold text-[10px] block">Buyer:</span>
-                        <span className="font-semibold text-on-surface">{order.consumerName}</span>
+                        <span className="text-outline uppercase font-bold text-[10px] block">
+                          Buyer:
+                        </span>
+                        <span className="font-semibold text-on-surface">
+                          {order.consumerName}
+                        </span>
                       </div>
                       <div className="text-xs">
-                        <span className="text-outline uppercase font-bold text-[10px] block">Farmer:</span>
-                        <span className="font-semibold text-primary">{order.farmerName}</span>
+                        <span className="text-outline uppercase font-bold text-[10px] block">
+                          Farmer:
+                        </span>
+                        <span className="font-semibold text-primary">
+                          {order.farmerName}
+                        </span>
                       </div>
                     </td>
                     <td className="px-6 py-4 font-heading font-bold text-primary text-base">
@@ -158,7 +176,8 @@ export default async function OrdersManagement({
 function StatusBadge({ status }: { status: OrderStatus }) {
   const styles: Record<OrderStatus, string> = {
     pending: "bg-amber-100 text-amber-900 border-amber-200",
-    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    confirmed:
+      "bg-secondary-container text-on-secondary-container border-secondary/20",
     packed: "bg-purple-100 text-purple-900 border-purple-200",
     shipped: "bg-sky-100 text-sky-900 border-sky-200",
     delivered: "bg-primary text-on-primary border-primary",

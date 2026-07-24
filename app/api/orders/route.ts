@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
           totalAmount: itemsTotal + 40, // subtotal + delivery fee
           deliveryAddress: body.deliveryAddress || "",
           deliverySlot: body.deliverySlot || "Morning (8AM - 12PM)",
-          deliveryDate: body.deliveryDate || new Date().toISOString().split("T")[0],
+          deliveryDate:
+            body.deliveryDate || new Date().toISOString().split("T")[0],
           notes: body.notes || "",
         });
 

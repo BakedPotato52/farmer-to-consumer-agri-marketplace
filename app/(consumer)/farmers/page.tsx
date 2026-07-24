@@ -33,13 +33,18 @@ export default async function FarmersPage(props: {
           Meet Our Producers
         </h1>
         <p className="font-body-md text-lg text-on-surface-variant max-w-2xl">
-          Connect directly with the local farmers providing your table with the freshest organic produce. Transparency from soil to shelf.
+          Connect directly with the local farmers providing your table with the
+          freshest organic produce. Transparency from soil to shelf.
         </p>
       </header>
 
       {/* Filter & Search Bar */}
       <div className="bg-surface-container-low p-6 rounded-2xl organic-shadow mb-8">
-        <form method="GET" action="/farmers" className="flex flex-col md:flex-row gap-4 items-center">
+        <form
+          method="GET"
+          action="/farmers"
+          className="flex flex-col md:flex-row gap-4 items-center"
+        >
           <div className="flex-1 w-full relative">
             <input
               type="text"
@@ -79,11 +84,16 @@ export default async function FarmersPage(props: {
       {farmers.length === 0 ? (
         <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
           <div className="w-16 h-16 rounded-full bg-on-secondary-container text-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-            <span className="material-symbols-outlined text-3xl"><MdAgriculture /></span>
+            <span className="material-symbols-outlined text-3xl">
+              <MdAgriculture />
+            </span>
           </div>
-          <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">No farmers found</h3>
+          <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">
+            No farmers found
+          </h3>
           <p className="text-on-surface-variant max-w-sm mx-auto mb-6">
-            Try adjusting your search criteria to discover local growers in other areas.
+            Try adjusting your search criteria to discover local growers in
+            other areas.
           </p>
           <Link
             href="/farmers"
@@ -117,7 +127,10 @@ export default async function FarmersPage(props: {
                   </span>
                   {farmer.isVerified && (
                     <span className="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-xs font-bold shadow-sm flex items-center gap-1">
-                      <span className="material-symbols-outlined text-[14px]"><MdVerified /></span> Verified
+                      <span className="material-symbols-outlined text-[14px]">
+                        <MdVerified />
+                      </span>{" "}
+                      Verified
                     </span>
                   )}
                 </div>
@@ -137,10 +150,15 @@ export default async function FarmersPage(props: {
                   )}
                 </div>
                 <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-                  <span className="material-symbols-outlined text-amber-500 text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  <span
+                    className="material-symbols-outlined text-amber-500 text-[16px]"
+                    style={{ fontVariationSettings: "'FILL' 1" }}
+                  >
                     <FaStar />
                   </span>
-                  <span className="text-xs font-bold text-amber-900">{farmer.rating.toFixed(1)}</span>
+                  <span className="text-xs font-bold text-amber-900">
+                    {farmer.rating.toFixed(1)}
+                  </span>
                 </div>
               </div>
 

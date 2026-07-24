@@ -7,17 +7,19 @@ export async function POST(request: Request) {
       process.env.CLOUDINARY_CLOUD_NAME ||
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
       "kanak-acharya";
-    
+
     // Parse API secret from CLOUDINARY_API_SECRET or CLOUDINARY_URL
     let apiSecret = process.env.CLOUDINARY_API_SECRET;
     if (!apiSecret && process.env.CLOUDINARY_URL) {
-      const match = process.env.CLOUDINARY_URL.match(/cloudinary:\/\/[^:]+:([^@]+)@/);
+      const match = process.env.CLOUDINARY_URL.match(
+        /cloudinary:\/\/[^:]+:([^@]+)@/,
+      );
       if (match) apiSecret = match[1];
     }
 
     const apiKey =
       process.env.CLOUDINARY_API_KEY ||
-      (process.env.CLOUDINARY_URL?.match(/cloudinary:\/\/([^:]+):/)?.[1]);
+      process.env.CLOUDINARY_URL?.match(/cloudinary:\/\/([^:]+):/)?.[1];
 
     const uploadPreset =
       process.env.CLOUDINARY_UPLOAD_PRESET ||
@@ -31,13 +33,19 @@ export async function POST(request: Request) {
       const formData = await request.formData();
       const file = formData.get("file");
       if (!file) {
-        return NextResponse.json({ error: "No file provided in form data" }, { status: 400 });
+        return NextResponse.json(
+          { error: "No file provided in form data" },
+          { status: 400 },
+        );
       }
       fileData = file as Blob;
     } else {
       const json = await request.json();
       if (!json.file) {
-        return NextResponse.json({ error: "No file string provided in JSON payload" }, { status: 400 });
+        return NextResponse.json(
+          { error: "No file string provided in JSON payload" },
+          { status: 400 },
+        );
       }
       fileData = json.file;
     }
@@ -59,11 +67,17 @@ export async function POST(request: Request) {
 
     // 2. If unsigned upload failed and we have credentials, try Signed Upload
     if (!cloudinaryRes.ok && apiKey && apiSecret) {
-      console.warn("Unsigned Cloudinary upload failed, attempting signed upload...", data.error?.message);
-      
+      console.warn(
+        "Unsigned Cloudinary upload failed, attempting signed upload...",
+        data.error?.message,
+      );
+
       const timestamp = Math.round(new Date().getTime() / 1000).toString();
       const paramsToSign = `timestamp=${timestamp}${apiSecret}`;
-      const signature = crypto.createHash("sha1").update(paramsToSign).digest("hex");
+      const signature = crypto
+        .createHash("sha1")
+        .update(paramsToSign)
+        .digest("hex");
 
       const signedFormData = new FormData();
       signedFormData.append("file", fileData);
@@ -85,7 +99,9 @@ export async function POST(request: Request) {
     if (!cloudinaryRes.ok || !data.secure_url) {
       console.error("Cloudinary upload error:", data);
       return NextResponse.json(
-        { error: data.error?.message || "Failed to upload image to Cloudinary" },
+        {
+          error: data.error?.message || "Failed to upload image to Cloudinary",
+        },
         { status: 500 },
       );
     }

@@ -1,6 +1,9 @@
 import { store, generateId } from "@/lib/data/store";
 import type { User, UserRole } from "@/lib/types";
-import { saveUserToFirestore, fetchUsersFromFirestore } from "@/lib/firebase/services";
+import {
+  saveUserToFirestore,
+  fetchUsersFromFirestore,
+} from "@/lib/firebase/services";
 
 export async function getAllUsers(): Promise<User[]> {
   const users = await fetchUsersFromFirestore();
@@ -32,7 +35,10 @@ export async function createUser(
   return newUser;
 }
 
-export async function authenticateUser(email: string, password: string): Promise<User | null> {
+export async function authenticateUser(
+  email: string,
+  password: string,
+): Promise<User | null> {
   const users = await getAllUsers();
   const user = users.find((u) => u.email === email && u.password === password);
   return user || null;

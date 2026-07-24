@@ -22,20 +22,27 @@ export default async function ProfilePage() {
       {/* Header Card */}
       <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-heading text-3xl font-extrabold text-primary">Farm Profile Settings</h1>
+          <h1 className="font-heading text-3xl font-extrabold text-primary">
+            Farm Profile Settings
+          </h1>
           <p className="text-on-surface-variant text-sm mt-1">
-            Manage public farm story, location details, crop categories, and verification status.
+            Manage public farm story, location details, crop categories, and
+            verification status.
           </p>
         </div>
 
         {profile.isVerified ? (
           <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold shadow-sm">
-            <span className="material-symbols-outlined text-[18px]"><MdVerified /></span>
+            <span className="material-symbols-outlined text-[18px]">
+              <MdVerified />
+            </span>
             <span>Verified Master Farmer</span>
           </div>
         ) : (
           <div className="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-100 text-amber-900 rounded-full text-xs font-bold shadow-sm">
-              <span className="material-symbols-outlined text-[18px]"><MdOutlineSchedule /></span>
+            <span className="material-symbols-outlined text-[18px]">
+              <MdOutlineSchedule />
+            </span>
             <span>Verification Pending</span>
           </div>
         )}

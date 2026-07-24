@@ -20,7 +20,8 @@ export default async function OrdersPage() {
     confirmed: "bg-blue-100 text-blue-900 border-blue-200",
     packed: "bg-purple-100 text-purple-900 border-purple-200",
     shipped: "bg-sky-100 text-sky-900 border-sky-200",
-    delivered: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    delivered:
+      "bg-secondary-container text-on-secondary-container border-secondary/20",
     cancelled: "bg-error-container text-on-error-container border-error/20",
   };
 
@@ -39,11 +40,16 @@ export default async function OrdersPage() {
       {orders.length === 0 ? (
         <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
           <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-            <span className="material-symbols-outlined text-3xl"><MdOutlineLocalShipping /></span>
+            <span className="material-symbols-outlined text-3xl">
+              <MdOutlineLocalShipping />
+            </span>
           </div>
-          <h2 className="font-heading text-2xl font-bold text-on-surface mb-2">No orders placed yet</h2>
+          <h2 className="font-heading text-2xl font-bold text-on-surface mb-2">
+            No orders placed yet
+          </h2>
           <p className="text-on-surface-variant max-w-sm mx-auto mb-6 text-sm">
-            Discover local organic farmers and bring fresh harvests directly to your table.
+            Discover local organic farmers and bring fresh harvests directly to
+            your table.
           </p>
           <Link
             href="/products"
@@ -55,7 +61,10 @@ export default async function OrdersPage() {
       ) : (
         <div className="flex flex-col gap-6">
           {orders.map((order) => {
-            const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
+            const itemCount = order.items.reduce(
+              (sum, item) => sum + item.quantity,
+              0,
+            );
 
             return (
               <div
@@ -72,8 +81,12 @@ export default async function OrdersPage() {
                     />
                   ) : (
                     <>
-                      <span className="material-symbols-outlined text-4xl mb-1"><MdOutlineLocalShipping /></span>
-                      <span className="text-xs font-bold text-outline uppercase">{itemCount} {itemCount === 1 ? "Item" : "Items"}</span>
+                      <span className="material-symbols-outlined text-4xl mb-1">
+                        <MdOutlineLocalShipping />
+                      </span>
+                      <span className="text-xs font-bold text-outline uppercase">
+                        {itemCount} {itemCount === 1 ? "Item" : "Items"}
+                      </span>
                     </>
                   )}
                 </div>
@@ -93,15 +106,18 @@ export default async function OrdersPage() {
 
                       <div
                         className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1 border ${
-                          statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                          statusBadgeStyle[order.status] ||
+                          "bg-surface-container text-on-surface"
                         }`}
                       >
                         <span className="material-symbols-outlined text-[16px]">
-                          {order.status === "delivered"
-                            ? <FaCircleCheck />
-                            : order.status === "cancelled"
-                              ? <FaCircleXmark />
-                              : <RiProgress5Line />}
+                          {order.status === "delivered" ? (
+                            <FaCircleCheck />
+                          ) : order.status === "cancelled" ? (
+                            <FaCircleXmark />
+                          ) : (
+                            <RiProgress5Line />
+                          )}
                         </span>
                         {order.status}
                       </div>
@@ -138,7 +154,9 @@ export default async function OrdersPage() {
 
                   <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-outline-variant/10">
                     <div>
-                      <span className="text-xs text-outline block">Total Amount</span>
+                      <span className="text-xs text-outline block">
+                        Total Amount
+                      </span>
                       <span className="font-heading text-2xl font-bold text-primary">
                         ₹{order.totalAmount.toFixed(2)}
                       </span>
@@ -149,7 +167,9 @@ export default async function OrdersPage() {
                       className="px-6 py-2.5 rounded-xl bg-primary text-on-primary font-heading text-sm font-semibold hover:bg-primary-container transition-all active:scale-[0.98] organic-shadow flex items-center gap-2"
                     >
                       View Details
-                      <span className="material-symbols-outlined text-[18px]"><FaArrowRight /></span>
+                      <span className="material-symbols-outlined text-[18px]">
+                        <FaArrowRight />
+                      </span>
                     </Link>
                   </div>
                 </div>

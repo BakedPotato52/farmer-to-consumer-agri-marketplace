@@ -49,7 +49,8 @@ export default async function ProductsPage(props: {
           Today&apos;s Harvest
         </h1>
         <p className="font-body-md text-lg text-on-surface-variant max-w-2xl mt-2">
-          Connecting you directly with local farmers bringing the season&apos;s finest organic produce to your table.
+          Connecting you directly with local farmers bringing the season&apos;s
+          finest organic produce to your table.
         </p>
       </div>
 
@@ -62,7 +63,9 @@ export default async function ProductsPage(props: {
             className="bg-surface-container-low p-6 rounded-2xl organic-shadow space-y-6 sticky top-16"
           >
             <div>
-              <h3 className="font-heading text-xl font-bold text-on-surface mb-4">Search & Filters</h3>
+              <h3 className="font-heading text-xl font-bold text-on-surface mb-4">
+                Search & Filters
+              </h3>
               <div className="relative">
                 <input
                   type="text"
@@ -79,7 +82,9 @@ export default async function ProductsPage(props: {
 
             {/* Categories */}
             <div>
-              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">Category</h3>
+              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">
+                Category
+              </h3>
               <div className="space-y-2.5">
                 <label className="flex items-center gap-3 cursor-pointer group">
                   <input
@@ -93,20 +98,25 @@ export default async function ProductsPage(props: {
                     All Harvests
                   </span>
                 </label>
-                {["vegetables", "fruits", "dairy", "grains", "herbs"].map((c) => (
-                  <label key={c} className="flex items-center gap-3 cursor-pointer group capitalize">
-                    <input
-                      type="radio"
-                      name="category"
-                      value={c}
-                      defaultChecked={cat === c}
-                      className="w-4 h-4 text-primary focus:ring-primary border-outline"
-                    />
-                    <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors">
-                      {c}
-                    </span>
-                  </label>
-                ))}
+                {["vegetables", "fruits", "dairy", "grains", "herbs"].map(
+                  (c) => (
+                    <label
+                      key={c}
+                      className="flex items-center gap-3 cursor-pointer group capitalize"
+                    >
+                      <input
+                        type="radio"
+                        name="category"
+                        value={c}
+                        defaultChecked={cat === c}
+                        className="w-4 h-4 text-primary focus:ring-primary border-outline"
+                      />
+                      <span className="text-sm font-medium text-on-surface-variant group-hover:text-primary transition-colors">
+                        {c}
+                      </span>
+                    </label>
+                  ),
+                )}
               </div>
             </div>
 
@@ -121,7 +131,9 @@ export default async function ProductsPage(props: {
                   className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
                 />
                 <span className="text-sm font-semibold text-on-surface group-hover:text-primary transition-colors flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[16px] text-secondary"><FaLeaf /></span>
+                  <span className="material-symbols-outlined text-[16px] text-secondary">
+                    <FaLeaf />
+                  </span>
                   Organic Certified Only
                 </span>
               </label>
@@ -129,7 +141,9 @@ export default async function ProductsPage(props: {
 
             {/* Price Range */}
             <div>
-              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">Price Range (₹)</h3>
+              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">
+                Price Range (₹)
+              </h3>
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -151,7 +165,9 @@ export default async function ProductsPage(props: {
 
             {/* Sort By */}
             <div>
-              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">Sort By</h3>
+              <h3 className="font-heading text-lg font-bold text-on-surface mb-3">
+                Sort By
+              </h3>
               <select
                 name="sortBy"
                 defaultValue={sortBy || ""}
@@ -185,18 +201,27 @@ export default async function ProductsPage(props: {
           {/* Toolbar */}
           <div className="flex flex-wrap items-center justify-between mb-6 gap-4 pb-4 border-b border-outline-variant/10">
             <p className="text-sm text-on-surface-variant">
-              Showing <span className="font-bold text-on-surface">{products.length}</span> results for your selection
+              Showing{" "}
+              <span className="font-bold text-on-surface">
+                {products.length}
+              </span>{" "}
+              results for your selection
             </p>
           </div>
 
           {products.length === 0 ? (
             <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
               <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-                <span className="material-symbols-outlined text-3xl"><MdEco /></span>
+                <span className="material-symbols-outlined text-3xl">
+                  <MdEco />
+                </span>
               </div>
-              <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">No produce found</h3>
+              <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">
+                No produce found
+              </h3>
               <p className="text-on-surface-variant max-w-sm mx-auto mb-6">
-                Try adjusting your search query or clear filters to discover other seasonal items.
+                Try adjusting your search query or clear filters to discover
+                other seasonal items.
               </p>
               <Link
                 href="/products"
@@ -206,7 +231,7 @@ export default async function ProductsPage(props: {
               </Link>
             </div>
           ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
               {products.map((product) => {
                 const farmer = farmerMap.get(product.farmerId);
                 const bgGradients: Record<string, string> = {
@@ -216,7 +241,9 @@ export default async function ProductsPage(props: {
                   grains: "from-amber-700/80 to-yellow-900/90",
                   herbs: "from-teal-700/80 to-emerald-900/90",
                 };
-                const gradient = bgGradients[product.category] || "from-primary to-primary-container";
+                const gradient =
+                  bgGradients[product.category] ||
+                  "from-primary to-primary-container";
 
                 return (
                   <Link
@@ -224,8 +251,11 @@ export default async function ProductsPage(props: {
                     href={`/products/${product.id}`}
                     className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
-                    <div className={`aspect-square relative overflow-hidden bg-linear-to-br ${gradient} flex items-center justify-center`}>
-                      {product.image || (product.images && product.images.length > 0) ? (
+                    <div
+                      className={`aspect-square relative overflow-hidden bg-linear-to-br ${gradient} flex items-center justify-center`}
+                    >
+                      {product.image ||
+                      (product.images && product.images.length > 0) ? (
                         <img
                           src={product.image || product.images[0]}
                           alt={product.name}
@@ -243,7 +273,10 @@ export default async function ProductsPage(props: {
                       {product.isOrganic && (
                         <div className="absolute top-4 left-4">
                           <span className="bg-amber-100/90 backdrop-blur-md text-amber-900 text-xs font-bold py-1 px-3 rounded-full flex items-center gap-1 shadow-sm">
-                            <span className="material-symbols-outlined text-[14px]"><MdVerified /></span> Organic
+                            <span className="material-symbols-outlined text-[14px]">
+                              <MdVerified />
+                            </span>{" "}
+                            Organic
                           </span>
                         </div>
                       )}
@@ -259,17 +292,28 @@ export default async function ProductsPage(props: {
                         {product.name}
                       </h3>
                       <div className="flex items-center gap-1.5 mb-4 text-on-surface-variant text-sm">
-                        <span className="material-symbols-outlined text-secondary text-[16px]">person</span>
-                        <span className="line-clamp-1">{farmer?.farmName || "Local Farm"}</span>
+                        <span className="material-symbols-outlined text-secondary text-[16px]">
+                          person
+                        </span>
+                        <span className="line-clamp-1">
+                          {farmer?.farmName || "Local Farm"}
+                        </span>
                       </div>
 
                       <div className="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10">
                         <div className="flex flex-col">
-                          <span className="font-heading text-xl font-bold text-primary">₹{product.price}</span>
-                          <span className="text-xs text-outline">per {product.unit}</span>
+                          <span className="font-heading text-xl font-bold text-primary">
+                            ₹{product.price}
+                          </span>
+                          <span className="text-xs text-outline">
+                            per {product.unit}
+                          </span>
                         </div>
                         <span className="bg-primary hover:bg-primary-container text-on-primary px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm">
-                          <span className="material-symbols-outlined text-[16px]"><MdVisibility /></span> View
+                          <span className="material-symbols-outlined text-[16px]">
+                            <MdVisibility />
+                          </span>{" "}
+                          View
                         </span>
                       </div>
                     </div>

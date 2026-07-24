@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MdInventory2, MdOutlineDashboard, MdPerson, MdShoppingCart } from "react-icons/md";
+import {
+  MdInventory2,
+  MdOutlineDashboard,
+  MdPerson,
+  MdShoppingCart,
+} from "react-icons/md";
 
 export default function Navigation() {
   const pathname = usePathname();
@@ -30,7 +35,9 @@ export default function Navigation() {
                 : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high/50"
             }`}
           >
-            <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
+            <span className="material-symbols-outlined text-[20px]">
+              {link.icon}
+            </span>
             <span>{link.label}</span>
           </Link>
         );

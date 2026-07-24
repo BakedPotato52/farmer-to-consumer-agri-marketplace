@@ -14,8 +14,12 @@ const CACHE_KEYS = {
   BY_ID: (id: string) => `cache:farmers:id:${id}`,
 };
 
-export async function getAllFarmers(): Promise<(FarmerProfile & { user: User })[]> {
-  const cached = await getCache<(FarmerProfile & { user: User })[]>(CACHE_KEYS.ALL);
+export async function getAllFarmers(): Promise<
+  (FarmerProfile & { user: User })[]
+> {
+  const cached = await getCache<(FarmerProfile & { user: User })[]>(
+    CACHE_KEYS.ALL,
+  );
   if (cached) return cached;
 
   const farmers = await fetchFarmersFromFirestore();
@@ -45,7 +49,9 @@ export async function getAllFarmers(): Promise<(FarmerProfile & { user: User })[
 export async function getFarmerById(
   userId: string,
 ): Promise<(FarmerProfile & { user: User }) | undefined> {
-  const cached = await getCache<FarmerProfile & { user: User }>(CACHE_KEYS.BY_ID(userId));
+  const cached = await getCache<FarmerProfile & { user: User }>(
+    CACHE_KEYS.BY_ID(userId),
+  );
   if (cached) return cached;
 
   const farmers = await getAllFarmers();
@@ -77,8 +83,10 @@ export async function updateFarmerProfile(
   data: Partial<FarmerProfile>,
 ): Promise<FarmerProfile | undefined> {
   const farmers = await fetchFarmersFromFirestore();
-  const existing = farmers.find((p) => p.userId === userId) || store.farmerProfiles.find((p) => p.userId === userId);
-  
+  const existing =
+    farmers.find((p) => p.userId === userId) ||
+    store.farmerProfiles.find((p) => p.userId === userId);
+
   const updated = {
     ...(existing || {
       userId,
@@ -111,7 +119,9 @@ export async function updateFarmerProfile(
   return updated;
 }
 
-export async function verifyFarmer(userId: string): Promise<FarmerProfile | undefined> {
+export async function verifyFarmer(
+  userId: string,
+): Promise<FarmerProfile | undefined> {
   const updates = {
     isVerified: true,
     verificationDate: new Date().toISOString(),
@@ -127,8 +137,12 @@ export async function rejectFarmer(userId: string): Promise<boolean> {
   return true;
 }
 
-export async function getVerifiedFarmers(): Promise<(FarmerProfile & { user: User })[]> {
-  const cached = await getCache<(FarmerProfile & { user: User })[]>(CACHE_KEYS.VERIFIED);
+export async function getVerifiedFarmers(): Promise<
+  (FarmerProfile & { user: User })[]
+> {
+  const cached = await getCache<(FarmerProfile & { user: User })[]>(
+    CACHE_KEYS.VERIFIED,
+  );
   if (cached) return cached;
 
   const farmers = await getAllFarmers();
@@ -137,7 +151,9 @@ export async function getVerifiedFarmers(): Promise<(FarmerProfile & { user: Use
   return result;
 }
 
-export async function getPendingFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+export async function getPendingFarmers(): Promise<
+  (FarmerProfile & { user: User })[]
+> {
   const farmers = await getAllFarmers();
   return farmers.filter((f) => !f.isVerified);
 }

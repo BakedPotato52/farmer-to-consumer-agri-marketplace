@@ -33,7 +33,7 @@ export default async function FarmerProfilePage(props: {
             <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/40 to-black/20" />
           </>
         ) : (
-            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_20%,var(--tw-gradient-stops))] from-white via-transparent to-transparent" />
         )}
 
         <div className="relative z-10 max-w-[1280px] mx-auto w-full px-4 md:px-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -51,14 +51,20 @@ export default async function FarmerProfilePage(props: {
             </div>
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold mb-2 shadow-sm">
-                <span className="material-symbols-outlined text-[16px]"><MdVerified /></span>
-                <span className="capitalize">{farmer.farmingMethod} Farmer</span>
+                <span className="material-symbols-outlined text-[16px]">
+                  <MdVerified />
+                </span>
+                <span className="capitalize">
+                  {farmer.farmingMethod} Farmer
+                </span>
               </div>
               <h1 className="font-heading text-3xl md:text-5xl font-extrabold text-white mb-1 tracking-tight">
                 {farmer.farmName}
               </h1>
               <p className="text-sm md:text-base text-white/90 flex items-center gap-1">
-                <span className="material-symbols-outlined text-[18px]"><FaLocationDot /></span>
+                <span className="material-symbols-outlined text-[18px]">
+                  <FaLocationDot />
+                </span>
                 {farmer.farmLocation}, {farmer.state}
               </p>
             </div>
@@ -73,25 +79,33 @@ export default async function FarmerProfilePage(props: {
             <span className="font-heading text-3xl font-extrabold text-primary block">
               {farmer.rating.toFixed(1)} ★
             </span>
-            <span className="text-xs text-outline font-medium uppercase tracking-wider">Rating</span>
+            <span className="text-xs text-outline font-medium uppercase tracking-wider">
+              Rating
+            </span>
           </div>
           <div className="border-l border-outline-variant/20">
             <span className="font-heading text-3xl font-extrabold text-primary block">
               {farmer.totalReviews}
             </span>
-            <span className="text-xs text-outline font-medium uppercase tracking-wider">Reviews</span>
+            <span className="text-xs text-outline font-medium uppercase tracking-wider">
+              Reviews
+            </span>
           </div>
           <div className="border-l border-outline-variant/20">
             <span className="font-heading text-3xl font-extrabold text-primary block">
               {products.length}
             </span>
-            <span className="text-xs text-outline font-medium uppercase tracking-wider">Live Products</span>
+            <span className="text-xs text-outline font-medium uppercase tracking-wider">
+              Live Products
+            </span>
           </div>
           <div className="border-l border-outline-variant/20">
             <span className="font-heading text-3xl font-extrabold text-primary block capitalize">
               {farmer.farmingMethod}
             </span>
-            <span className="text-xs text-outline font-medium uppercase tracking-wider">Method</span>
+            <span className="text-xs text-outline font-medium uppercase tracking-wider">
+              Method
+            </span>
           </div>
         </div>
       </section>
@@ -102,13 +116,17 @@ export default async function FarmerProfilePage(props: {
         <div className="lg:col-span-4 space-y-6 sticky top-24 self-start">
           {/* About Farm */}
           <div className="glass-card rounded-3xl p-8 organic-shadow space-y-6">
-            <h2 className="font-heading text-2xl font-bold text-primary">About Our Farm</h2>
+            <h2 className="font-heading text-2xl font-bold text-primary">
+              About Our Farm
+            </h2>
             <p className="text-sm text-on-surface-variant leading-relaxed">
               {farmer.description}
             </p>
 
             <div className="space-y-3 pt-4 border-t border-outline-variant/10">
-              <span className="text-xs font-bold text-outline uppercase tracking-wider block">Crops Grown</span>
+              <span className="text-xs font-bold text-outline uppercase tracking-wider block">
+                Crops Grown
+              </span>
               <div className="flex flex-wrap gap-2">
                 {farmer.cropTypes.map((crop) => (
                   <span
@@ -129,26 +147,35 @@ export default async function FarmerProfilePage(props: {
             </h2>
 
             {reviews.length === 0 ? (
-              <p className="text-xs text-outline italic">No reviews yet for this farmer.</p>
+              <p className="text-xs text-outline italic">
+                No reviews yet for this farmer.
+              </p>
             ) : (
               <div className="space-y-4 divide-y divide-outline-variant/10">
                 {reviews.map((review) => (
                   <div key={review.id} className="pt-3 first:pt-0 space-y-1">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="font-bold text-on-surface">{review.consumerName}</span>
+                      <span className="font-bold text-on-surface">
+                        {review.consumerName}
+                      </span>
                       <div className="flex text-amber-500">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <span
                             key={star}
                             className="material-symbols-outlined text-[14px]"
-                            style={{ fontVariationSettings: star <= review.rating ? "'FILL' 1" : "'FILL' 0" }}
+                            style={{
+                              fontVariationSettings:
+                                star <= review.rating ? "'FILL' 1" : "'FILL' 0",
+                            }}
                           >
                             <FaStar />
                           </span>
                         ))}
                       </div>
                     </div>
-                    <p className="text-xs text-on-surface-variant leading-relaxed">{review.comment}</p>
+                    <p className="text-xs text-on-surface-variant leading-relaxed">
+                      {review.comment}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -162,14 +189,22 @@ export default async function FarmerProfilePage(props: {
             <h2 className="font-heading text-2xl font-bold text-primary">
               Products Available from {farmer.farmName}
             </h2>
-            <span className="text-xs text-outline">({products.length} products)</span>
+            <span className="text-xs text-outline">
+              ({products.length} products)
+            </span>
           </div>
 
           {products.length === 0 ? (
             <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
-              <span className="material-symbols-outlined text-4xl text-outline mb-2"><MdInventory2 /></span>
-              <h3 className="font-heading text-lg font-bold text-on-surface mb-1">No products listed</h3>
-              <p className="text-xs text-on-surface-variant">Check back soon for fresh seasonal harvests!</p>
+              <span className="material-symbols-outlined text-4xl text-outline mb-2">
+                <MdInventory2 />
+              </span>
+              <h3 className="font-heading text-lg font-bold text-on-surface mb-1">
+                No products listed
+              </h3>
+              <p className="text-xs text-on-surface-variant">
+                Check back soon for fresh seasonal harvests!
+              </p>
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -181,7 +216,9 @@ export default async function FarmerProfilePage(props: {
                   grains: "from-amber-700/80 to-yellow-900/90",
                   herbs: "from-teal-700/80 to-emerald-900/90",
                 };
-                const gradient = bgGradients[product.category] || "from-primary to-primary-container";
+                const gradient =
+                  bgGradients[product.category] ||
+                  "from-primary to-primary-container";
 
                 return (
                   <Link
@@ -189,8 +226,11 @@ export default async function FarmerProfilePage(props: {
                     href={`/products/${product.id}`}
                     className="bg-white rounded-2xl organic-shadow overflow-hidden group flex flex-col hover:-translate-y-1 transition-all duration-300 border border-outline-variant/10"
                   >
-                    <div className={`h-64 relative bg-linear-to-br ${gradient} flex items-center justify-center overflow-hidden`}>
-                      {product.image || (product.images && product.images.length > 0) ? (
+                    <div
+                      className={`h-64 relative bg-linear-to-br ${gradient} flex items-center justify-center overflow-hidden`}
+                    >
+                      {product.image ||
+                      (product.images && product.images.length > 0) ? (
                         <img
                           src={product.image || product.images[0]}
                           alt={product.name}
@@ -221,8 +261,13 @@ export default async function FarmerProfilePage(props: {
 
                       <div className="mt-auto flex items-center justify-between pt-3 border-t border-outline-variant/10">
                         <div>
-                          <span className="font-heading text-lg font-bold text-primary">₹{product.price}</span>
-                          <span className="text-xs text-outline"> / {product.unit}</span>
+                          <span className="font-heading text-lg font-bold text-primary">
+                            ₹{product.price}
+                          </span>
+                          <span className="text-xs text-outline">
+                            {" "}
+                            / {product.unit}
+                          </span>
                         </div>
                         <span className="bg-primary hover:bg-primary-container text-on-primary px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1 transition-all">
                           View

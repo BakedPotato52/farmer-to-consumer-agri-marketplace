@@ -43,7 +43,8 @@ export default async function OrdersPage({
 
   const statusBadgeStyle: Record<string, string> = {
     pending: "bg-amber-100 text-amber-900 border-amber-200",
-    confirmed: "bg-secondary-container text-on-secondary-container border-secondary/20",
+    confirmed:
+      "bg-secondary-container text-on-secondary-container border-secondary/20",
     packed: "bg-purple-100 text-purple-900 border-purple-200",
     shipped: "bg-sky-100 text-sky-900 border-sky-200",
     delivered: "bg-primary text-on-primary",
@@ -62,9 +63,12 @@ export default async function OrdersPage({
     <div className="space-y-8">
       {/* Header */}
       <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow">
-        <h1 className="font-heading text-3xl font-extrabold text-primary">Orders Management</h1>
+        <h1 className="font-heading text-3xl font-extrabold text-primary">
+          Orders Management
+        </h1>
         <p className="text-on-surface-variant text-sm mt-1">
-          Track customer orders, fulfill shipments, and update status workflow ({orders.length} orders listed).
+          Track customer orders, fulfill shipments, and update status workflow (
+          {orders.length} orders listed).
         </p>
       </div>
 
@@ -106,10 +110,17 @@ export default async function OrdersPage({
             <tbody className="divide-y divide-outline-variant/10">
               {orders.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-6 py-12 text-center text-outline italic">
+                  <td
+                    colSpan={7}
+                    className="px-6 py-12 text-center text-outline italic"
+                  >
                     <div className="flex flex-col items-center justify-center space-y-2">
-                      <span className="material-symbols-outlined text-4xl text-outline"><MdOutlineShoppingCart /></span>
-                      <p className="font-heading font-bold text-on-surface">No orders in this category</p>
+                      <span className="material-symbols-outlined text-4xl text-outline">
+                        <MdOutlineShoppingCart />
+                      </span>
+                      <p className="font-heading font-bold text-on-surface">
+                        No orders in this category
+                      </p>
                     </div>
                   </td>
                 </tr>
@@ -117,21 +128,33 @@ export default async function OrdersPage({
                 orders.map((order) => {
                   const nextStatus = getNextStatus(order.status);
                   return (
-                    <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
+                    <tr
+                      key={order.id}
+                      className="hover:bg-surface-container-low/50 transition-colors"
+                    >
                       <td className="px-6 py-4 font-mono text-xs font-bold text-primary">
-                        <Link href={`/dashboard/orders/${order.id}`} className="hover:underline">
+                        <Link
+                          href={`/dashboard/orders/${order.id}`}
+                          className="hover:underline"
+                        >
                           #{order.id.slice(-6).toUpperCase()}
                         </Link>
                       </td>
-                      <td className="px-6 py-4 font-semibold text-on-surface">{order.consumerName}</td>
-                      <td className="px-6 py-4 text-xs text-on-surface-variant">
-                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                      <td className="px-6 py-4 font-semibold text-on-surface">
+                        {order.consumerName}
                       </td>
-                      <td className="px-6 py-4 font-heading font-bold text-primary">₹{order.totalAmount}</td>
+                      <td className="px-6 py-4 text-xs text-on-surface-variant">
+                        {order.items.length}{" "}
+                        {order.items.length === 1 ? "item" : "items"}
+                      </td>
+                      <td className="px-6 py-4 font-heading font-bold text-primary">
+                        ₹{order.totalAmount}
+                      </td>
                       <td className="px-6 py-4">
                         <span
                           className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider border ${
-                            statusBadgeStyle[order.status] || "bg-surface-container text-on-surface"
+                            statusBadgeStyle[order.status] ||
+                            "bg-surface-container text-on-surface"
                           }`}
                         >
                           {ORDER_STATUS_LABELS[order.status]}
@@ -152,7 +175,10 @@ export default async function OrdersPage({
                             <form
                               action={async () => {
                                 "use server";
-                                await updateOrderStatusAction(order.id, nextStatus);
+                                await updateOrderStatusAction(
+                                  order.id,
+                                  nextStatus,
+                                );
                               }}
                             >
                               <button

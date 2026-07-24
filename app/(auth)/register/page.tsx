@@ -61,11 +61,11 @@ function SubmitButton({ label }: { label: string }) {
         <>
           {label}
           <span className="material-symbols-outlined text-[20px]">
-              {label.includes("Complete") || label.includes("Account") ? (
-                <MdCheckCircle />
-              ) : (
-                <FaArrowRight />
-              )}
+            {label.includes("Complete") || label.includes("Account") ? (
+              <MdCheckCircle />
+            ) : (
+              <FaArrowRight />
+            )}
           </span>
         </>
       )}
@@ -99,7 +99,9 @@ export default function RegisterPage() {
 
   const toggleMethod = (method: string) => {
     setSelectedMethods((prev) =>
-      prev.includes(method) ? prev.filter((m) => m !== method) : [...prev, method],
+      prev.includes(method)
+        ? prev.filter((m) => m !== method)
+        : [...prev, method],
     );
   };
 
@@ -172,7 +174,10 @@ export default function RegisterPage() {
         </div>
 
         {/* ── Unified Form ── */}
-        <form action={formAction} className="glass-card rounded-3xl p-8 md:p-12 organic-shadow flex flex-col gap-8">
+        <form
+          action={formAction}
+          className="glass-card rounded-3xl p-8 md:p-12 organic-shadow flex flex-col gap-8"
+        >
           {/* Hidden metadata & state fields */}
           <input type="hidden" name="role" value={role} />
           <input type="hidden" name="name" value={name} />
@@ -180,13 +185,23 @@ export default function RegisterPage() {
           <input type="hidden" name="password" value={password} />
           <input type="hidden" name="phone" value={phone} />
           <input type="hidden" name="address" value={address} />
-          <input type="hidden" name="cropTypes" value={selectedCrops.join(",")} />
-          <input type="hidden" name="farmingMethod" value={selectedMethods[0] || "organic"} />
+          <input
+            type="hidden"
+            name="cropTypes"
+            value={selectedCrops.join(",")}
+          />
+          <input
+            type="hidden"
+            name="farmingMethod"
+            value={selectedMethods[0] || "organic"}
+          />
 
           {/* Error Banner */}
           {(validationError || state?.error) && (
             <div className="flex items-center gap-2 p-4 rounded-2xl bg-error-container/30 border border-error/20 text-error text-sm font-medium">
-              <span className="material-symbols-outlined text-[20px]"><RiErrorWarningLine /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <RiErrorWarningLine />
+              </span>
               <p>{validationError || state?.error}</p>
             </div>
           )}
@@ -198,7 +213,8 @@ export default function RegisterPage() {
                 Join the FarmFresh Community
               </h1>
               <p className="text-on-surface-variant text-sm">
-                Experience local, organic produce directly from independent farmers.
+                Experience local, organic produce directly from independent
+                farmers.
               </p>
             </div>
 
@@ -211,10 +227,11 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setRole("consumer")}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all duration-300 ${role === "consumer"
+                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all duration-300 ${
+                    role === "consumer"
                       ? "bg-secondary-container/20 border-secondary ring-1 ring-secondary"
                       : "border-outline-variant/30 bg-surface/50 hover:border-secondary/50"
-                    }`}
+                  }`}
                 >
                   <span className="material-symbols-outlined text-3xl text-on-surface-variant">
                     <FaShoppingBasket />
@@ -224,10 +241,11 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setRole("farmer")}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all duration-300 ${role === "farmer"
+                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all duration-300 ${
+                    role === "farmer"
                       ? "bg-secondary-container/20 border-secondary ring-1 ring-secondary"
                       : "border-outline-variant/30 bg-surface/50 hover:border-secondary/50"
-                    }`}
+                  }`}
                 >
                   <span className="material-symbols-outlined text-3xl text-on-surface-variant">
                     <MdAgriculture />
@@ -320,8 +338,8 @@ export default function RegisterPage() {
               <button
                 type="button"
                 onClick={handleNextStep}
-                  className="group w-full bg-primary text-on-primary py-4 rounded-xl text-sm font-semibold hover:bg-primary-container transition-all duration-300 flex items-center justify-center gap-2 organic-shadow"
-                >
+                className="group w-full bg-primary text-on-primary py-4 rounded-xl text-sm font-semibold hover:bg-primary-container transition-all duration-300 flex items-center justify-center gap-2 organic-shadow"
+              >
                 <span>Continue to Farm Details</span>
                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform text-[20px]">
                   <FaArrowRight />
@@ -351,7 +369,8 @@ export default function RegisterPage() {
                   Tell us about your land
                 </h1>
                 <p className="text-on-surface-variant text-sm">
-                  Connect directly with local consumers who value fresh, sustainable agriculture.
+                  Connect directly with local consumers who value fresh,
+                  sustainable agriculture.
                 </p>
               </div>
 
@@ -416,12 +435,15 @@ export default function RegisterPage() {
                       key={crop.label}
                       type="button"
                       onClick={() => toggleCrop(crop.label)}
-                      className={`px-4 py-2 rounded-full border text-xs transition-all duration-300 flex items-center gap-1.5 ${selectedCrops.includes(crop.label)
+                      className={`px-4 py-2 rounded-full border text-xs transition-all duration-300 flex items-center gap-1.5 ${
+                        selectedCrops.includes(crop.label)
                           ? "bg-secondary-container text-on-secondary-container border-secondary font-semibold"
                           : "border-outline-variant/30 hover:border-primary/50 text-on-surface-variant"
                       }`}
                     >
-                      <span className="material-symbols-outlined text-[16px]">{crop.icon}</span>
+                      <span className="material-symbols-outlined text-[16px]">
+                        {crop.icon}
+                      </span>
                       {crop.label}
                     </button>
                   ))}
@@ -437,7 +459,8 @@ export default function RegisterPage() {
                   {FARMING_METHODS.map((method) => (
                     <label
                       key={method.value}
-                      className={`relative flex items-center p-3 rounded-xl border cursor-pointer transition-all ${selectedMethods.includes(method.value)
+                      className={`relative flex items-center p-3 rounded-xl border cursor-pointer transition-all ${
+                        selectedMethods.includes(method.value)
                           ? "bg-primary-fixed/20 border-primary"
                           : "border-outline-variant/20 bg-white/40 hover:bg-white/60"
                       }`}
@@ -483,7 +506,8 @@ export default function RegisterPage() {
       {/* ── Footer ── */}
       <footer className="w-full py-6 px-4 text-center mt-auto">
         <p className="text-xs text-on-surface-variant">
-          © {new Date().getFullYear()} FarmFresh Marketplace. All rights reserved.
+          © {new Date().getFullYear()} FarmFresh Marketplace. All rights
+          reserved.
         </p>
       </footer>
     </div>

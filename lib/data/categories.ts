@@ -14,8 +14,13 @@ export async function getAllCategories(): Promise<CategoryItem[]> {
   if (cached && cached.length > 0) return cached;
 
   const dbCategories = await fetchCategoriesFromFirestore();
-  const result = dbCategories.length > 0 ? dbCategories : (store.categories.length > 0 ? store.categories : initialCategories);
-  
+  const result =
+    dbCategories.length > 0
+      ? dbCategories
+      : store.categories.length > 0
+        ? store.categories
+        : initialCategories;
+
   await setCache(CACHE_KEY, result, 300);
   return result;
 }

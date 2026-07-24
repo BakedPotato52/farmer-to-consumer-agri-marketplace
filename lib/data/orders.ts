@@ -17,7 +17,9 @@ export async function getOrderById(id: string): Promise<Order | undefined> {
   return orders.find((o) => o.id === id);
 }
 
-export async function getOrdersByConsumer(consumerId: string): Promise<Order[]> {
+export async function getOrdersByConsumer(
+  consumerId: string,
+): Promise<Order[]> {
   const orders = await getAllOrders();
   return orders.filter((o) => o.consumerId === consumerId);
 }
@@ -49,7 +51,8 @@ export async function updateOrderStatus(
   status: OrderStatus,
 ): Promise<Order | undefined> {
   const orders = await getAllOrders();
-  const existing = orders.find((o) => o.id === id) || store.orders.find((o) => o.id === id);
+  const existing =
+    orders.find((o) => o.id === id) || store.orders.find((o) => o.id === id);
   if (!existing) return undefined;
 
   const now = new Date().toISOString();

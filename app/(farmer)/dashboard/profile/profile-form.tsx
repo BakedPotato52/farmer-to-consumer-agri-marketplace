@@ -7,7 +7,11 @@ import { FarmerProfile } from "@/lib/types";
 import ImageUpload from "@/components/ui/ImageUpload";
 import { MdStorefront } from "react-icons/md";
 import { RiProgress5Line } from "react-icons/ri";
-import { FaCheckCircle, FaExclamationTriangle, FaRegSave } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaExclamationTriangle,
+  FaRegSave,
+} from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 
 function SubmitButton() {
@@ -20,13 +24,17 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+          <span className="material-symbols-outlined animate-spin text-[20px]">
+            <RiProgress5Line />
+          </span>
           Updating...
         </>
       ) : (
         <>
-            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
-            Save Changes
+          <span className="material-symbols-outlined text-[20px]">
+            <FaRegSave />
+          </span>
+          Save Changes
         </>
       )}
     </button>
@@ -40,13 +48,17 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
     <div className="glass-card organic-shadow rounded-3xl p-6 md:p-8 space-y-8">
       {state?.success && (
         <div className="p-4 rounded-xl bg-secondary-container/40 text-on-secondary-container border border-secondary/20 text-xs font-semibold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]"><FaCheckCircle /></span>
+          <span className="material-symbols-outlined text-[18px]">
+            <FaCheckCircle />
+          </span>
           {state.message}
         </div>
       )}
       {state?.error && (
         <div className="p-4 rounded-xl bg-error-container/30 text-on-error-container border border-error/20 text-xs font-semibold flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]"><FaExclamationTriangle /></span>
+          <span className="material-symbols-outlined text-[18px]">
+            <FaExclamationTriangle />
+          </span>
           {state.error}
         </div>
       )}
@@ -55,13 +67,18 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
         {/* Section 1: Basic Farm Information */}
         <div className="space-y-6">
           <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-            <span className="material-symbols-outlined text-[20px]"><MdStorefront /></span>
+            <span className="material-symbols-outlined text-[20px]">
+              <MdStorefront />
+            </span>
             1. Farm Identity & Bio
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="farmName" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="farmName"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Farm Name *
               </label>
               <input
@@ -75,7 +92,10 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="farmingMethod" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="farmingMethod"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Farming Method *
               </label>
               <select
@@ -92,7 +112,10 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="cropTypes" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="cropTypes"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Primary Crop Types (comma-separated)
               </label>
               <input
@@ -106,7 +129,10 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
             </div>
 
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="description" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="description"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Farm Story & Description
               </label>
               <textarea
@@ -144,13 +170,18 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
         {/* Section 2: Location */}
         <div className="space-y-6">
           <h2 className="font-heading text-lg font-bold text-primary flex items-center gap-2 border-b border-outline-variant/10 pb-3">
-            <span className="material-symbols-outlined text-[20px]"><FaLocationDot /></span>
+            <span className="material-symbols-outlined text-[20px]">
+              <FaLocationDot />
+            </span>
             2. Farm Location Details
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="farmLocation" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="farmLocation"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Address / City *
               </label>
               <input
@@ -164,7 +195,10 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="state" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="state"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 State *
               </label>
               <input
@@ -178,7 +212,10 @@ export default function ProfileForm({ profile }: { profile: FarmerProfile }) {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="pincode" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="pincode"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Pincode *
               </label>
               <input

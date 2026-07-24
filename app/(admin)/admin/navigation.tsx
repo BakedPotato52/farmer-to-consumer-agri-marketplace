@@ -2,7 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MdAnalytics, MdCategory, MdOutlineDashboard, MdPerson, MdSettings, MdShoppingCart } from "react-icons/md";
+import {
+  MdAnalytics,
+  MdCategory,
+  MdOutlineDashboard,
+  MdPerson,
+  MdSettings,
+  MdShoppingCart,
+} from "react-icons/md";
 
 export default function AdminNavigation() {
   const pathname = usePathname();
@@ -13,7 +20,11 @@ export default function AdminNavigation() {
     { href: "/admin/orders", label: "Global Orders", icon: <MdShoppingCart /> },
     { href: "/admin/categories", label: "Categories", icon: <MdCategory /> },
     { href: "/admin/analytics", label: "Analytics", icon: <MdAnalytics /> },
-    { href: "/admin/settings", label: "Platform Settings", icon: <MdSettings /> },
+    {
+      href: "/admin/settings",
+      label: "Platform Settings",
+      icon: <MdSettings />,
+    },
   ];
 
   return (
@@ -32,7 +43,9 @@ export default function AdminNavigation() {
                 : "text-on-surface-variant hover:text-primary hover:bg-surface-container-high/50"
             }`}
           >
-            <span className="material-symbols-outlined text-[20px]">{link.icon}</span>
+            <span className="material-symbols-outlined text-[20px]">
+              {link.icon}
+            </span>
             <span>{link.label}</span>
           </Link>
         );

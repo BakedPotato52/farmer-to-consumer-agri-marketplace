@@ -33,7 +33,10 @@ export async function createProductAction(prevState: any, formData: FormData) {
   const imagesStr = formData.get("images") as string;
 
   const images = imagesStr
-    ? imagesStr.split(",").map((s) => s.trim()).filter(Boolean)
+    ? imagesStr
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
     : [];
   const image = images[0] || undefined;
 
@@ -100,7 +103,10 @@ export async function updateProductAction(prevState: any, formData: FormData) {
   const imagesStr = formData.get("images") as string;
 
   const images = imagesStr
-    ? imagesStr.split(",").map((s) => s.trim()).filter(Boolean)
+    ? imagesStr
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean)
     : [];
   const image = images[0] || undefined;
 

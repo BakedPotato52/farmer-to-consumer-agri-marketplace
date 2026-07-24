@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { MdCloudUpload, MdDelete, MdImage, MdCheckCircle } from "react-icons/md";
+import {
+  MdCloudUpload,
+  MdDelete,
+  MdImage,
+  MdCheckCircle,
+} from "react-icons/md";
 import { AiOutlineReload } from "react-icons/ai";
 
 interface ImageUploadProps {
@@ -127,47 +132,51 @@ export default function ImageUpload({
       )}
 
       {/* Dropzone Upload Button */}
-      {(!multiple && images.length >= 1) ? null : images.length < maxFiles && (
-        <div
-          onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-2 ${
-            isUploading
-              ? "border-primary/40 bg-primary/5 cursor-wait"
-              : "border-outline-variant/40 hover:border-primary/60 bg-white/40 hover:bg-white/70"
-          }`}
-        >
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            multiple={multiple}
-            onChange={handleFileSelect}
-            className="hidden"
-            disabled={isUploading}
-          />
+      {!multiple && images.length >= 1
+        ? null
+        : images.length < maxFiles && (
+            <div
+              onClick={() => fileInputRef.current?.click()}
+              className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all duration-200 flex flex-col items-center justify-center gap-2 ${
+                isUploading
+                  ? "border-primary/40 bg-primary/5 cursor-wait"
+                  : "border-outline-variant/40 hover:border-primary/60 bg-white/40 hover:bg-white/70"
+              }`}
+            >
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                multiple={multiple}
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={isUploading}
+              />
 
-          {isUploading ? (
-            <>
-              <AiOutlineReload className="animate-spin text-3xl text-primary" />
-              <p className="text-xs font-semibold text-primary">Uploading to Cloudinary...</p>
-            </>
-          ) : (
-            <>
-              <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                <MdCloudUpload className="text-2xl" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-on-surface">
-                  Click or drag images to upload
-                </p>
-                <p className="text-xs text-outline mt-0.5">
-                    PNG, JPG, WEBP up to 10MB
-                </p>
-              </div>
-            </>
+              {isUploading ? (
+                <>
+                  <AiOutlineReload className="animate-spin text-3xl text-primary" />
+                  <p className="text-xs font-semibold text-primary">
+                    Uploading to Cloudinary...
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                    <MdCloudUpload className="text-2xl" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-on-surface">
+                      Click or drag images to upload
+                    </p>
+                    <p className="text-xs text-outline mt-0.5">
+                      PNG, JPG, WEBP up to 10MB
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
           )}
-        </div>
-      )}
 
       {error && (
         <p className="text-xs font-medium text-error flex items-center gap-1">

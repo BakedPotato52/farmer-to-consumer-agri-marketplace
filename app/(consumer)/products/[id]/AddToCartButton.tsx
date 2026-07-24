@@ -47,7 +47,9 @@ export default function AddToCartButton({
     <div className="space-y-4">
       {/* Quantity Picker */}
       <div className="flex items-center gap-4">
-        <span className="text-sm font-semibold text-on-surface-variant">Quantity:</span>
+        <span className="text-sm font-semibold text-on-surface-variant">
+          Quantity:
+        </span>
         <div className="flex items-center bg-surface-container-low border border-outline-variant/30 rounded-xl p-1">
           <button
             type="button"
@@ -56,10 +58,14 @@ export default function AddToCartButton({
           >
             -
           </button>
-          <span className="w-12 text-center text-sm font-bold text-on-surface">{quantity}</span>
+          <span className="w-12 text-center text-sm font-bold text-on-surface">
+            {quantity}
+          </span>
           <button
             type="button"
-            onClick={() => setQuantity(Math.min(product.quantityAvailable, quantity + 1))}
+            onClick={() =>
+              setQuantity(Math.min(product.quantityAvailable, quantity + 1))
+            }
             className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm cursor-pointer"
           >
             +
@@ -77,18 +83,22 @@ export default function AddToCartButton({
           added
             ? "bg-secondary text-on-secondary hover:opacity-90"
             : product.quantityAvailable > 0
-            ? "bg-primary text-on-primary hover:bg-primary-container active:scale-[0.98]"
-            : "bg-surface-container-high text-outline cursor-not-allowed"
+              ? "bg-primary text-on-primary hover:bg-primary-container active:scale-[0.98]"
+              : "bg-surface-container-high text-outline cursor-not-allowed"
         }`}
       >
         {added ? (
           <>
-            <span className="material-symbols-outlined text-[20px]"><FaRegCheckCircle /></span>
+            <span className="material-symbols-outlined text-[20px]">
+              <FaRegCheckCircle />
+            </span>
             Added to Basket!
           </>
         ) : product.quantityAvailable > 0 ? (
           <>
-            <span className="material-symbols-outlined text-[20px]"><MdAddShoppingCart /></span>
+            <span className="material-symbols-outlined text-[20px]">
+              <MdAddShoppingCart />
+            </span>
             Add to Basket (₹{product.price * quantity})
           </>
         ) : (

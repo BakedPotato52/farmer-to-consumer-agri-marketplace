@@ -29,10 +29,14 @@ export const COLLECTIONS = {
 } as const;
 
 function handleFirestoreError(action: string, err: any) {
-  if (err?.code === "not-found" || err?.message?.includes("NOT_FOUND") || err?.code === 5) {
+  if (
+    err?.code === "not-found" ||
+    err?.message?.includes("NOT_FOUND") ||
+    err?.code === 5
+  ) {
     console.warn(
       `[Firestore Setup Required] ${action}: Cloud Firestore Database does not exist yet for project 'farm-fresh-52'.\n` +
-      `👉 Please visit https://console.firebase.google.com/u/0/project/farm-fresh-52/firestore and click 'Create database'.`
+        `👉 Please visit https://console.firebase.google.com/u/0/project/farm-fresh-52/firestore and click 'Create database'.`,
     );
   } else {
     console.error(`[Firestore Error] ${action}:`, err);
@@ -81,7 +85,10 @@ export async function saveProductToFirestore(product: Product): Promise<void> {
   }
 }
 
-export async function updateProductInFirestore(id: string, updates: Partial<Product>): Promise<void> {
+export async function updateProductInFirestore(
+  id: string,
+  updates: Partial<Product>,
+): Promise<void> {
   try {
     await updateDoc(doc(db, COLLECTIONS.PRODUCTS, id), updates as DocumentData);
   } catch (err) {
@@ -110,7 +117,9 @@ export async function fetchFarmersFromFirestore(): Promise<FarmerProfile[]> {
   }
 }
 
-export async function saveFarmerToFirestore(farmer: FarmerProfile): Promise<void> {
+export async function saveFarmerToFirestore(
+  farmer: FarmerProfile,
+): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.FARMERS, farmer.userId), farmer);
   } catch (err) {
@@ -118,9 +127,15 @@ export async function saveFarmerToFirestore(farmer: FarmerProfile): Promise<void
   }
 }
 
-export async function updateFarmerInFirestore(userId: string, updates: Partial<FarmerProfile>): Promise<void> {
+export async function updateFarmerInFirestore(
+  userId: string,
+  updates: Partial<FarmerProfile>,
+): Promise<void> {
   try {
-    await updateDoc(doc(db, COLLECTIONS.FARMERS, userId), updates as DocumentData);
+    await updateDoc(
+      doc(db, COLLECTIONS.FARMERS, userId),
+      updates as DocumentData,
+    );
   } catch (err) {
     handleFirestoreError("updateFarmerInFirestore", err);
   }
@@ -147,7 +162,10 @@ export async function saveOrderToFirestore(order: Order): Promise<void> {
   }
 }
 
-export async function updateOrderInFirestore(id: string, updates: Partial<Order>): Promise<void> {
+export async function updateOrderInFirestore(
+  id: string,
+  updates: Partial<Order>,
+): Promise<void> {
   try {
     await updateDoc(doc(db, COLLECTIONS.ORDERS, id), updates as DocumentData);
   } catch (err) {
@@ -189,7 +207,9 @@ export async function fetchCategoriesFromFirestore(): Promise<CategoryItem[]> {
   }
 }
 
-export async function saveCategoryToFirestore(category: CategoryItem): Promise<void> {
+export async function saveCategoryToFirestore(
+  category: CategoryItem,
+): Promise<void> {
   try {
     await setDoc(doc(db, COLLECTIONS.CATEGORIES, category.id), category);
   } catch (err) {

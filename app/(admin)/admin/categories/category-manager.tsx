@@ -31,9 +31,12 @@ export default function CategoryManager({
       {/* Header */}
       <div className="glass-card p-6 md:p-8 rounded-3xl organic-shadow flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="font-heading text-3xl font-extrabold text-primary">Marketplace Categories</h1>
+          <h1 className="font-heading text-3xl font-extrabold text-primary">
+            Marketplace Categories
+          </h1>
           <p className="text-on-surface-variant text-sm mt-1">
-            Organize produce taxonomies, icons, and marketplace navigation tags ({initialCategories.length} active categories).
+            Organize produce taxonomies, icons, and marketplace navigation tags
+            ({initialCategories.length} active categories).
           </p>
         </div>
         <button
@@ -49,10 +52,17 @@ export default function CategoryManager({
 
       {isAdding && (
         <div className="glass-card p-8 rounded-3xl organic-shadow border-2 border-primary/20">
-          <h2 className="font-heading text-xl font-bold text-primary mb-4">Create New Category</h2>
-          <form action={handleAdd} className="flex flex-col sm:flex-row gap-4 items-end">
+          <h2 className="font-heading text-xl font-bold text-primary mb-4">
+            Create New Category
+          </h2>
+          <form
+            action={handleAdd}
+            className="flex flex-col sm:flex-row gap-4 items-end"
+          >
             <div className="flex-1 w-full space-y-2">
-              <label className="block text-xs font-bold text-outline uppercase tracking-wider">Category Name *</label>
+              <label className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Category Name *
+              </label>
               <input
                 type="text"
                 name="name"
@@ -62,7 +72,9 @@ export default function CategoryManager({
               />
             </div>
             <div className="w-full sm:w-36 space-y-2">
-              <label className="block text-xs font-bold text-outline uppercase tracking-wider">Emoji Icon *</label>
+              <label className="block text-xs font-bold text-outline uppercase tracking-wider">
+                Emoji Icon *
+              </label>
               <input
                 type="text"
                 name="icon"
@@ -93,8 +105,12 @@ export default function CategoryManager({
                 {category.icon}
               </div>
               <div>
-                <h3 className="font-heading text-lg font-bold text-primary">{category.name}</h3>
-                <span className="text-xs font-mono text-outline">slug: {category.slug}</span>
+                <h3 className="font-heading text-lg font-bold text-primary">
+                  {category.name}
+                </h3>
+                <span className="text-xs font-mono text-outline">
+                  slug: {category.slug}
+                </span>
               </div>
             </div>
 
@@ -103,7 +119,9 @@ export default function CategoryManager({
               className="p-2 text-error hover:bg-error-container/30 rounded-xl transition-colors opacity-70 group-hover:opacity-100 cursor-pointer"
               title="Delete Category"
             >
-              <span className="material-symbols-outlined text-[20px]"><RiDeleteBinLine /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <RiDeleteBinLine />
+              </span>
             </button>
           </div>
         ))}

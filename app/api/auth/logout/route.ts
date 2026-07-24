@@ -9,10 +9,16 @@ export async function POST() {
   } catch (err) {
     console.error("Error signing out from Firebase Auth:", err);
   }
-  
+
   await destroySession();
-  
-  return NextResponse.redirect(new URL("/login", process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"), {
-    status: 303,
-  });
+
+  return NextResponse.redirect(
+    new URL(
+      "/login",
+      process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
+    ),
+    {
+      status: 303,
+    },
+  );
 }

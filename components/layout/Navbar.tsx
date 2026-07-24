@@ -183,13 +183,15 @@ export default function Navbar({
                       session.role === "admin"
                         ? "/admin"
                         : session.role === "farmer"
-                        ? "/dashboard"
-                        : "/orders"
+                          ? "/dashboard"
+                          : "/orders"
                     }
                     className="flex items-center gap-2.5 px-3 py-2 text-sm font-semibold text-on-surface hover:bg-surface-container-high rounded-xl transition-colors"
                   >
                     <MdOutlineDashboard className="text-primary text-base" />
-                    {session.role === "consumer" ? "Order History" : "Dashboard"}
+                    {session.role === "consumer"
+                      ? "Order History"
+                      : "Dashboard"}
                   </Link>
 
                   <form action="/api/auth/logout" method="POST">
@@ -297,9 +299,22 @@ export default function Navbar({
                 </span>
                 {[
                   { label: "Home", href: "/", icon: "🏠" },
-                  { label: "Marketplace", href: "/products", icon: <IoStorefrontOutline /> },
-                  { label: "Farmers Directory", href: "/farmers", icon: <IoMdPeople /> },
-                  { label: "Shopping Cart", href: "/cart", icon: <BsCart4 />, badge: cartCount },
+                  {
+                    label: "Marketplace",
+                    href: "/products",
+                    icon: <IoStorefrontOutline />,
+                  },
+                  {
+                    label: "Farmers Directory",
+                    href: "/farmers",
+                    icon: <IoMdPeople />,
+                  },
+                  {
+                    label: "Shopping Cart",
+                    href: "/cart",
+                    icon: <BsCart4 />,
+                    badge: cartCount,
+                  },
                 ].map((item) => (
                   <Link
                     key={item.href}
@@ -350,15 +365,18 @@ export default function Navbar({
               {session ? (
                 <div className="space-y-3">
                   <div className="text-xs text-on-surface-variant">
-                    Signed in as <span className="font-bold text-on-surface">{session.name}</span>
+                    Signed in as{" "}
+                    <span className="font-bold text-on-surface">
+                      {session.name}
+                    </span>
                   </div>
                   <Link
                     href={
                       session.role === "admin"
                         ? "/admin"
                         : session.role === "farmer"
-                        ? "/dashboard"
-                        : "/orders"
+                          ? "/dashboard"
+                          : "/orders"
                     }
                     onClick={() => setMobileMenuOpen(false)}
                     className="block w-full text-center px-4 py-3 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm"

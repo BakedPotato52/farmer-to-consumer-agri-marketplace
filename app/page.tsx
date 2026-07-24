@@ -319,8 +319,12 @@ export default async function Home() {
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid md:grid-cols-3 gap-6">
             {farmers.length === 0 ? (
               <div className="col-span-full text-center py-12 text-on-surface-variant">
-                <p className="font-heading font-bold text-lg text-primary mb-1">No verified farmers listed yet.</p>
-                <p className="text-sm">Register as a seller to feature your farm on FarmFresh!</p>
+                <p className="font-heading font-bold text-lg text-primary mb-1">
+                  No verified farmers listed yet.
+                </p>
+                <p className="text-sm">
+                  Register as a seller to feature your farm on FarmFresh!
+                </p>
               </div>
             ) : (
               farmers.map((farmer) => (

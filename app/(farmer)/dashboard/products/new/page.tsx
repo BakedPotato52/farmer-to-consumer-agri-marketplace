@@ -19,14 +19,18 @@ function SubmitButton() {
     >
       {pending ? (
         <>
-          <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+          <span className="material-symbols-outlined animate-spin text-[20px]">
+            <RiProgress5Line />
+          </span>
           Updating...
         </>
       ) : (
         <>
-            <span className="material-symbols-outlined text-[20px]"><FaRegSave /></span>
-            Save Changes
-          </>
+          <span className="material-symbols-outlined text-[20px]">
+            <FaRegSave />
+          </span>
+          Save Changes
+        </>
       )}
     </button>
   );
@@ -39,14 +43,20 @@ export default function NewProductPage() {
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-3xl font-extrabold text-primary">Add New Product</h1>
-          <p className="text-on-surface-variant text-sm mt-1">List your farm-fresh produce directly to consumers.</p>
+          <h1 className="font-heading text-3xl font-extrabold text-primary">
+            Add New Product
+          </h1>
+          <p className="text-on-surface-variant text-sm mt-1">
+            List your farm-fresh produce directly to consumers.
+          </p>
         </div>
         <Link
           href="/dashboard/products"
           className="text-on-surface-variant text-sm font-semibold hover:text-primary transition-colors flex items-center gap-1"
         >
-          <span className="material-symbols-outlined text-[18px]"><FaArrowLeft /></span>
+          <span className="material-symbols-outlined text-[18px]">
+            <FaArrowLeft />
+          </span>
           Cancel
         </Link>
       </div>
@@ -54,7 +64,9 @@ export default function NewProductPage() {
       <div className="glass-card organic-shadow rounded-3xl p-8">
         {state?.error && (
           <div className="p-4 rounded-xl bg-error-container/30 border border-error/20 text-xs font-semibold text-on-error-container mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]"><RiErrorWarningLine /></span>
+            <span className="material-symbols-outlined text-[18px]">
+              <RiErrorWarningLine />
+            </span>
             {state.error}
           </div>
         )}
@@ -62,7 +74,10 @@ export default function NewProductPage() {
         <form action={formAction} className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="name" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="name"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Product Name *
               </label>
               <input
@@ -76,7 +91,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="category" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="category"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Category *
               </label>
               <select
@@ -95,7 +113,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="harvestDate" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="harvestDate"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Harvest Date *
               </label>
               <input
@@ -108,7 +129,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="price" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="price"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Price (₹) *
               </label>
               <input
@@ -124,7 +148,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="unit" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="unit"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Measurement Unit *
               </label>
               <select
@@ -142,7 +169,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="quantityAvailable" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="quantityAvailable"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Quantity Available in Stock *
               </label>
               <input
@@ -157,7 +187,10 @@ export default function NewProductPage() {
             </div>
 
             <div className="space-y-2 sm:col-span-2">
-              <label htmlFor="description" className="block text-xs font-bold text-outline uppercase tracking-wider">
+              <label
+                htmlFor="description"
+                className="block text-xs font-bold text-outline uppercase tracking-wider"
+              >
                 Detailed Product Description *
               </label>
               <textarea
@@ -187,7 +220,9 @@ export default function NewProductPage() {
                   className="w-5 h-5 rounded border-outline text-primary focus:ring-primary"
                 />
                 <span className="text-sm font-semibold text-on-surface flex items-center gap-1">
-                  <span className="material-symbols-outlined text-[18px] text-secondary"><FaLeaf /></span>
+                  <span className="material-symbols-outlined text-[18px] text-secondary">
+                    <FaLeaf />
+                  </span>
                   This product is Certified Organic
                 </span>
               </label>

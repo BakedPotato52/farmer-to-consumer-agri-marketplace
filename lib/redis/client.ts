@@ -29,8 +29,14 @@ function getRedisInstance(): Redis | null {
       redisClient.on("error", (err: any) => {
         if (!isRedisDisabled) {
           const msg = err?.message || String(err);
-          if (msg.includes("WRONGPASS") || msg.includes("Stream isn't writeable") || msg.includes("NOAUTH")) {
-            console.warn("[Redis Service] Auth or connection issue. Direct database mode active.");
+          if (
+            msg.includes("WRONGPASS") ||
+            msg.includes("Stream isn't writeable") ||
+            msg.includes("NOAUTH")
+          ) {
+            console.warn(
+              "[Redis Service] Auth or connection issue. Direct database mode active.",
+            );
             isRedisDisabled = true;
             try {
               redisClient?.disconnect();

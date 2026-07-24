@@ -49,7 +49,9 @@ export async function getProductById(id: string): Promise<Product | undefined> {
   return product;
 }
 
-export async function getProductsByFarmer(farmerId: string): Promise<Product[]> {
+export async function getProductsByFarmer(
+  farmerId: string,
+): Promise<Product[]> {
   const cached = await getCache<Product[]>(CACHE_KEYS.BY_FARMER(farmerId));
   if (cached) return cached;
 
@@ -59,7 +61,9 @@ export async function getProductsByFarmer(farmerId: string): Promise<Product[]> 
   return result;
 }
 
-export async function getProductsByCategory(category: ProductCategory): Promise<Product[]> {
+export async function getProductsByCategory(
+  category: ProductCategory,
+): Promise<Product[]> {
   const products = await getAllProducts();
   return products.filter((p) => p.category === category);
 }
@@ -81,7 +85,7 @@ export async function createProduct(
   };
   store.products.push(newProduct);
   await saveProductToFirestore(newProduct);
-  
+
   // Invalidate Redis product cache pattern
   await deleteCachePattern("cache:products:*");
   await deleteCachePattern("cache:analytics:*");
@@ -93,7 +97,9 @@ export async function updateProduct(
   data: Partial<Product>,
 ): Promise<Product | undefined> {
   const products = await getAllProducts();
-  const existing = products.find((p) => p.id === id) || store.products.find((p) => p.id === id);
+  const existing =
+    products.find((p) => p.id === id) ||
+    store.products.find((p) => p.id === id);
   if (!existing) return undefined;
 
   const updated = {
@@ -130,7 +136,9 @@ export async function deleteProduct(id: string): Promise<boolean> {
   return true;
 }
 
-export async function filterProducts(filters: ProductFilters): Promise<Product[]> {
+export async function filterProducts(
+  filters: ProductFilters,
+): Promise<Product[]> {
   const filterHash = JSON.stringify(filters);
   const cached = await getCache<Product[]>(CACHE_KEYS.FILTERED(filterHash));
   if (cached) return cached;
@@ -169,7 +177,9 @@ export async function filterProducts(filters: ProductFilters): Promise<Product[]
 
   if (filters.location) {
     const loc = filters.location.toLowerCase();
-    const farmers = await Promise.all(filtered.map((p) => getFarmerById(p.farmerId)));
+    const farmers = await Promise.all(
+      filtered.map((p) => getFarmerById(p.farmerId)),
+    );
     filtered = filtered.filter((_, idx) => {
       const farmer = farmers[idx];
       if (!farmer) return false;

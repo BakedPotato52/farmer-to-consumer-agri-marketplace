@@ -62,7 +62,10 @@ export default function CheckoutPage() {
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        setError(errorData.error || "Failed to place order. Please check your information and try again.");
+        setError(
+          errorData.error ||
+            "Failed to place order. Please check your information and try again.",
+        );
         setIsSubmitting(false);
         return;
       }
@@ -78,15 +81,22 @@ export default function CheckoutPage() {
 
   return (
     <div className="pt-8 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 min-h-screen">
-      <h1 className="font-heading text-4xl font-extrabold text-primary mb-8">Secure Checkout</h1>
+      <h1 className="font-heading text-4xl font-extrabold text-primary mb-8">
+        Secure Checkout
+      </h1>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8"
+      >
         {/* Left Column: Delivery Form */}
         <div className="lg:col-span-8 space-y-6">
           {/* Step 1: Address */}
           <section className="glass-card p-6 md:p-8 rounded-3xl organic-shadow space-y-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[22px]"><FaLocationDot /></span>
+              <span className="material-symbols-outlined text-[22px]">
+                <FaLocationDot />
+              </span>
               1. Delivery Address
             </h2>
 
@@ -127,9 +137,15 @@ export default function CheckoutPage() {
                     className="w-full px-4 py-3 bg-white border border-outline-variant/30 rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/20 text-on-surface font-medium"
                   >
                     <option value="">Select a time slot</option>
-                    <option value="Morning (8AM - 12PM)">Morning (8:00 AM - 12:00 PM)</option>
-                    <option value="Afternoon (12PM - 4PM)">Afternoon (12:00 PM - 4:00 PM)</option>
-                    <option value="Evening (4PM - 8PM)">Evening (4:00 PM - 8:00 PM)</option>
+                    <option value="Morning (8AM - 12PM)">
+                      Morning (8:00 AM - 12:00 PM)
+                    </option>
+                    <option value="Afternoon (12PM - 4PM)">
+                      Afternoon (12:00 PM - 4:00 PM)
+                    </option>
+                    <option value="Evening (4PM - 8PM)">
+                      Evening (4:00 PM - 8:00 PM)
+                    </option>
                   </select>
                 </div>
               </div>
@@ -151,15 +167,23 @@ export default function CheckoutPage() {
           {/* Step 2: Payment Method Info */}
           <section className="glass-card p-6 md:p-8 rounded-3xl organic-shadow space-y-4">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[22px]">payments</span>
+              <span className="material-symbols-outlined text-[22px]">
+                payments
+              </span>
               2. Payment Method
             </h2>
             <div className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-secondary text-2xl"><MdLocalAtm /></span>
+                <span className="material-symbols-outlined text-secondary text-2xl">
+                  <MdLocalAtm />
+                </span>
                 <div>
-                  <p className="font-heading font-bold text-on-surface text-sm">Pay on Delivery (COD) / UPI</p>
-                  <p className="text-xs text-outline">Pay securely upon doorstep delivery</p>
+                  <p className="font-heading font-bold text-on-surface text-sm">
+                    Pay on Delivery (COD) / UPI
+                  </p>
+                  <p className="text-xs text-outline">
+                    Pay securely upon doorstep delivery
+                  </p>
                 </div>
               </div>
               <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
@@ -179,7 +203,10 @@ export default function CheckoutPage() {
             {/* Items snippet */}
             <div className="space-y-3 max-h-56 overflow-y-auto pr-1 text-xs">
               {items.map((item) => (
-                <div key={item.productId} className="flex justify-between items-center text-on-surface-variant">
+                <div
+                  key={item.productId}
+                  className="flex justify-between items-center text-on-surface-variant"
+                >
                   <span className="truncate pr-2 font-medium">
                     {item.quantity}x {item.productName}
                   </span>
@@ -193,15 +220,23 @@ export default function CheckoutPage() {
             <div className="border-t border-outline-variant/10 pt-4 space-y-2 text-sm">
               <div className="flex justify-between text-on-surface-variant">
                 <span>Subtotal</span>
-                <span className="font-semibold text-on-surface">₹{subtotal.toFixed(2)}</span>
+                <span className="font-semibold text-on-surface">
+                  ₹{subtotal.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between text-on-surface-variant">
                 <span>Delivery Fee</span>
-                <span className="font-semibold text-on-surface">₹{deliveryFee.toFixed(2)}</span>
+                <span className="font-semibold text-on-surface">
+                  ₹{deliveryFee.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between items-center pt-3 border-t border-outline-variant/20">
-                <span className="font-heading text-lg font-bold text-on-surface">Total</span>
-                <span className="font-heading text-2xl font-bold text-primary">₹{total.toFixed(2)}</span>
+                <span className="font-heading text-lg font-bold text-on-surface">
+                  Total
+                </span>
+                <span className="font-heading text-2xl font-bold text-primary">
+                  ₹{total.toFixed(2)}
+                </span>
               </div>
             </div>
 
@@ -218,12 +253,16 @@ export default function CheckoutPage() {
             >
               {isSubmitting ? (
                 <>
-                  <span className="material-symbols-outlined animate-spin text-[20px]"><RiProgress5Line /></span>
+                  <span className="material-symbols-outlined animate-spin text-[20px]">
+                    <RiProgress5Line />
+                  </span>
                   Placing Order...
                 </>
               ) : (
                 <>
-                    <span className="material-symbols-outlined text-[20px]"><FaCheckCircle /></span>
+                  <span className="material-symbols-outlined text-[20px]">
+                    <FaCheckCircle />
+                  </span>
                   Place Order (₹{total.toFixed(2)})
                 </>
               )}

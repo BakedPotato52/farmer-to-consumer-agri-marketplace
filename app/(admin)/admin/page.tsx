@@ -4,7 +4,15 @@ import { getPendingFarmers } from "@/lib/data/farmers";
 import { approveFarmerAction, rejectFarmerAction } from "./farmers/actions";
 import Link from "next/link";
 import { FaCheckCircle } from "react-icons/fa";
-import { MdAgriculture, MdGroups3, MdHowToReg, MdOutlineLocalShipping, MdOutlineShoppingCart, MdPayments, MdVerified } from "react-icons/md";
+import {
+  MdAgriculture,
+  MdGroups3,
+  MdHowToReg,
+  MdOutlineLocalShipping,
+  MdOutlineShoppingCart,
+  MdPayments,
+  MdVerified,
+} from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 
 export default async function AdminOverview() {
@@ -22,7 +30,8 @@ export default async function AdminOverview() {
           Super Admin Control Center
         </h1>
         <p className="text-on-surface-variant text-sm mt-1">
-          Monitor platform metrics, approve new farmer merchants, and oversee global order fulfillment.
+          Monitor platform metrics, approve new farmer merchants, and oversee
+          global order fulfillment.
         </p>
       </div>
 
@@ -66,7 +75,9 @@ export default async function AdminOverview() {
         <div className="lg:col-span-4 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-120">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]"><MdHowToReg /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <MdHowToReg />
+              </span>
               Pending Approvals
             </h2>
             <Link
@@ -80,8 +91,12 @@ export default async function AdminOverview() {
           <div className="flex-1 overflow-y-auto pr-1 space-y-3">
             {pendingFarmers.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-outline text-xs text-center space-y-2">
-                <span className="material-symbols-outlined text-4xl"><FaCheckCircle /></span>
-                <p className="font-heading font-bold text-on-surface text-sm">All caught up!</p>
+                <span className="material-symbols-outlined text-4xl">
+                  <FaCheckCircle />
+                </span>
+                <p className="font-heading font-bold text-on-surface text-sm">
+                  All caught up!
+                </p>
                 <p>No new farmer registration requests pending.</p>
               </div>
             ) : (
@@ -91,18 +106,26 @@ export default async function AdminOverview() {
                   className="p-4 rounded-2xl bg-surface-container-low border border-outline-variant/15 space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-heading font-bold text-primary text-sm">{farmer.farmName}</span>
+                    <span className="font-heading font-bold text-primary text-sm">
+                      {farmer.farmName}
+                    </span>
                     <span className="text-[10px] uppercase font-bold text-amber-800 bg-amber-100 px-2 py-0.5 rounded-full">
                       Pending
                     </span>
                   </div>
                   <p className="text-xs text-on-surface-variant flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]"><FaLocationDot /></span>
+                    <span className="material-symbols-outlined text-[14px]">
+                      <FaLocationDot />
+                    </span>
                     {farmer.farmLocation}, {farmer.state}
                   </p>
                   <div className="grid grid-cols-2 gap-2 pt-1">
                     <form action={approveFarmerAction}>
-                      <input type="hidden" name="userId" value={farmer.userId} />
+                      <input
+                        type="hidden"
+                        name="userId"
+                        value={farmer.userId}
+                      />
                       <button
                         type="submit"
                         className="w-full text-center py-2 bg-primary text-on-primary rounded-xl text-xs font-bold hover:bg-primary-container transition-all cursor-pointer"
@@ -111,7 +134,11 @@ export default async function AdminOverview() {
                       </button>
                     </form>
                     <form action={rejectFarmerAction}>
-                      <input type="hidden" name="userId" value={farmer.userId} />
+                      <input
+                        type="hidden"
+                        name="userId"
+                        value={farmer.userId}
+                      />
                       <button
                         type="submit"
                         className="w-full text-center py-2 bg-error-container text-on-error-container rounded-xl text-xs font-bold hover:opacity-80 transition-opacity cursor-pointer"
@@ -130,7 +157,9 @@ export default async function AdminOverview() {
         <div className="lg:col-span-8 glass-card organic-shadow rounded-3xl p-6 flex flex-col h-120">
           <div className="flex justify-between items-center mb-6">
             <h2 className="font-heading text-xl font-bold text-primary flex items-center gap-2">
-              <span className="material-symbols-outlined text-[20px]"><MdOutlineShoppingCart /></span>
+              <span className="material-symbols-outlined text-[20px]">
+                <MdOutlineShoppingCart />
+              </span>
               Recent Platform Orders
             </h2>
             <Link
@@ -154,11 +183,16 @@ export default async function AdminOverview() {
               </thead>
               <tbody className="divide-y divide-outline-variant/10">
                 {recentOrders.map((order) => (
-                  <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
+                  <tr
+                    key={order.id}
+                    className="hover:bg-surface-container-low/50 transition-colors"
+                  >
                     <td className="px-4 py-3 font-mono font-bold text-primary">
                       #{order.id.slice(-6).toUpperCase()}
                     </td>
-                    <td className="px-4 py-3 font-semibold">{order.consumerName}</td>
+                    <td className="px-4 py-3 font-semibold">
+                      {order.consumerName}
+                    </td>
                     <td className="px-4 py-3 font-heading font-bold text-primary">
                       ₹{order.totalAmount.toLocaleString("en-IN")}
                     </td>
@@ -168,8 +202,8 @@ export default async function AdminOverview() {
                           order.status === "delivered"
                             ? "bg-secondary-container text-on-secondary-container border-secondary/20"
                             : order.status === "cancelled"
-                            ? "bg-error-container text-on-error-container border-error/20"
-                            : "bg-amber-100 text-amber-900 border-amber-200"
+                              ? "bg-error-container text-on-error-container border-error/20"
+                              : "bg-amber-100 text-amber-900 border-amber-200"
                         }`}
                       >
                         {order.status}
@@ -189,21 +223,27 @@ export default async function AdminOverview() {
       {/* Quick Platform Insights */}
       <div className="glass-card organic-shadow rounded-3xl p-6 flex flex-col md:flex-row gap-6 md:items-center justify-around text-center">
         <div>
-          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Average Order Value</span>
+          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">
+            Average Order Value
+          </span>
           <span className="font-heading text-2xl font-bold text-primary">
             ₹{stats.averageOrderValue.toFixed(2)}
           </span>
         </div>
         <div className="hidden md:block w-px h-10 bg-outline-variant/20" />
         <div>
-          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Repeat Customer Rate</span>
+          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">
+            Repeat Customer Rate
+          </span>
           <span className="font-heading text-2xl font-bold text-primary">
             {stats.repeatCustomerRate.toFixed(1)}%
           </span>
         </div>
         <div className="hidden md:block w-px h-10 bg-outline-variant/20" />
         <div>
-          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Pending Approvals</span>
+          <span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">
+            Pending Approvals
+          </span>
           <span className="font-heading text-2xl font-bold text-primary">
             {stats.pendingApprovals}
           </span>
@@ -222,19 +262,27 @@ function StatCard({
   title: string;
   value: string;
   subtitle?: string;
-    icon: React.ReactNode;
+  icon: React.ReactNode;
 }) {
   return (
     <div className="glass-card organic-shadow rounded-2xl p-5 flex flex-col justify-between hover:-translate-y-0.5 transition-all">
       <div className="flex justify-between items-start mb-3">
-        <span className="text-xs font-bold text-outline uppercase tracking-wider">{title}</span>
+        <span className="text-xs font-bold text-outline uppercase tracking-wider">
+          {title}
+        </span>
         <div className="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
           <span className="material-symbols-outlined text-[18px]">{icon}</span>
         </div>
       </div>
       <div>
-        <div className="font-heading text-2xl font-bold text-primary tracking-tight">{value}</div>
-        {subtitle && <div className="text-[11px] text-outline font-medium mt-0.5">{subtitle}</div>}
+        <div className="font-heading text-2xl font-bold text-primary tracking-tight">
+          {value}
+        </div>
+        {subtitle && (
+          <div className="text-[11px] text-outline font-medium mt-0.5">
+            {subtitle}
+          </div>
+        )}
       </div>
     </div>
   );
