@@ -5,7 +5,6 @@ import { useCart } from "@/lib/cart/CartContext";
 import { FaRegCheckCircle } from "react-icons/fa";
 import { MdAddShoppingCart } from "react-icons/md";
 
-
 export default function AddToCartButton({
   product,
   farmerName,
@@ -18,6 +17,7 @@ export default function AddToCartButton({
     isOrganic: boolean;
     farmerId: string;
     quantityAvailable: number;
+    image?: string;
   };
   farmerName: string;
 }) {
@@ -34,6 +34,7 @@ export default function AddToCartButton({
       price: product.price,
       unit: product.unit,
       quantity,
+      image: product.image,
       isOrganic: product.isOrganic,
       maxQuantity: product.quantityAvailable,
     });
@@ -51,7 +52,7 @@ export default function AddToCartButton({
           <button
             type="button"
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm cursor-pointer"
           >
             -
           </button>
@@ -59,7 +60,7 @@ export default function AddToCartButton({
           <button
             type="button"
             onClick={() => setQuantity(Math.min(product.quantityAvailable, quantity + 1))}
-            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm"
+            className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:bg-surface-container text-on-surface font-bold text-sm transition-colors shadow-sm cursor-pointer"
           >
             +
           </button>
@@ -72,7 +73,7 @@ export default function AddToCartButton({
         type="button"
         onClick={handleAdd}
         disabled={product.quantityAvailable === 0}
-        className={`w-full py-4 px-6 rounded-xl font-heading text-sm font-semibold transition-all duration-300 shadow-md flex items-center justify-center gap-2 organic-shadow ${
+        className={`w-full py-4 px-6 rounded-xl font-heading text-sm font-semibold transition-all duration-300 shadow-md flex items-center justify-center gap-2 organic-shadow cursor-pointer ${
           added
             ? "bg-secondary text-on-secondary hover:opacity-90"
             : product.quantityAvailable > 0
@@ -87,7 +88,7 @@ export default function AddToCartButton({
           </>
         ) : product.quantityAvailable > 0 ? (
           <>
-              <span className="material-symbols-outlined text-[20px]"><MdAddShoppingCart /></span>
+            <span className="material-symbols-outlined text-[20px]"><MdAddShoppingCart /></span>
             Add to Basket (₹{product.price * quantity})
           </>
         ) : (

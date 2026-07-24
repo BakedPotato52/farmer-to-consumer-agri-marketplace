@@ -6,7 +6,7 @@ import {
   createOrder,
 } from "@/lib/data/orders";
 import { getSession } from "@/lib/auth/session";
-import type { Order } from "@/lib/types";
+import type { Order, OrderItem } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
   const session = await getSession();
@@ -40,13 +40,56 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
+    const createdOrders: Order[] = [];
 
-    // Validate required fields
+    // Support itemsByFarmer (grouping cart items by farmer)
+    if (body.itemsByFarmer && typeof body.itemsByFarmer === "object") {
+      const farmerIds = Object.keys(body.itemsByFarmer);
+
+      for (const farmerId of farmerIds) {
+        const rawItems = body.itemsByFarmer[farmerId];
+        if (!Array.isArray(rawItems) || rawItems.length === 0) continue;
+
+        const orderItems: OrderItem[] = rawItems.map((item: any) => ({
+          productId: item.productId,
+          productName: item.productName,
+          quantity: item.quantity,
+          pricePerUnit: item.price,
+          unit: item.unit || "kg",
+          totalPrice: item.price * item.quantity,
+          image: item.image,
+        }));
+
+        const itemsTotal = orderItems.reduce(
+          (sum, item) => sum + item.totalPrice,
+          0,
+        );
+        const farmerName = rawItems[0]?.farmerName || "Local Farmer";
+
+        const order = await createOrder({
+          consumerId: session.userId,
+          consumerName: session.name,
+          farmerId,
+          farmerName,
+          items: orderItems,
+          totalAmount: itemsTotal + 40, // subtotal + delivery fee
+          deliveryAddress: body.deliveryAddress || "",
+          deliverySlot: body.deliverySlot || "Morning (8AM - 12PM)",
+          deliveryDate: body.deliveryDate || new Date().toISOString().split("T")[0],
+          notes: body.notes || "",
+        });
+
+        createdOrders.push(order);
+      }
+
+      return NextResponse.json({ orders: createdOrders }, { status: 201 });
+    }
+
+    // Direct single-farmer order fallback
     const required = [
       "farmerId",
       "farmerName",
       "items",
-      "totalAmount",
       "deliveryAddress",
       "deliverySlot",
       "deliveryDate",
@@ -60,16 +103,34 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    const orderItems: OrderItem[] = body.items.map((item: any) => ({
+      productId: item.productId,
+      productName: item.productName || item.name,
+      quantity: item.quantity,
+      pricePerUnit: item.pricePerUnit || item.price,
+      unit: item.unit || "kg",
+      totalPrice: item.totalPrice || item.price * item.quantity,
+      image: item.image,
+    }));
+
     const newOrder = await createOrder({
       consumerId: session.userId,
       consumerName: session.name,
-      ...body,
+      farmerId: body.farmerId,
+      farmerName: body.farmerName,
+      items: orderItems,
+      totalAmount: body.totalAmount || 0,
+      deliveryAddress: body.deliveryAddress,
+      deliverySlot: body.deliverySlot,
+      deliveryDate: body.deliveryDate,
+      notes: body.notes || "",
     });
 
     return NextResponse.json(newOrder, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Order creation error:", error);
     return NextResponse.json(
-      { error: "Invalid request data" },
+      { error: error?.message || "Invalid request data" },
       { status: 400 },
     );
   }

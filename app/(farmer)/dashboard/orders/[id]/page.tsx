@@ -104,9 +104,17 @@ export default async function OrderDetailPage({
               {order.items.map((item, idx) => (
                 <li key={idx} className="p-6 flex items-center justify-between hover:bg-surface-container-low/50 transition-colors">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold">
-                      <span className="material-symbols-outlined text-[24px]"><FaShoppingCart /></span>
-                    </div>
+                    {item.image ? (
+                      <img
+                        src={item.image}
+                        alt={item.productName}
+                        className="w-14 h-14 rounded-2xl object-cover border border-outline-variant/15 shrink-0"
+                      />
+                    ) : (
+                      <div className="w-14 h-14 rounded-2xl bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold shrink-0 text-xl">
+                        {item.productName.charAt(0)}
+                      </div>
+                    )}
                     <div>
                       <h3 className="font-heading font-bold text-primary text-base">{item.productName}</h3>
                       <p className="text-xs text-outline">

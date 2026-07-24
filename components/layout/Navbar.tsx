@@ -8,7 +8,7 @@ import { RiAccountCircleLine } from "react-icons/ri";
 import { IoIosSearch, IoMdPeople } from "react-icons/io";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { IoStorefrontOutline } from "react-icons/io5";
-import { MdLogout, MdOutlineDashboard } from "react-icons/md";
+import { MdEco, MdLogout, MdOutlineDashboard } from "react-icons/md";
 import { CartContext } from "@/lib/cart/CartContext";
 
 const CATEGORIES_NAV = [
@@ -77,7 +77,7 @@ export default function Navbar({
             className="font-heading text-2xl font-extrabold text-primary flex items-center gap-2 tracking-tight group"
           >
             <span className="w-8 h-8 rounded-xl bg-primary text-on-primary flex items-center justify-center text-sm shadow-md group-hover:scale-105 transition-transform">
-              🌱
+              <MdEco />
             </span>
             FarmFresh
           </Link>

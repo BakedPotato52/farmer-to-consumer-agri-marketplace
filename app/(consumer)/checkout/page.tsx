@@ -61,7 +61,10 @@ export default function CheckoutPage() {
       });
 
       if (!res.ok) {
-        console.warn("API route response error, completing order flow.");
+        const errorData = await res.json().catch(() => ({}));
+        setError(errorData.error || "Failed to place order. Please check your information and try again.");
+        setIsSubmitting(false);
+        return;
       }
 
       clearCart();

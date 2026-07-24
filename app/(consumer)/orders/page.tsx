@@ -62,10 +62,20 @@ export default async function OrdersPage() {
                 key={order.id}
                 className="glass-card organic-shadow rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 transition-all hover:-translate-y-0.5 hover:shadow-lg duration-300 border border-outline-variant/10"
               >
-                {/* Visual Icon Badge */}
-                <div className="w-full md:w-36 h-36 bg-surface-container-low rounded-2xl flex flex-col items-center justify-center shrink-0 border border-outline-variant/10 text-primary">
-                  <span className="material-symbols-outlined text-4xl mb-1"><MdOutlineLocalShipping /></span>
-                  <span className="text-xs font-bold text-outline uppercase">{itemCount} {itemCount === 1 ? "Item" : "Items"}</span>
+                {/* Visual Icon / Image Badge */}
+                <div className="w-full md:w-36 h-36 bg-surface-container-low rounded-2xl flex flex-col items-center justify-center shrink-0 border border-outline-variant/10 text-primary overflow-hidden relative">
+                  {order.items[0]?.image ? (
+                    <img
+                      src={order.items[0].image}
+                      alt={order.items[0].productName}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined text-4xl mb-1"><MdOutlineLocalShipping /></span>
+                      <span className="text-xs font-bold text-outline uppercase">{itemCount} {itemCount === 1 ? "Item" : "Items"}</span>
+                    </>
+                  )}
                 </div>
 
                 {/* Order Details */}
@@ -111,8 +121,15 @@ export default async function OrdersPage() {
                       {order.items.map((item) => (
                         <span
                           key={item.productId}
-                          className="px-2.5 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg border border-outline-variant/10"
+                          className="px-2.5 py-1 bg-surface-container-low text-on-surface-variant text-xs font-medium rounded-lg border border-outline-variant/10 flex items-center gap-2"
                         >
+                          {item.image && (
+                            <img
+                              src={item.image}
+                              alt={item.productName}
+                              className="w-5 h-5 object-cover rounded-md shrink-0"
+                            />
+                          )}
                           {item.quantity}x {item.productName}
                         </span>
                       ))}

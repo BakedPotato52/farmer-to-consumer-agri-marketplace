@@ -103,11 +103,26 @@ export default async function OrdersManagement({
                 displayedOrders.map((order) => (
                   <tr key={order.id} className="hover:bg-surface-container-low/50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="font-mono font-bold text-primary text-sm">
-                        #{order.id.slice(-6).toUpperCase()}
-                      </div>
-                      <div className="text-xs text-outline mt-0.5">
-                        {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                      <div className="flex items-center gap-3">
+                        {order.items[0]?.image ? (
+                          <img
+                            src={order.items[0].image}
+                            alt={order.items[0].productName}
+                            className="w-10 h-10 object-cover rounded-xl border border-outline-variant/15 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary font-bold text-xs flex items-center justify-center shrink-0">
+                            #{order.id.slice(-3).toUpperCase()}
+                          </div>
+                        )}
+                        <div>
+                          <div className="font-mono font-bold text-primary text-sm">
+                            #{order.id.slice(-6).toUpperCase()}
+                          </div>
+                          <div className="text-xs text-outline mt-0.5">
+                            {order.items.length} {order.items.length === 1 ? "item" : "items"}
+                          </div>
+                        </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 space-y-1">

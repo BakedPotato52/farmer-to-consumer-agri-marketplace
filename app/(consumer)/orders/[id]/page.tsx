@@ -27,7 +27,6 @@ export default async function OrderDetailPage(props: {
     delivered: <RiHomeLine />,
     cancelled: <FaCircleXmark />,
   };
-
   return (
     <div className="pt-8 pb-16 max-w-[1280px] mx-auto px-4 md:px-10 min-h-screen">
       {/* Header */}
@@ -119,6 +118,7 @@ export default async function OrderDetailPage(props: {
               {order.items.map((item) => (
                 <div key={item.productId} className="py-4 first:pt-0 last:pb-0 space-y-4">
                   <div className="flex justify-between items-start">
+
                     <div>
                       <Link
                         href={`/products/${item.productId}`}

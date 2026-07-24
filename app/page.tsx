@@ -3,6 +3,9 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { getVerifiedFarmers } from "@/lib/data/farmers";
 import { getPlatformStats } from "@/lib/data/analytics";
+import { getSession } from "@/lib/auth/session";
+import { CartProvider } from "@/lib/cart/CartProvider";
+import { cookies } from "next/headers";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { BsSearch, BsCart4, BsTruck } from "react-icons/bs";
 import { MdOutlineStarPurple500 } from "react-icons/md";
@@ -100,12 +103,14 @@ const TESTIMONIALS = [
 
 /* ─── Page ─── */
 export default async function Home() {
+  await cookies();
+  const session = await getSession();
   const farmers = await getVerifiedFarmers();
   const stats = await getPlatformStats();
 
   return (
-    <>
-      <Navbar session={null} />
+    <CartProvider>
+      <Navbar session={session} />
 
       <main className="pt-20">
         {/* ── Hero ── */}
@@ -475,6 +480,6 @@ export default async function Home() {
       </main>
 
       <Footer />
-    </>
+    </CartProvider>
   );
 }

@@ -71,21 +71,34 @@ export default function CartPage() {
               <div className="divide-y divide-outline-variant/10">
                 {group.items.map((item) => (
                   <div key={item.productId} className="p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <Link
-                          href={`/products/${item.productId}`}
-                          className="font-heading text-lg font-bold text-primary hover:underline"
-                        >
-                          {item.productName}
-                        </Link>
-                        {item.isOrganic && (
-                          <span className="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">
-                            Organic
-                          </span>
-                        )}
+                    <div className="flex items-center gap-4 flex-1">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.productName}
+                          className="w-16 h-16 object-cover rounded-2xl border border-outline-variant/15 shrink-0 shadow-xs"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center text-2xl font-bold shrink-0">
+                          {item.productName.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <Link
+                            href={`/products/${item.productId}`}
+                            className="font-heading text-lg font-bold text-primary hover:underline"
+                          >
+                            {item.productName}
+                          </Link>
+                          {item.isOrganic && (
+                            <span className="bg-secondary-container text-on-secondary-container text-[10px] uppercase font-bold px-2 py-0.5 rounded-full">
+                              Organic
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-outline">₹{item.price} per {item.unit}</p>
                       </div>
-                      <p className="text-xs text-outline">₹{item.price} per {item.unit}</p>
                     </div>
 
                     <div className="flex items-center gap-6 w-full sm:w-auto justify-between sm:justify-end">

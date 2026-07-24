@@ -130,6 +130,7 @@ export interface OrderItem {
   pricePerUnit: number;
   unit: string;
   totalPrice: number;
+  image?: string;
 }
 
 export interface Order {
