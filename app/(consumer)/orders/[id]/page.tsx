@@ -117,20 +117,33 @@ export default async function OrderDetailPage(props: {
             <div className="divide-y divide-outline-variant/10">
               {order.items.map((item) => (
                 <div key={item.productId} className="py-4 first:pt-0 last:pb-0 space-y-4">
-                  <div className="flex justify-between items-start">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      {item.image ? (
 
-                    <div>
-                      <Link
-                        href={`/products/${item.productId}`}
-                        className="font-heading text-lg font-bold text-primary hover:underline"
-                      >
-                        {item.productName}
-                      </Link>
-                      <p className="text-xs text-outline mt-0.5">
-                        {item.quantity} × ₹{item.pricePerUnit} per {item.unit}
-                      </p>
+                        <img
+                          src={item.image}
+                          alt={item.productName}
+                          className="w-16 h-16 object-cover rounded-2xl border border-outline-variant/15 shrink-0 shadow-xs"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 rounded-2xl bg-primary/10 text-primary font-heading font-extrabold text-2xl flex items-center justify-center shrink-0">
+                          {item.productName.charAt(0)}
+                        </div>
+                      )}
+                      <div>
+                        <Link
+                          href={`/products/${item.productId}`}
+                          className="font-heading text-lg font-bold text-primary hover:underline block"
+                        >
+                          {item.productName}
+                        </Link>
+                        <p className="text-xs text-outline mt-0.5">
+                          {item.quantity} × ₹{item.pricePerUnit} per {item.unit}
+                        </p>
+                      </div>
                     </div>
-                    <span className="font-heading text-lg font-bold text-on-surface">
+                    <span className="font-heading text-lg font-bold text-on-surface shrink-0">
                       ₹{item.totalPrice.toFixed(2)}
                     </span>
                   </div>
