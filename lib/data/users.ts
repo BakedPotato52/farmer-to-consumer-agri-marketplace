@@ -1,18 +1,25 @@
 import { store, generateId } from "@/lib/data/store";
 import type { User, UserRole } from "@/lib/types";
-import { saveUserToFirestore } from "@/lib/firebase/services";
+import { saveUserToFirestore, fetchUsersFromFirestore } from "@/lib/firebase/services";
 
-export function getUserByEmail(email: string): User | undefined {
-  return store.users.find((u) => u.email === email);
+export async function getAllUsers(): Promise<User[]> {
+  const users = await fetchUsersFromFirestore();
+  return users.length > 0 ? users : store.users;
 }
 
-export function getUserById(id: string): User | undefined {
-  return store.users.find((u) => u.id === id);
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  const users = await getAllUsers();
+  return users.find((u) => u.email === email);
 }
 
-export function createUser(
+export async function getUserById(id: string): Promise<User | undefined> {
+  const users = await getAllUsers();
+  return users.find((u) => u.id === id);
+}
+
+export async function createUser(
   data: Omit<User, "id" | "createdAt" | "updatedAt">,
-): User {
+): Promise<User> {
   const now = new Date().toISOString();
   const newUser: User = {
     ...data,
@@ -21,21 +28,17 @@ export function createUser(
     updatedAt: now,
   };
   store.users.push(newUser);
-  saveUserToFirestore(newUser).catch(console.error);
+  await saveUserToFirestore(newUser);
   return newUser;
 }
 
-export function authenticateUser(email: string, password: string): User | null {
-  const user = store.users.find(
-    (u) => u.email === email && u.password === password,
-  );
+export async function authenticateUser(email: string, password: string): Promise<User | null> {
+  const users = await getAllUsers();
+  const user = users.find((u) => u.email === email && u.password === password);
   return user || null;
 }
 
-export function getAllUsers(): User[] {
-  return [...store.users];
-}
-
-export function getUsersByRole(role: UserRole): User[] {
-  return store.users.filter((u) => u.role === role);
+export async function getUsersByRole(role: UserRole): Promise<User[]> {
+  const users = await getAllUsers();
+  return users.filter((u) => u.role === role);
 }

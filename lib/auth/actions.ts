@@ -30,7 +30,7 @@ export async function loginAction(
     await signInWithEmailAndPassword(auth, email, password);
   } catch (firebaseErr: any) {
     // If Firebase Auth fails, check local/store fallback
-    const fallbackUser = authenticateUser(email, password);
+    const fallbackUser = await authenticateUser(email, password);
     if (!fallbackUser) {
       const code = firebaseErr?.code;
       if (code === "auth/user-not-found" || code === "auth/invalid-credential" || code === "auth/wrong-password") {

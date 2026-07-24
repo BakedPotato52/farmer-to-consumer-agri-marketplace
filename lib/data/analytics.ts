@@ -1,4 +1,3 @@
-import { store } from "@/lib/data/store";
 import type {
   PlatformStats,
   SalesSummary,
@@ -6,34 +5,35 @@ import type {
   User,
   Product,
 } from "@/lib/types";
-import { getFarmerById } from "./farmers";
+import { getAllFarmers, getFarmerById } from "./farmers";
+import { getAllUsers } from "./users";
+import { getAllOrders } from "./orders";
+import { getAllProducts } from "./products";
 
-export function getPlatformStats(): PlatformStats {
-  const totalFarmers = store.farmerProfiles.length;
-  const verifiedFarmers = store.farmerProfiles.filter(
-    (f) => f.isVerified,
-  ).length;
-  const totalConsumers = store.users.filter(
-    (u) => u.role === "consumer",
-  ).length;
-  const totalOrders = store.orders.length;
+export async function getPlatformStats(): Promise<PlatformStats> {
+  const farmers = await getAllFarmers();
+  const users = await getAllUsers();
+  const orders = await getAllOrders();
 
-  const completedOrders = store.orders.filter((o) => o.status === "delivered");
+  const totalFarmers = farmers.length;
+  const verifiedFarmers = farmers.filter((f) => f.isVerified).length;
+  const totalConsumers = users.filter((u) => u.role === "consumer").length;
+  const totalOrders = orders.length;
+
+  const completedOrders = orders.filter((o) => o.status === "delivered");
   const totalRevenue = completedOrders.reduce(
     (sum, o) => sum + o.totalAmount,
     0,
   );
 
-  const pendingApprovals = store.farmerProfiles.filter(
-    (f) => !f.isVerified,
-  ).length;
+  const pendingApprovals = farmers.filter((f) => !f.isVerified).length;
 
   const orderFulfilmentRate =
     totalOrders > 0 ? (completedOrders.length / totalOrders) * 100 : 0;
   const averageOrderValue =
     completedOrders.length > 0 ? totalRevenue / completedOrders.length : 0;
 
-  const consumerOrderCounts = store.orders.reduce(
+  const consumerOrderCounts = orders.reduce(
     (acc, order) => {
       acc[order.consumerId] = (acc[order.consumerId] || 0) + 1;
       return acc;
@@ -61,14 +61,17 @@ export function getPlatformStats(): PlatformStats {
   };
 }
 
-export function getOrderTrends(): {
-  month: string;
-  orders: number;
-  revenue: number;
-}[] {
+export async function getOrderTrends(): Promise<
+  {
+    month: string;
+    orders: number;
+    revenue: number;
+  }[]
+> {
+  const orders = await getAllOrders();
   const trendsMap: Record<string, { orders: number; revenue: number }> = {};
 
-  store.orders.forEach((order) => {
+  orders.forEach((order) => {
     const date = new Date(order.createdAt);
     const monthYear = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 
@@ -91,16 +94,19 @@ export function getOrderTrends(): {
     }));
 }
 
-export function getTopFarmers(
+export async function getTopFarmers(
   limit: number = 5,
-): {
-  farmer: FarmerProfile & { user: User };
-  revenue: number;
-  orders: number;
-}[] {
+): Promise<
+  {
+    farmer: FarmerProfile & { user: User };
+    revenue: number;
+    orders: number;
+  }[]
+> {
+  const orders = await getAllOrders();
   const farmerStats: Record<string, { revenue: number; orders: number }> = {};
 
-  store.orders.forEach((order) => {
+  orders.forEach((order) => {
     if (!farmerStats[order.farmerId]) {
       farmerStats[order.farmerId] = { revenue: 0, orders: 0 };
     }
@@ -110,16 +116,20 @@ export function getTopFarmers(
     }
   });
 
-  const sortedFarmers = Object.keys(farmerStats)
-    .sort((a, b) => farmerStats[b].revenue - farmerStats[a].revenue)
-    .slice(0, limit)
-    .map((farmerId) => {
-      const farmer = getFarmerById(farmerId);
+  const farmerIds = Object.keys(farmerStats).sort(
+    (a, b) => farmerStats[b].revenue - farmerStats[a].revenue,
+  ).slice(0, limit);
+
+  const farmerList = await Promise.all(farmerIds.map((id) => getFarmerById(id)));
+
+  return farmerList
+    .map((farmer, idx) => {
       if (!farmer) return null;
+      const fId = farmerIds[idx];
       return {
         farmer,
-        revenue: farmerStats[farmerId].revenue,
-        orders: farmerStats[farmerId].orders,
+        revenue: farmerStats[fId].revenue,
+        orders: farmerStats[fId].orders,
       };
     })
     .filter(Boolean) as {
@@ -127,21 +137,21 @@ export function getTopFarmers(
     revenue: number;
     orders: number;
   }[];
-
-  return sortedFarmers;
 }
 
-export function getTopProducts(
+export async function getTopProducts(
   limit: number = 5,
-): { product: Product; orders: number; revenue: number }[] {
+): Promise<{ product: Product; orders: number; revenue: number }[]> {
+  const orders = await getAllOrders();
+  const products = await getAllProducts();
   const productStats: Record<string, { orders: number; revenue: number }> = {};
 
-  store.orders.forEach((order) => {
+  orders.forEach((order) => {
     order.items.forEach((item) => {
       if (!productStats[item.productId]) {
         productStats[item.productId] = { orders: 0, revenue: 0 };
       }
-      productStats[item.productId].orders += 1; // Assuming order count = number of times ordered
+      productStats[item.productId].orders += 1;
       if (order.status === "delivered") {
         productStats[item.productId].revenue += item.totalPrice;
       }
@@ -152,7 +162,7 @@ export function getTopProducts(
     .sort((a, b) => productStats[b].revenue - productStats[a].revenue)
     .slice(0, limit)
     .map((productId) => {
-      const product = store.products.find((p) => p.id === productId);
+      const product = products.find((p) => p.id === productId);
       if (!product) return null;
       return {
         product,
@@ -165,24 +175,28 @@ export function getTopProducts(
   return sortedProducts;
 }
 
-export function getCategoryDistribution(): {
-  category: string;
-  count: number;
-  revenue: number;
-}[] {
+export async function getCategoryDistribution(): Promise<
+  {
+    category: string;
+    count: number;
+    revenue: number;
+  }[]
+> {
+  const products = await getAllProducts();
+  const orders = await getAllOrders();
   const distribution: Record<string, { count: number; revenue: number }> = {};
 
-  store.products.forEach((product) => {
+  products.forEach((product) => {
     if (!distribution[product.category]) {
       distribution[product.category] = { count: 0, revenue: 0 };
     }
     distribution[product.category].count += 1;
   });
 
-  store.orders.forEach((order) => {
+  orders.forEach((order) => {
     if (order.status === "delivered") {
       order.items.forEach((item) => {
-        const product = store.products.find((p) => p.id === item.productId);
+        const product = products.find((p) => p.id === item.productId);
         if (product) {
           if (!distribution[product.category]) {
             distribution[product.category] = { count: 0, revenue: 0 };
@@ -200,8 +214,9 @@ export function getCategoryDistribution(): {
   }));
 }
 
-export function getFarmerSalesSummary(farmerId: string): SalesSummary {
-  const farmerOrders = store.orders.filter((o) => o.farmerId === farmerId);
+export async function getFarmerSalesSummary(farmerId: string): Promise<SalesSummary> {
+  const allOrders = await getAllOrders();
+  const farmerOrders = allOrders.filter((o) => o.farmerId === farmerId);
   const totalOrders = farmerOrders.length;
   const completedOrders = farmerOrders.filter(
     (o) => o.status === "delivered",

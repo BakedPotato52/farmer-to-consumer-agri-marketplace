@@ -6,13 +6,10 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
-  query,
-  where,
   type DocumentData,
 } from "firebase/firestore";
 import { db } from "./config";
 import type { User, FarmerProfile, Product, Order, Review } from "@/lib/types";
-import { store } from "@/lib/data/store";
 
 // Collection Names
 export const COLLECTIONS = {
@@ -26,60 +23,11 @@ export const COLLECTIONS = {
 function handleFirestoreError(action: string, err: any) {
   if (err?.code === "not-found" || err?.message?.includes("NOT_FOUND") || err?.code === 5) {
     console.warn(
-      `[Firestore Setup Required] ${action} failed: Database (default) does not exist yet for project 'farm-fresh-52'.\n` +
+      `[Firestore Setup Required] ${action}: Cloud Firestore Database does not exist yet for project 'farm-fresh-52'.\n` +
       `👉 Please visit https://console.firebase.google.com/u/0/project/farm-fresh-52/firestore and click 'Create database'.`
     );
   } else {
     console.error(`[Firestore Error] ${action}:`, err);
-  }
-}
-
-/**
- * Sync initial seed data to Firestore if a collection is empty
- */
-export async function seedFirestoreIfEmpty(): Promise<void> {
-  try {
-    const productsSnap = await getDocs(collection(db, COLLECTIONS.PRODUCTS));
-    if (productsSnap.empty) {
-      console.log("Seeding initial products to Firestore...");
-      for (const prod of store.products) {
-        await setDoc(doc(db, COLLECTIONS.PRODUCTS, prod.id), prod);
-      }
-    }
-
-    const usersSnap = await getDocs(collection(db, COLLECTIONS.USERS));
-    if (usersSnap.empty) {
-      console.log("Seeding initial users to Firestore...");
-      for (const user of store.users) {
-        await setDoc(doc(db, COLLECTIONS.USERS, user.id), user);
-      }
-    }
-
-    const farmersSnap = await getDocs(collection(db, COLLECTIONS.FARMERS));
-    if (farmersSnap.empty) {
-      console.log("Seeding initial farmers to Firestore...");
-      for (const farmer of store.farmerProfiles) {
-        await setDoc(doc(db, COLLECTIONS.FARMERS, farmer.userId), farmer);
-      }
-    }
-
-    const ordersSnap = await getDocs(collection(db, COLLECTIONS.ORDERS));
-    if (ordersSnap.empty) {
-      console.log("Seeding initial orders to Firestore...");
-      for (const order of store.orders) {
-        await setDoc(doc(db, COLLECTIONS.ORDERS, order.id), order);
-      }
-    }
-
-    const reviewsSnap = await getDocs(collection(db, COLLECTIONS.REVIEWS));
-    if (reviewsSnap.empty) {
-      console.log("Seeding initial reviews to Firestore...");
-      for (const review of store.reviews) {
-        await setDoc(doc(db, COLLECTIONS.REVIEWS, review.id), review);
-      }
-    }
-  } catch (err) {
-    handleFirestoreError("seedFirestoreIfEmpty", err);
   }
 }
 
@@ -88,11 +36,11 @@ export async function seedFirestoreIfEmpty(): Promise<void> {
 export async function fetchUsersFromFirestore(): Promise<User[]> {
   try {
     const snap = await getDocs(collection(db, COLLECTIONS.USERS));
-    if (snap.empty) return store.users;
+    if (snap.empty) return [];
     return snap.docs.map((d) => d.data() as User);
   } catch (err) {
     handleFirestoreError("fetchUsersFromFirestore", err);
-    return store.users;
+    return [];
   }
 }
 
@@ -109,11 +57,11 @@ export async function saveUserToFirestore(user: User): Promise<void> {
 export async function fetchProductsFromFirestore(): Promise<Product[]> {
   try {
     const snap = await getDocs(collection(db, COLLECTIONS.PRODUCTS));
-    if (snap.empty) return store.products;
+    if (snap.empty) return [];
     return snap.docs.map((d) => d.data() as Product);
   } catch (err) {
     handleFirestoreError("fetchProductsFromFirestore", err);
-    return store.products;
+    return [];
   }
 }
 
@@ -146,11 +94,11 @@ export async function deleteProductFromFirestore(id: string): Promise<void> {
 export async function fetchFarmersFromFirestore(): Promise<FarmerProfile[]> {
   try {
     const snap = await getDocs(collection(db, COLLECTIONS.FARMERS));
-    if (snap.empty) return store.farmerProfiles;
+    if (snap.empty) return [];
     return snap.docs.map((d) => d.data() as FarmerProfile);
   } catch (err) {
     handleFirestoreError("fetchFarmersFromFirestore", err);
-    return store.farmerProfiles;
+    return [];
   }
 }
 
@@ -175,11 +123,11 @@ export async function updateFarmerInFirestore(userId: string, updates: Partial<F
 export async function fetchOrdersFromFirestore(): Promise<Order[]> {
   try {
     const snap = await getDocs(collection(db, COLLECTIONS.ORDERS));
-    if (snap.empty) return store.orders;
+    if (snap.empty) return [];
     return snap.docs.map((d) => d.data() as Order);
   } catch (err) {
     handleFirestoreError("fetchOrdersFromFirestore", err);
-    return store.orders;
+    return [];
   }
 }
 
@@ -204,11 +152,11 @@ export async function updateOrderInFirestore(id: string, updates: Partial<Order>
 export async function fetchReviewsFromFirestore(): Promise<Review[]> {
   try {
     const snap = await getDocs(collection(db, COLLECTIONS.REVIEWS));
-    if (snap.empty) return store.reviews;
+    if (snap.empty) return [];
     return snap.docs.map((d) => d.data() as Review);
   } catch (err) {
     handleFirestoreError("fetchReviewsFromFirestore", err);
-    return store.reviews;
+    return [];
   }
 }
 

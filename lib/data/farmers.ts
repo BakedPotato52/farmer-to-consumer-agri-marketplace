@@ -1,26 +1,44 @@
 import { store } from "@/lib/data/store";
 import type { FarmerProfile, User, FarmerFilters } from "@/lib/types";
-import { saveFarmerToFirestore, updateFarmerInFirestore } from "@/lib/firebase/services";
+import {
+  saveFarmerToFirestore,
+  updateFarmerInFirestore,
+  fetchFarmersFromFirestore,
+  fetchUsersFromFirestore,
+} from "@/lib/firebase/services";
 
-export function getAllFarmers(): (FarmerProfile & { user: User })[] {
-  return store.farmerProfiles.map((profile) => {
-    const user = store.users.find((u) => u.id === profile.userId)!;
+export async function getAllFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+  const farmers = await fetchFarmersFromFirestore();
+  const users = await fetchUsersFromFirestore();
+
+  const farmerList = farmers.length > 0 ? farmers : store.farmerProfiles;
+  const userList = users.length > 0 ? users : store.users;
+
+  return farmerList.map((profile) => {
+    const user = userList.find((u) => u.id === profile.userId) || {
+      id: profile.userId,
+      name: profile.farmName || "Farmer",
+      email: "",
+      password: "",
+      role: "farmer" as const,
+      phone: "",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
     return { ...profile, user };
   });
 }
 
-export function getFarmerById(
+export async function getFarmerById(
   userId: string,
-): (FarmerProfile & { user: User }) | undefined {
-  const profile = store.farmerProfiles.find((p) => p.userId === userId);
-  if (!profile) return undefined;
-  const user = store.users.find((u) => u.id === userId)!;
-  return { ...profile, user };
+): Promise<(FarmerProfile & { user: User }) | undefined> {
+  const farmers = await getAllFarmers();
+  return farmers.find((f) => f.userId === userId);
 }
 
-export function createFarmerProfile(
+export async function createFarmerProfile(
   data: Omit<FarmerProfile, "rating" | "totalReviews" | "totalProducts">,
-): FarmerProfile {
+): Promise<FarmerProfile> {
   const newProfile: FarmerProfile = {
     ...data,
     rating: 0,
@@ -28,58 +46,77 @@ export function createFarmerProfile(
     totalProducts: 0,
   };
   store.farmerProfiles.push(newProfile);
-  saveFarmerToFirestore(newProfile).catch(console.error);
+  await saveFarmerToFirestore(newProfile);
   return newProfile;
 }
 
-export function updateFarmerProfile(
+export async function updateFarmerProfile(
   userId: string,
   data: Partial<FarmerProfile>,
-): FarmerProfile | undefined {
-  const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
-  if (index === -1) return undefined;
+): Promise<FarmerProfile | undefined> {
+  const farmers = await fetchFarmersFromFirestore();
+  const existing = farmers.find((p) => p.userId === userId) || store.farmerProfiles.find((p) => p.userId === userId);
+  
+  const updated = {
+    ...(existing || {
+      userId,
+      farmName: "Farm",
+      farmLocation: "",
+      state: "",
+      pincode: "",
+      cropTypes: [],
+      farmingMethod: "organic" as const,
+      description: "",
+      isVerified: false,
+      rating: 0,
+      totalReviews: 0,
+      totalProducts: 0,
+      deliverySlots: [],
+    }),
+    ...data,
+  };
 
-  store.farmerProfiles[index] = { ...store.farmerProfiles[index], ...data };
-  updateFarmerInFirestore(userId, data).catch(console.error);
-  return store.farmerProfiles[index];
+  const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
+  if (index !== -1) {
+    store.farmerProfiles[index] = updated;
+  } else {
+    store.farmerProfiles.push(updated);
+  }
+
+  await updateFarmerInFirestore(userId, data);
+  return updated;
 }
 
-export function verifyFarmer(userId: string): FarmerProfile | undefined {
-  const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
-  if (index === -1) return undefined;
-
+export async function verifyFarmer(userId: string): Promise<FarmerProfile | undefined> {
   const updates = {
     isVerified: true,
     verificationDate: new Date().toISOString(),
   };
-
-  store.farmerProfiles[index] = {
-    ...store.farmerProfiles[index],
-    ...updates,
-  };
-  updateFarmerInFirestore(userId, updates).catch(console.error);
-  return store.farmerProfiles[index];
+  return updateFarmerProfile(userId, updates);
 }
 
-export function rejectFarmer(userId: string): boolean {
-  const index = store.farmerProfiles.findIndex((p) => p.userId === userId);
-  if (index === -1) return false;
-  store.farmerProfiles.splice(index, 1);
+export async function rejectFarmer(userId: string): Promise<boolean> {
+  const updates = {
+    isVerified: false,
+  };
+  await updateFarmerProfile(userId, updates);
   return true;
 }
 
-export function getVerifiedFarmers(): (FarmerProfile & { user: User })[] {
-  return getAllFarmers().filter((f) => f.isVerified);
+export async function getVerifiedFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+  const farmers = await getAllFarmers();
+  return farmers.filter((f) => f.isVerified);
 }
 
-export function getPendingFarmers(): (FarmerProfile & { user: User })[] {
-  return getAllFarmers().filter((f) => !f.isVerified);
+export async function getPendingFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+  const farmers = await getAllFarmers();
+  return farmers.filter((f) => !f.isVerified);
 }
 
-export function searchFarmers(
+export async function searchFarmers(
   filters: FarmerFilters,
-): (FarmerProfile & { user: User })[] {
-  let farmers = getAllFarmers();
+): Promise<(FarmerProfile & { user: User })[]> {
+  let farmers = await getAllFarmers();
 
   if (filters.isVerified !== undefined) {
     farmers = farmers.filter((f) => f.isVerified === filters.isVerified);

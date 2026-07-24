@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { getVerifiedFarmers } from "@/lib/data/farmers";
+import { getPlatformStats } from "@/lib/data/analytics";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { BsSearch, BsCart4, BsTruck } from "react-icons/bs";
 import { MdOutlineStarPurple500 } from "react-icons/md";
@@ -97,7 +99,10 @@ const TESTIMONIALS = [
 ];
 
 /* ─── Page ─── */
-export default function Home() {
+export default async function Home() {
+  const farmers = await getVerifiedFarmers();
+  const stats = await getPlatformStats();
+
   return (
     <>
       <Navbar session={null} />
@@ -268,7 +273,7 @@ export default function Home() {
             <div className="grid md:grid-cols-3 gap-12 text-center">
               <div>
                 <div className="font-heading text-6xl font-extrabold mb-2">
-                  12+
+                  {stats.totalFarmers}
                 </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
                   Farmers Onboarded
@@ -276,7 +281,7 @@ export default function Home() {
               </div>
               <div>
                 <div className="font-heading text-6xl font-extrabold mb-2">
-                  48
+                  {stats.totalOrders}
                 </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
                   Orders Fulfilled
@@ -284,10 +289,10 @@ export default function Home() {
               </div>
               <div>
                 <div className="font-heading text-6xl font-extrabold mb-2">
-                  1+
+                  ₹{stats.totalRevenue.toLocaleString("en-IN")}
                 </div>
                 <div className="text-sm text-primary-fixed-dim uppercase tracking-wider font-semibold">
-                  Liters of Fresh Milk
+                  Marketplace Value
                 </div>
               </div>
             </div>
@@ -307,49 +312,63 @@ export default function Home() {
           </div>
 
           <div className="px-4 md:px-[40px] max-w-[1280px] mx-auto grid md:grid-cols-3 gap-6">
-            {FARMERS.map((farmer) => (
-              <div
-                key={farmer.name}
-                className="bg-surface rounded-2xl p-6 organic-shadow group transition-all hover:-translate-y-2"
-              >
-                <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-6">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center"
-                    style={{ backgroundImage: `url('${farmer.image}')` }}
-                  />
-                  <div className="absolute top-4 right-4 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">
-                      verified
-                    </span>{" "}
-                    Verified
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="font-heading text-xl font-bold text-primary">
-                    {farmer.name}
-                  </h3>
-                  <div className="flex items-center text-on-surface-variant gap-1 text-sm">
-                    <span className="material-symbols-outlined text-sm">
-                      location_on
-                    </span>{" "}
-                    {farmer.location}
-                  </div>
-                  <p className="text-on-surface-variant text-sm pt-2">
-                    {farmer.bio}
-                  </p>
-                  <div className="pt-4 flex gap-2 flex-wrap">
-                    {farmer.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-block px-3 py-1 rounded-full bg-surface-container-highest text-on-tertiary-fixed-variant text-xs font-medium"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+            {farmers.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-on-surface-variant">
+                <p className="font-heading font-bold text-lg text-primary mb-1">No verified farmers listed yet.</p>
+                <p className="text-sm">Register as a seller to feature your farm on FarmFresh!</p>
               </div>
-            ))}
+            ) : (
+              farmers.map((farmer) => (
+                <div
+                  key={farmer.userId}
+                  className="bg-surface rounded-2xl p-6 organic-shadow group transition-all hover:-translate-y-2"
+                >
+                  <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-6 bg-primary/10 flex items-center justify-center">
+                    {farmer.farmImage ? (
+                      <img
+                        src={farmer.farmImage}
+                        alt={farmer.farmName}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="font-heading font-bold text-4xl text-primary">
+                        {farmer.farmName.charAt(0)}
+                      </span>
+                    )}
+                    <div className="absolute top-4 right-4 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1">
+                      <span className="material-symbols-outlined text-[14px]">
+                        verified
+                      </span>{" "}
+                      Verified
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="font-heading text-xl font-bold text-primary">
+                      {farmer.farmName}
+                    </h3>
+                    <div className="flex items-center text-on-surface-variant gap-1 text-sm">
+                      <span className="material-symbols-outlined text-sm">
+                        location_on
+                      </span>{" "}
+                      {farmer.farmLocation}, {farmer.state}
+                    </div>
+                    <p className="text-on-surface-variant text-sm pt-2 line-clamp-3">
+                      {farmer.description}
+                    </p>
+                    <div className="pt-4 flex gap-2 flex-wrap">
+                      {farmer.cropTypes.map((tag) => (
+                        <span
+                          key={tag}
+                          className="inline-block px-3 py-1 rounded-full bg-surface-container-highest text-on-tertiary-fixed-variant text-xs font-medium"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </section>
 

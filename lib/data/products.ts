@@ -5,34 +5,40 @@ import {
   saveProductToFirestore,
   updateProductInFirestore,
   deleteProductFromFirestore,
+  fetchProductsFromFirestore,
 } from "@/lib/firebase/services";
 
-export function getAllProducts(): Product[] {
-  return [...store.products];
+export async function getAllProducts(): Promise<Product[]> {
+  const products = await fetchProductsFromFirestore();
+  return products.length > 0 ? products : store.products;
 }
 
-export function getActiveProducts(): Product[] {
-  return store.products.filter((p) => p.isActive);
+export async function getActiveProducts(): Promise<Product[]> {
+  const products = await getAllProducts();
+  return products.filter((p) => p.isActive);
 }
 
-export function getProductById(id: string): Product | undefined {
-  return store.products.find((p) => p.id === id);
+export async function getProductById(id: string): Promise<Product | undefined> {
+  const products = await getAllProducts();
+  return products.find((p) => p.id === id);
 }
 
-export function getProductsByFarmer(farmerId: string): Product[] {
-  return store.products.filter((p) => p.farmerId === farmerId);
+export async function getProductsByFarmer(farmerId: string): Promise<Product[]> {
+  const products = await getAllProducts();
+  return products.filter((p) => p.farmerId === farmerId);
 }
 
-export function getProductsByCategory(category: ProductCategory): Product[] {
-  return store.products.filter((p) => p.category === category);
+export async function getProductsByCategory(category: ProductCategory): Promise<Product[]> {
+  const products = await getAllProducts();
+  return products.filter((p) => p.category === category);
 }
 
-export function createProduct(
+export async function createProduct(
   data: Omit<
     Product,
     "id" | "rating" | "totalReviews" | "createdAt" | "updatedAt"
   >,
-): Product {
+): Promise<Product> {
   const now = new Date().toISOString();
   const newProduct: Product = {
     ...data,
@@ -43,37 +49,47 @@ export function createProduct(
     updatedAt: now,
   };
   store.products.push(newProduct);
-  saveProductToFirestore(newProduct).catch(console.error);
+  await saveProductToFirestore(newProduct);
   return newProduct;
 }
 
-export function updateProduct(
+export async function updateProduct(
   id: string,
   data: Partial<Product>,
-): Product | undefined {
-  const index = store.products.findIndex((p) => p.id === id);
-  if (index === -1) return undefined;
+): Promise<Product | undefined> {
+  const products = await getAllProducts();
+  const existing = products.find((p) => p.id === id) || store.products.find((p) => p.id === id);
+  if (!existing) return undefined;
 
   const updated = {
-    ...store.products[index],
+    ...existing,
     ...data,
     updatedAt: new Date().toISOString(),
   };
-  store.products[index] = updated;
-  updateProductInFirestore(id, updated).catch(console.error);
-  return store.products[index];
+
+  const index = store.products.findIndex((p) => p.id === id);
+  if (index !== -1) {
+    store.products[index] = updated;
+  } else {
+    store.products.push(updated);
+  }
+
+  await updateProductInFirestore(id, data);
+  return updated;
 }
 
-export function deleteProduct(id: string): boolean {
+export async function deleteProduct(id: string): Promise<boolean> {
   const index = store.products.findIndex((p) => p.id === id);
-  if (index === -1) return false;
-  store.products.splice(index, 1);
-  deleteProductFromFirestore(id).catch(console.error);
+  if (index !== -1) {
+    store.products.splice(index, 1);
+  }
+  await deleteProductFromFirestore(id);
   return true;
 }
 
-export function filterProducts(filters: ProductFilters): Product[] {
-  let filtered = store.products.filter((p) => p.isActive);
+export async function filterProducts(filters: ProductFilters): Promise<Product[]> {
+  const allProducts = await getAllProducts();
+  let filtered = allProducts.filter((p) => p.isActive);
 
   if (filters.search) {
     const s = filters.search.toLowerCase();
@@ -106,8 +122,9 @@ export function filterProducts(filters: ProductFilters): Product[] {
 
   if (filters.location) {
     const loc = filters.location.toLowerCase();
-    filtered = filtered.filter((p) => {
-      const farmer = getFarmerById(p.farmerId);
+    const farmers = await Promise.all(filtered.map((p) => getFarmerById(p.farmerId)));
+    filtered = filtered.filter((_, idx) => {
+      const farmer = farmers[idx];
       if (!farmer) return false;
       return (
         farmer.farmLocation.toLowerCase().includes(loc) ||

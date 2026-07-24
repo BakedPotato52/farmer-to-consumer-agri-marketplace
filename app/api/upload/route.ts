@@ -7,15 +7,24 @@ export async function POST(request: Request) {
       process.env.CLOUDINARY_CLOUD_NAME ||
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
       "kanak-acharya";
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+    
+    // Parse API secret from CLOUDINARY_API_SECRET or CLOUDINARY_URL
+    let apiSecret = process.env.CLOUDINARY_API_SECRET;
+    if (!apiSecret && process.env.CLOUDINARY_URL) {
+      const match = process.env.CLOUDINARY_URL.match(/cloudinary:\/\/[^:]+:([^@]+)@/);
+      if (match) apiSecret = match[1];
+    }
+
+    const apiKey =
+      process.env.CLOUDINARY_API_KEY ||
+      (process.env.CLOUDINARY_URL?.match(/cloudinary:\/\/([^:]+):/)?.[1]);
+
     const uploadPreset =
       process.env.CLOUDINARY_UPLOAD_PRESET ||
       process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET ||
       "farm-fresh";
 
     let fileData: string | Blob;
-
     const contentType = request.headers.get("content-type") || "";
 
     if (contentType.includes("multipart/form-data")) {
@@ -33,37 +42,48 @@ export async function POST(request: Request) {
       fileData = json.file;
     }
 
-    // Build Cloudinary API payload
-    const cloudinaryFormData = new FormData();
-    cloudinaryFormData.append("file", fileData);
+    // 1. Try Unsigned Upload first with upload_preset
+    const unsignedFormData = new FormData();
+    unsignedFormData.append("file", fileData);
+    unsignedFormData.append("upload_preset", uploadPreset);
 
-    const timestamp = Math.round(new Date().getTime() / 1000).toString();
-
-    if (apiKey && apiSecret) {
-      // Signed upload to Cloudinary API
-      const paramsToSign = `timestamp=${timestamp}${apiSecret}`;
-      const signature = crypto.createHash("sha1").update(paramsToSign).digest("hex");
-
-      cloudinaryFormData.append("timestamp", timestamp);
-      cloudinaryFormData.append("api_key", apiKey);
-      cloudinaryFormData.append("signature", signature);
-    } else {
-      // Unsigned upload preset fallback
-      cloudinaryFormData.append("upload_preset", uploadPreset);
-    }
-
-    const cloudinaryRes = await fetch(
+    let cloudinaryRes = await fetch(
       `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
       {
         method: "POST",
-        body: cloudinaryFormData,
+        body: unsignedFormData,
       },
     );
 
-    const data = await cloudinaryRes.json();
+    let data = await cloudinaryRes.json();
+
+    // 2. If unsigned upload failed and we have credentials, try Signed Upload
+    if (!cloudinaryRes.ok && apiKey && apiSecret) {
+      console.warn("Unsigned Cloudinary upload failed, attempting signed upload...", data.error?.message);
+      
+      const timestamp = Math.round(new Date().getTime() / 1000).toString();
+      const paramsToSign = `timestamp=${timestamp}${apiSecret}`;
+      const signature = crypto.createHash("sha1").update(paramsToSign).digest("hex");
+
+      const signedFormData = new FormData();
+      signedFormData.append("file", fileData);
+      signedFormData.append("timestamp", timestamp);
+      signedFormData.append("api_key", apiKey);
+      signedFormData.append("signature", signature);
+
+      cloudinaryRes = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: "POST",
+          body: signedFormData,
+        },
+      );
+
+      data = await cloudinaryRes.json();
+    }
 
     if (!cloudinaryRes.ok || !data.secure_url) {
-      console.error("Cloudinary upload failed:", data);
+      console.error("Cloudinary upload error:", data);
       return NextResponse.json(
         { error: data.error?.message || "Failed to upload image to Cloudinary" },
         { status: 500 },
@@ -79,7 +99,7 @@ export async function POST(request: Request) {
       height: data.height,
     });
   } catch (err: any) {
-    console.error("Image upload API error:", err);
+    console.error("Image upload API exception:", err);
     return NextResponse.json(
       { error: err.message || "An error occurred while uploading image" },
       { status: 500 },

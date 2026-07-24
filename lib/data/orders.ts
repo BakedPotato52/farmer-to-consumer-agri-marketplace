@@ -1,26 +1,34 @@
 import { store, generateId } from "@/lib/data/store";
 import type { Order, OrderStatus } from "@/lib/types";
-import { saveOrderToFirestore, updateOrderInFirestore } from "@/lib/firebase/services";
+import {
+  saveOrderToFirestore,
+  updateOrderInFirestore,
+  fetchOrdersFromFirestore,
+} from "@/lib/firebase/services";
 
-export function getAllOrders(): Order[] {
-  return [...store.orders];
+export async function getAllOrders(): Promise<Order[]> {
+  const orders = await fetchOrdersFromFirestore();
+  return orders.length > 0 ? orders : store.orders;
 }
 
-export function getOrderById(id: string): Order | undefined {
-  return store.orders.find((o) => o.id === id);
+export async function getOrderById(id: string): Promise<Order | undefined> {
+  const orders = await getAllOrders();
+  return orders.find((o) => o.id === id);
 }
 
-export function getOrdersByConsumer(consumerId: string): Order[] {
-  return store.orders.filter((o) => o.consumerId === consumerId);
+export async function getOrdersByConsumer(consumerId: string): Promise<Order[]> {
+  const orders = await getAllOrders();
+  return orders.filter((o) => o.consumerId === consumerId);
 }
 
-export function getOrdersByFarmer(farmerId: string): Order[] {
-  return store.orders.filter((o) => o.farmerId === farmerId);
+export async function getOrdersByFarmer(farmerId: string): Promise<Order[]> {
+  const orders = await getAllOrders();
+  return orders.filter((o) => o.farmerId === farmerId);
 }
 
-export function createOrder(
+export async function createOrder(
   data: Omit<Order, "id" | "status" | "createdAt" | "updatedAt">,
-): Order {
+): Promise<Order> {
   const now = new Date().toISOString();
   const newOrder: Order = {
     ...data,
@@ -30,28 +38,36 @@ export function createOrder(
     updatedAt: now,
   };
   store.orders.push(newOrder);
-  saveOrderToFirestore(newOrder).catch(console.error);
+  await saveOrderToFirestore(newOrder);
   return newOrder;
 }
 
-export function updateOrderStatus(
+export async function updateOrderStatus(
   id: string,
   status: OrderStatus,
-): Order | undefined {
-  const index = store.orders.findIndex((o) => o.id === id);
-  if (index === -1) return undefined;
+): Promise<Order | undefined> {
+  const orders = await getAllOrders();
+  const existing = orders.find((o) => o.id === id) || store.orders.find((o) => o.id === id);
+  if (!existing) return undefined;
 
   const now = new Date().toISOString();
   const updated = {
-    ...store.orders[index],
+    ...existing,
     status,
     updatedAt: now,
   };
-  store.orders[index] = updated;
-  updateOrderInFirestore(id, { status, updatedAt: now }).catch(console.error);
-  return store.orders[index];
+
+  const index = store.orders.findIndex((o) => o.id === id);
+  if (index !== -1) {
+    store.orders[index] = updated;
+  } else {
+    store.orders.push(updated);
+  }
+
+  await updateOrderInFirestore(id, { status, updatedAt: now });
+  return updated;
 }
 
-export function cancelOrder(id: string): Order | undefined {
+export async function cancelOrder(id: string): Promise<Order | undefined> {
   return updateOrderStatus(id, "cancelled");
 }
