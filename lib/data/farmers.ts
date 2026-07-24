@@ -6,15 +6,25 @@ import {
   fetchFarmersFromFirestore,
   fetchUsersFromFirestore,
 } from "@/lib/firebase/services";
+import { getCache, setCache, deleteCachePattern } from "@/lib/redis/client";
+
+const CACHE_KEYS = {
+  ALL: "cache:farmers:all",
+  VERIFIED: "cache:farmers:verified",
+  BY_ID: (id: string) => `cache:farmers:id:${id}`,
+};
 
 export async function getAllFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+  const cached = await getCache<(FarmerProfile & { user: User })[]>(CACHE_KEYS.ALL);
+  if (cached) return cached;
+
   const farmers = await fetchFarmersFromFirestore();
   const users = await fetchUsersFromFirestore();
 
   const farmerList = farmers.length > 0 ? farmers : store.farmerProfiles;
   const userList = users.length > 0 ? users : store.users;
 
-  return farmerList.map((profile) => {
+  const result = farmerList.map((profile) => {
     const user = userList.find((u) => u.id === profile.userId) || {
       id: profile.userId,
       name: profile.farmName || "Farmer",
@@ -27,13 +37,23 @@ export async function getAllFarmers(): Promise<(FarmerProfile & { user: User })[
     };
     return { ...profile, user };
   });
+
+  await setCache(CACHE_KEYS.ALL, result, 120);
+  return result;
 }
 
 export async function getFarmerById(
   userId: string,
 ): Promise<(FarmerProfile & { user: User }) | undefined> {
+  const cached = await getCache<FarmerProfile & { user: User }>(CACHE_KEYS.BY_ID(userId));
+  if (cached) return cached;
+
   const farmers = await getAllFarmers();
-  return farmers.find((f) => f.userId === userId);
+  const farmer = farmers.find((f) => f.userId === userId);
+  if (farmer) {
+    await setCache(CACHE_KEYS.BY_ID(userId), farmer, 120);
+  }
+  return farmer;
 }
 
 export async function createFarmerProfile(
@@ -47,6 +67,8 @@ export async function createFarmerProfile(
   };
   store.farmerProfiles.push(newProfile);
   await saveFarmerToFirestore(newProfile);
+  await deleteCachePattern("cache:farmers:*");
+  await deleteCachePattern("cache:analytics:*");
   return newProfile;
 }
 
@@ -84,6 +106,8 @@ export async function updateFarmerProfile(
   }
 
   await updateFarmerInFirestore(userId, data);
+  await deleteCachePattern("cache:farmers:*");
+  await deleteCachePattern("cache:analytics:*");
   return updated;
 }
 
@@ -104,8 +128,13 @@ export async function rejectFarmer(userId: string): Promise<boolean> {
 }
 
 export async function getVerifiedFarmers(): Promise<(FarmerProfile & { user: User })[]> {
+  const cached = await getCache<(FarmerProfile & { user: User })[]>(CACHE_KEYS.VERIFIED);
+  if (cached) return cached;
+
   const farmers = await getAllFarmers();
-  return farmers.filter((f) => f.isVerified);
+  const result = farmers.filter((f) => f.isVerified);
+  await setCache(CACHE_KEYS.VERIFIED, result, 120);
+  return result;
 }
 
 export async function getPendingFarmers(): Promise<(FarmerProfile & { user: User })[]> {

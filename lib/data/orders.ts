@@ -5,6 +5,7 @@ import {
   updateOrderInFirestore,
   fetchOrdersFromFirestore,
 } from "@/lib/firebase/services";
+import { deleteCachePattern } from "@/lib/redis/client";
 
 export async function getAllOrders(): Promise<Order[]> {
   const orders = await fetchOrdersFromFirestore();
@@ -39,6 +40,7 @@ export async function createOrder(
   };
   store.orders.push(newOrder);
   await saveOrderToFirestore(newOrder);
+  await deleteCachePattern("cache:analytics:*");
   return newOrder;
 }
 
@@ -65,6 +67,7 @@ export async function updateOrderStatus(
   }
 
   await updateOrderInFirestore(id, { status, updatedAt: now });
+  await deleteCachePattern("cache:analytics:*");
   return updated;
 }
 

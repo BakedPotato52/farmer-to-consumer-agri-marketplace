@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getVerifiedFarmers } from "@/lib/data/farmers";
-import { MdVerified } from "react-icons/md";
+import { MdAgriculture, MdVerified } from "react-icons/md";
 import { FaLocationDot, FaStar } from "react-icons/fa6";
 
 export default async function FarmersPage(props: {
@@ -15,6 +15,7 @@ export default async function FarmersPage(props: {
   if (method) {
     farmers = farmers.filter((f) => f.farmingMethod === method);
   }
+
   if (location) {
     const locLower = location.toLowerCase();
     farmers = farmers.filter(
@@ -77,8 +78,8 @@ export default async function FarmersPage(props: {
       {/* Farmers Grid */}
       {farmers.length === 0 ? (
         <div className="bg-surface-container-lowest rounded-3xl p-16 text-center organic-shadow border border-outline-variant/10">
-          <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
-            <span className="material-symbols-outlined text-3xl">agriculture</span>
+          <div className="w-16 h-16 rounded-full bg-on-secondary-container text-secondary-container flex items-center justify-center mx-auto mb-4 organic-shadow">
+            <span className="material-symbols-outlined text-3xl"><MdAgriculture /></span>
           </div>
           <h3 className="font-heading text-2xl font-bold text-on-surface mb-2">No farmers found</h3>
           <p className="text-on-surface-variant max-w-sm mx-auto mb-6">

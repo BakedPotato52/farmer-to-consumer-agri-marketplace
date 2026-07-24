@@ -16,6 +16,7 @@ export async function loginAction(
   prevState: any,
   formData: FormData,
 ): Promise<{ error?: string; success?: boolean }> {
+
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
 
@@ -59,7 +60,6 @@ export async function loginAction(
     role: user.role,
   });
 
-  console.log("User logged in:", user);
 
   if (user.role === "admin") {
     redirect("/admin");

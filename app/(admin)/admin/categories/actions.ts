@@ -1,23 +1,39 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { createCategory, deleteCategory } from "@/lib/data/categories";
 
 export async function addCategoryAction(formData: FormData) {
   const name = formData.get("name") as string;
   const icon = formData.get("icon") as string;
-  const slug = name.toLowerCase().replace(/\s+/g, "-");
 
-  // In a real app we'd save to DB here
-  console.log(`Adding category: ${name} ${icon} (${slug})`);
+  if (!name || !icon) {
+    return { error: "Name and icon are required" };
+  }
 
-  revalidatePath("/admin/categories");
-  return { success: true };
+  try {
+    await createCategory({ name, icon });
+    revalidatePath("/admin/categories");
+    revalidatePath("/products");
+    revalidatePath("/");
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "Failed to create category" };
+  }
 }
 
 export async function deleteCategoryAction(id: string) {
-  // In a real app we'd delete from DB here
-  console.log(`Deleting category: ${id}`);
+  if (!id) {
+    return { error: "Category ID is required" };
+  }
 
-  revalidatePath("/admin/categories");
-  return { success: true };
+  try {
+    await deleteCategory(id);
+    revalidatePath("/admin/categories");
+    revalidatePath("/products");
+    revalidatePath("/");
+    return { success: true };
+  } catch (err: any) {
+    return { error: err.message || "Failed to delete category" };
+  }
 }

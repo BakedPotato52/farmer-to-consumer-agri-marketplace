@@ -11,6 +11,13 @@ import {
 import { db } from "./config";
 import type { User, FarmerProfile, Product, Order, Review } from "@/lib/types";
 
+export interface CategoryItem {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+}
+
 // Collection Names
 export const COLLECTIONS = {
   USERS: "users",
@@ -18,6 +25,7 @@ export const COLLECTIONS = {
   PRODUCTS: "products",
   ORDERS: "orders",
   REVIEWS: "reviews",
+  CATEGORIES: "categories",
 } as const;
 
 function handleFirestoreError(action: string, err: any) {
@@ -165,5 +173,34 @@ export async function saveReviewToFirestore(review: Review): Promise<void> {
     await setDoc(doc(db, COLLECTIONS.REVIEWS, review.id), review);
   } catch (err) {
     handleFirestoreError("saveReviewToFirestore", err);
+  }
+}
+
+// --- CATEGORY OPERATIONS ---
+
+export async function fetchCategoriesFromFirestore(): Promise<CategoryItem[]> {
+  try {
+    const snap = await getDocs(collection(db, COLLECTIONS.CATEGORIES));
+    if (snap.empty) return [];
+    return snap.docs.map((d) => d.data() as CategoryItem);
+  } catch (err) {
+    handleFirestoreError("fetchCategoriesFromFirestore", err);
+    return [];
+  }
+}
+
+export async function saveCategoryToFirestore(category: CategoryItem): Promise<void> {
+  try {
+    await setDoc(doc(db, COLLECTIONS.CATEGORIES, category.id), category);
+  } catch (err) {
+    handleFirestoreError("saveCategoryToFirestore", err);
+  }
+}
+
+export async function deleteCategoryFromFirestore(id: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, COLLECTIONS.CATEGORIES, id));
+  } catch (err) {
+    handleFirestoreError("deleteCategoryFromFirestore", err);
   }
 }

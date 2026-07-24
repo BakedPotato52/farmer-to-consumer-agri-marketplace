@@ -9,8 +9,16 @@ import { getAllFarmers, getFarmerById } from "./farmers";
 import { getAllUsers } from "./users";
 import { getAllOrders } from "./orders";
 import { getAllProducts } from "./products";
+import { getCache, setCache } from "@/lib/redis/client";
+
+const CACHE_KEYS = {
+  STATS: "cache:analytics:platform_stats",
+};
 
 export async function getPlatformStats(): Promise<PlatformStats> {
+  const cached = await getCache<PlatformStats>(CACHE_KEYS.STATS);
+  if (cached) return cached;
+
   const farmers = await getAllFarmers();
   const users = await getAllUsers();
   const orders = await getAllOrders();
@@ -48,7 +56,7 @@ export async function getPlatformStats(): Promise<PlatformStats> {
   const repeatCustomerRate =
     uniqueCustomers > 0 ? (repeatCustomers / uniqueCustomers) * 100 : 0;
 
-  return {
+  const result: PlatformStats = {
     totalFarmers,
     verifiedFarmers,
     totalConsumers,
@@ -59,6 +67,9 @@ export async function getPlatformStats(): Promise<PlatformStats> {
     averageOrderValue,
     repeatCustomerRate,
   };
+
+  await setCache(CACHE_KEYS.STATS, result, 60);
+  return result;
 }
 
 export async function getOrderTrends(): Promise<
