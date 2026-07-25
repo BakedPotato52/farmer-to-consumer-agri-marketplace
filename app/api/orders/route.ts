@@ -7,6 +7,7 @@ import {
 } from "@/lib/data/orders";
 import { getSession } from "@/lib/auth/session";
 import type { Order, OrderItem } from "@/lib/types";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function GET(request: NextRequest) {
   const session = await getSession();
@@ -35,6 +36,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: "Unauthorized. Consumer access required." },
       { status: 403 },
+    );
+  }
+
+  // Rate Limit: max 5 order placements per 60 seconds per consumer
+  const rateLimit = await checkRateLimit(`order:${session.userId}`, 5, 60);
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      {
+        error: `Order creation rate limit exceeded. Bot prevention active. Please wait ${rateLimit.resetInSeconds} seconds before placing another order.`,
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(rateLimit.resetInSeconds),
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
     );
   }
 

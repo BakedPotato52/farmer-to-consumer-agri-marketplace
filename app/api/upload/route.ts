@@ -1,8 +1,33 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
   try {
+    const clientIp =
+      request.headers.get("x-forwarded-for")?.split(",")[0] ||
+      request.headers.get("x-real-ip") ||
+      "127.0.0.1";
+
+    // Rate Limit: max 4 image uploads per minute per IP
+    const rateLimit = await checkRateLimit(`upload:${clientIp}`, 4, 60);
+
+    if (!rateLimit.success) {
+      return NextResponse.json(
+        {
+          error: `Upload rate limit exceeded. Bot prevention active. Please wait ${rateLimit.resetInSeconds} seconds before uploading again.`,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateLimit.resetInSeconds),
+            "X-RateLimit-Limit": String(rateLimit.limit),
+            "X-RateLimit-Remaining": String(rateLimit.remaining),
+          },
+        },
+      );
+    }
+
     const cloudName =
       process.env.CLOUDINARY_CLOUD_NAME ||
       process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ||
@@ -106,14 +131,22 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      url: data.secure_url,
-      publicId: data.public_id,
-      format: data.format,
-      width: data.width,
-      height: data.height,
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        url: data.secure_url,
+        publicId: data.public_id,
+        format: data.format,
+        width: data.width,
+        height: data.height,
+      },
+      {
+        headers: {
+          "X-RateLimit-Limit": String(rateLimit.limit),
+          "X-RateLimit-Remaining": String(rateLimit.remaining),
+        },
+      },
+    );
   } catch (err: any) {
     console.error("Image upload API exception:", err);
     return NextResponse.json(

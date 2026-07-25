@@ -10,12 +10,21 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ProductCategory } from "@/lib/types";
 import { cookies } from "next/headers";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function createProductAction(prevState: any, formData: FormData) {
   await cookies();
   const session = await getSession();
   if (!session || session.role !== "farmer") {
     return { error: "Unauthorized" };
+  }
+
+  // Rate Limit: max 10 product creations per 60s per farmer
+  const rateLimit = await checkRateLimit(`create_product:${session.userId}`, 10, 60);
+  if (!rateLimit.success) {
+    return {
+      error: `Product creation rate limit exceeded. Bot prevention active. Please wait ${rateLimit.resetInSeconds} seconds before creating another product.`,
+    };
   }
 
   const name = formData.get("name") as string;

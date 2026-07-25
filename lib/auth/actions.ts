@@ -11,6 +11,7 @@ import { authenticateUser, createUser, getUserByEmail } from "@/lib/data/users";
 import { createFarmerProfile } from "@/lib/data/farmers";
 import { createSession, destroySession } from "@/lib/auth/session";
 import type { UserRole, FarmingMethod } from "@/lib/types";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function loginAction(
   prevState: any,
@@ -21,6 +22,14 @@ export async function loginAction(
 
   if (!email || !password) {
     return { error: "Email and password are required" };
+  }
+
+  // Rate limit login attempts: max 5 attempts per 60s per email
+  const rateLimit = await checkRateLimit(`login:${email.toLowerCase().trim()}`, 5, 60);
+  if (!rateLimit.success) {
+    return {
+      error: `Too many login attempts. Bot prevention active. Please wait ${rateLimit.resetInSeconds} seconds before trying again.`,
+    };
   }
 
   let user = await getUserByEmail(email);
@@ -85,6 +94,14 @@ export async function registerAction(
 
   if (!email || !password || !name || !role) {
     return { error: "Missing required fields" };
+  }
+
+  // Rate limit registration: max 3 registrations per 60s per email
+  const rateLimit = await checkRateLimit(`register:${email.toLowerCase().trim()}`, 3, 60);
+  if (!rateLimit.success) {
+    return {
+      error: `Registration rate limit exceeded. Bot prevention active. Please wait ${rateLimit.resetInSeconds} seconds before creating another account.`,
+    };
   }
 
   if (password.length < 6) {
