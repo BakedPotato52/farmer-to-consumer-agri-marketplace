@@ -87,7 +87,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ## Workflow & System Design
 
-- Workflow & System design diagrams documentation : [WORKFLOW.md](WORKFLOW.md)
+- Workflow & System design diagrams documentation : [WORKFLOW_SYSTEM_DIAGRAM.md](WORKFLOW_SYSTEM_DIAGRAM.md)
 
 ## Technology Stack
 
@@ -103,7 +103,6 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ---
 
-## Project Structure
 ## Project Structure
 
 ```
