@@ -1,4 +1,4 @@
-# 🌱 FarmFresh — Direct Farmer-to-Consumer Agricultural Marketplace
+# FarmFresh — Direct Farmer-to-Consumer Agricultural Marketplace
 
 **FarmFresh** is a modern, high-performance web application designed to connect local agricultural producers directly with consumers. By eliminating intermediaries, FarmFresh empowers farmers with fair pricing and gives consumers fresh, transparently sourced produce.
 
@@ -6,7 +6,7 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 ### 1. Multi-Role Authentication & Session Management
 - **Three Core User Roles**: Consumer, Farmer, and Administrator.
@@ -85,6 +85,10 @@ Built with **Next.js 16 (App Router & Turbopack)**, **React 19**, **Tailwind CSS
 
 ---
 
+## Workflow & System Design
+
+- Workflow documentation and System design diagrams: [WORKFLOW_SYSTEM_DIAGRAM.md](WORKFLOW_SYSTEM_DIAGRAM.md)
+
 ## Technology Stack
 
 | Layer | Technology |
@@ -134,11 +138,11 @@ farmer-to-consumer-agri-marketplace/
 ```env
 # Cloudinary Configuration
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=kanak-acharjee
-NEXT_PUBLIC_CLOUDINARY_API_KEY=1296619737434296
-CLOUDINARY_URL=cloudinary://1296619737434296:Lbv8Do0uLYSxVtQvmYSxVtQvmYsShFpNiJmk@kanak-acharjee
+NEXT_PUBLIC_CLOUDINARY_API_KEY=12966137434296
+CLOUDINARY_URL=cloudinary://12966137434296:Lbv8Do0uLYSxVtQvmYvmYsShFpNiJmk@kanak-acharjee
 CLOUDINARY_CLOUD_NAME=kanak-acharjee
-CLOUDINARY_API_KEY=1296619737434296
-CLOUDINARY_API_SECRET=Lbv8Do0uLYSxVtQvmYsSxVtQvmYShFpNiJmk
+CLOUDINARY_API_KEY=12966137434296
+CLOUDINARY_API_SECRET=Lbv8Do0uLYvmYsSxVtQvmYShFpNiJmk
 CLOUDINARY_UPLOAD_PRESET=farm-fresh
 
 # Redis Caching Configuration
